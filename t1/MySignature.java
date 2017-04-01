@@ -16,8 +16,6 @@ public class MySignature {
     private byte[] _data;
     private MessageDigest _messageDigest;
     private Cipher _cipher;
-    private PrivateKey _msPrivateKey;
-    private PublicKey _msPublicKey;
 
     protected MySignature(String digestMethodName, String encryptionMethodName) 
                 throws NoSuchAlgorithmException, NoSuchPaddingException{
@@ -55,16 +53,27 @@ public class MySignature {
      }
 
     public void initVerify(PublicKey publicKey){
-        throws InvalidKeyException{
-        try {
-	    _msPublicKey = publicKey;
-        } catch (ClassCastException cce) {
-	    throw new InvalidKeyException("Wrong public key type");
-	}
-
+	_cipher.init(Cipher.DECRYPT_MODE, publicKey);
     }
 
     public boolean verify(byte[] signature){
-        return false;
+        throws SignatureException{
+				
+	    byte messageDigestPublic[] = null;
+	    try {
+	        messageDigestPublic = _messageDigest.digest();
+	    } catch (NullPointerException npe) {
+		throw new SignatureException("No SHA digest found");
+	    }
+
+	    byte[] messageDigestPrivate = null;
+	    try {
+		messageDigestPrivate = _cipher.doFinal(signature);
+	    } catch (Exception e) {
+		throw new Exception(“Fail to get messageDigestPrivate”);
+	    } finally {
+		return MessageDigest.isEqual(messageDigestPrivate, messageDigestPublic);
+            }
+	}
     }
 }
