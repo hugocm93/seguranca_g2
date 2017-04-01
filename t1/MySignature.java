@@ -9,13 +9,14 @@ public class MySignature {
     private PublicKey _publicKey;
     private String _digestMethodName;
     private String _encryptionMethodName;
+    private byte[] _data;
 
     protected MySignature(String digestMethodName, String encryptionMethodName){
         _digestMethodName = digestMethodName;
         _encryptionMethodName = encryptionMethodName;
     }
 
-    public static MySignature getInstance(String method) {
+    public static MySignature getInstance(String method) throws IllegalArgumentException {
         switch(method){
             case "MD5WITHRSA":
                 if(_md5WithRsa == null) {
@@ -36,7 +37,7 @@ public class MySignature {
 	}
 
 	public void update(byte[] data){
-
+        _data = data;
 	}
 
 	public byte[] sign(){
