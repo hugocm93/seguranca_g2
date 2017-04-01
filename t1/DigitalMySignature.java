@@ -27,17 +27,17 @@ public class DigitalMySignature {
     		sig.update(plainText);
     		byte[] signature = sig.sign();
     		//System.out.println( sig.getProvider().getInfo() );
-    		System.out.println( "\nSignature:" );
+    		//System.out.println( "\nSignature:" );
 	
 		// converte o signature para hexadecimal
-		StringBuffer buf = new StringBuffer();
-		for(int i = 0; i < signature.length; i++) {
-			String hex = Integer.toHexString(0x0100 + (signature[i] & 0x00FF)).substring(1);
-       			buf.append((hex.length() < 2 ? "0" : "") + hex);
-    		}
+		//StringBuffer buf = new StringBuffer();
+		//for(int i = 0; i < signature.length; i++) {
+		//	String hex = Integer.toHexString(0x0100 + (signature[i] & 0x00FF)).substring(1);
+       		//	buf.append((hex.length() < 2 ? "0" : "") + hex);
+    		//}
 
     		// imprime o signature em hexadecimal
-    		System.out.println( buf.toString() );
+    		//System.out.println( buf.toString() );
 
     		//
     		// verifica a assinatura com a chave publica

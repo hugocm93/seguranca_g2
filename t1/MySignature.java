@@ -48,9 +48,15 @@ public class MySignature {
 	}
 
 	public byte[] sign() throws IllegalBlockSizeException, BadPaddingException {
-        byte[] digest = _messageDigest.digest(_data);
+            byte[] digest = _messageDigest.digest(_data);
+            System.out.println("\nPlain Text Digest");
+            printHexaDecimal(digest);
 
-        return _cipher.doFinal(digest);
+            byte[] cipherText = _cipher.doFinal(digest);
+            System.out.println("\nSignature");
+            printHexaDecimal(cipherText);
+
+            return cipherText;
 	}
 
     public void initVerify(PublicKey publicKey) throws InvalidKeyException{
@@ -61,13 +67,17 @@ public class MySignature {
 	    byte messageDigestPublic[] = null;
 	    try {
 	        messageDigestPublic = _messageDigest.digest(_data);
+                System.out.println("\nMessage digest with public key");
+                printHexaDecimal(messageDigestPublic);
 	    } catch (NullPointerException npe) {
 			throw new SignatureException("No " + _messageDigest.getAlgorithm() + " digest found");
 	    }
 
 	    byte[] messageDigestPrivate = null;
 	    try{
-			messageDigestPrivate = _cipher.doFinal(signature);
+	        messageDigestPrivate = _cipher.doFinal(signature);
+                System.out.println("\nMessage digest with private key");
+                printHexaDecimal(messageDigestPrivate);
 	    } 
 		catch (Exception e){
 			throw new Exception("Fail to get messageDigestPrivate");
@@ -76,4 +86,14 @@ public class MySignature {
 			return MessageDigest.isEqual(messageDigestPrivate, messageDigestPublic);
 		}
 	}
+
+	public static void printHexaDecimal(byte[] data){
+	    StringBuffer buf = new StringBuffer();
+	    for(int i = 0; i < data.length; i++) {
+	        String hex = Integer.toHexString(0x0100 + (data[i] & 0x00FF)).substring(1);
+	        buf.append((hex.length() < 2 ? "0" : "") + hex);
+	    }
+	    System.out.println( buf.toString() );
+	}
+
 }
