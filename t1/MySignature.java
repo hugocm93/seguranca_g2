@@ -17,12 +17,14 @@ public class MySignature {
     private MessageDigest _messageDigest;
     private Cipher _cipher;
 
-    protected MySignature(String digestMethodName, String encryptionMethodName) throws NoSuchAlgorithmException, NoSuchPaddingException{
+    protected MySignature(String digestMethodName, String encryptionMethodName) 
+                throws NoSuchAlgorithmException, NoSuchPaddingException{
         _messageDigest = MessageDigest.getInstance(digestMethodName);
         _cipher = Cipher.getInstance(encryptionMethodName);
     }
 
-    public static MySignature getInstance(String method) throws IllegalArgumentException, NoSuchAlgorithmException, NoSuchPaddingException {
+    public static MySignature getInstance(String method) 
+        throws IllegalArgumentException, NoSuchAlgorithmException, NoSuchPaddingException {
         switch(method){
             case "MD5WITHRSA":
                 if(_md5WithRsa == null) {
