@@ -1,22 +1,25 @@
+import java.security.PrivateKey;
+import java.security.PublicKey;
+
 public class MySignature {
 
-	private void initSign( byte[] privateKey){
+	public void initSign( PrivateKey publicKey){
 
 	}
 
-	private void update( byte[] data){
+	public void update( byte[] data){
 
 	}
 
-	private byte[] sign(){
+	public byte[] sign(){
         return null; 
 	 }
 
-	private void initVerity( byte[] publicKey){
+	public void initVerity( PublicKey publicKey){
 
 	}
 
-	private boolean verify( byte[] signature){
+	public boolean verify( byte[] signature){
         return false;
 	}
 }
