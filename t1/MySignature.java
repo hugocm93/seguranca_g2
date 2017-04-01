@@ -3,11 +3,14 @@ import java.security.PublicKey;
 
 public class MySignature {
 
-	public void initSign( PrivateKey publicKey){
+    private PrivateKey _privateKey;
+    private PublicKey _publicKey;
 
+	public void initSign(PrivateKey privateKey){
+        _privateKey = privateKey;
 	}
 
-	public void update( byte[] data){
+	public void update(byte[] data){
 
 	}
 
@@ -15,11 +18,11 @@ public class MySignature {
         return null; 
 	 }
 
-	public void initVerity( PublicKey publicKey){
-
+	public void initVerity(PublicKey publicKey){
+        _publicKey = publicKey;
 	}
 
-	public boolean verify( byte[] signature){
+	public boolean verify(byte[] signature){
         return false;
 	}
 }
