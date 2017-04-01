@@ -11,6 +11,8 @@ public class MySignature {
     private byte[] _data;
     private MessageDigest _messageDigest;
     private Cipher _cipher;
+    private PrivateKey _msPrivateKey;
+    private PublicKey _msPublicKey;
 
     protected MySignature(String digestMethodName, String encryptionMethodName) throws NoSuchAlgorithmException{
         _messageDigest = MessageDigest.getInstance(digestMethodName);
@@ -45,10 +47,17 @@ public class MySignature {
         return _cipher.doFinal(digest);
      }
 
-	public void initVerify(PublicKey publicKey){
+    public void initVerify(PublicKey publicKey){
+        throws InvalidKeyException{
+        try {
+	    _msPublicKey = publicKey;
+        } catch (ClassCastException cce) {
+	    throw new InvalidKeyException("Wrong public key type");
 	}
 
-	public boolean verify(byte[] signature){
+    }
+
+    public boolean verify(byte[] signature){
         return false;
-	}
+    }
 }
