@@ -27,7 +27,7 @@ public class MySignature {
     public static MySignature getInstance(String method) 
 				throws IllegalArgumentException, NoSuchAlgorithmException, NoSuchPaddingException{
         switch(method){
-            case "MD5WITHRSA":
+            case "MD5WithRSA":
                 if(_md5WithRsa == null) {
 					_md5WithRsa = new MySignature( "MD5", "RSA");
                 }
@@ -51,7 +51,7 @@ public class MySignature {
         byte[] digest = _messageDigest.digest(_data);
 
         return _cipher.doFinal(digest);
-     }
+	}
 
     public void initVerify(PublicKey publicKey) throws InvalidKeyException{
 		_cipher.init(Cipher.DECRYPT_MODE, publicKey);
