@@ -3,6 +3,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
+import java.security.SignatureException;
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
@@ -23,8 +24,7 @@ public class MySignature {
         _cipher = Cipher.getInstance(encryptionMethodName);
     }
 
-    public static MySignature getInstance(String method) 
-        throws IllegalArgumentException, NoSuchAlgorithmException, NoSuchPaddingException {
+    public static MySignature getInstance(String method) throws IllegalArgumentException, NoSuchAlgorithmException, NoSuchPaddingException{
         switch(method){
             case "MD5WITHRSA":
                 if(_md5WithRsa == null) {
@@ -52,28 +52,27 @@ public class MySignature {
         return _cipher.doFinal(digest);
      }
 
-    public void initVerify(PublicKey publicKey){
-	_cipher.init(Cipher.DECRYPT_MODE, publicKey);
+    public void initVerify(PublicKey publicKey) throws InvalidKeyException{
+		_cipher.init(Cipher.DECRYPT_MODE, publicKey);
     }
 
-    public boolean verify(byte[] signature){
-        throws SignatureException{
-				
+    public boolean verify(byte[] signature) throws SignatureException{
 	    byte messageDigestPublic[] = null;
 	    try {
 	        messageDigestPublic = _messageDigest.digest();
 	    } catch (NullPointerException npe) {
-		throw new SignatureException("No SHA digest found");
+			throw new SignatureException("No SHA digest found");
 	    }
 
 	    byte[] messageDigestPrivate = null;
-	    try {
-		messageDigestPrivate = _cipher.doFinal(signature);
-	    } catch (Exception e) {
-		throw new Exception(“Fail to get messageDigestPrivate”);
-	    } finally {
-		return MessageDigest.isEqual(messageDigestPrivate, messageDigestPublic);
-            }
+	    try{
+			messageDigestPrivate = _cipher.doFinal(signature);
+	    } 
+		catch (Exception e){
+			throw new Exception("Fail to get messageDigestPrivate");
+	    } 
+		finally{
+			return MessageDigest.isEqual(messageDigestPrivate, messageDigestPublic);
+		}
 	}
-    }
 }
