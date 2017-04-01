@@ -24,11 +24,12 @@ public class MySignature {
         _cipher = Cipher.getInstance(encryptionMethodName);
     }
 
-    public static MySignature getInstance(String method) throws IllegalArgumentException, NoSuchAlgorithmException, NoSuchPaddingException{
+    public static MySignature getInstance(String method) 
+				throws IllegalArgumentException, NoSuchAlgorithmException, NoSuchPaddingException{
         switch(method){
             case "MD5WITHRSA":
                 if(_md5WithRsa == null) {
-                    _md5WithRsa = new MySignature( "MD5", "RSA");
+					_md5WithRsa = new MySignature( "MD5", "RSA");
                 }
                 return _md5WithRsa;
 
@@ -59,9 +60,9 @@ public class MySignature {
     public boolean verify(byte[] signature) throws SignatureException{
 	    byte messageDigestPublic[] = null;
 	    try {
-	        messageDigestPublic = _messageDigest.digest();
+	        messageDigestPublic = _messageDigest.digest(_data);
 	    } catch (NullPointerException npe) {
-			throw new SignatureException("No SHA digest found");
+			throw new SignatureException("No " + _messageDigest.getAlgorithm() + " digest found");
 	    }
 
 	    byte[] messageDigestPrivate = null;
