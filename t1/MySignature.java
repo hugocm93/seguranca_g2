@@ -1,8 +1,13 @@
+import java.security.InvalidKeyException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
-import java.security.MessageDigest;
+import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
-import java.security.NoSuchAlgorithmException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
+
 
 public class MySignature {
 
@@ -12,12 +17,12 @@ public class MySignature {
     private MessageDigest _messageDigest;
     private Cipher _cipher;
 
-    protected MySignature(String digestMethodName, String encryptionMethodName) throws NoSuchAlgorithmException{
+    protected MySignature(String digestMethodName, String encryptionMethodName) throws NoSuchAlgorithmException, NoSuchPaddingException{
         _messageDigest = MessageDigest.getInstance(digestMethodName);
         _cipher = Cipher.getInstance(encryptionMethodName);
     }
 
-    public static MySignature getInstance(String method) throws IllegalArgumentException {
+    public static MySignature getInstance(String method) throws IllegalArgumentException, NoSuchAlgorithmException, NoSuchPaddingException {
         switch(method){
             case "MD5WITHRSA":
                 if(_md5WithRsa == null) {
@@ -31,7 +36,7 @@ public class MySignature {
         }
     }
 
-	public void initSign(PrivateKey privateKey){
+	public void initSign(PrivateKey privateKey) throws InvalidKeyException{
         _cipher.init(Cipher.ENCRYPT_MODE, privateKey);
 	}
 
@@ -39,7 +44,7 @@ public class MySignature {
         _data = data;
 	}
 
-	public byte[] sign(){
+	public byte[] sign() throws IllegalBlockSizeException, BadPaddingException {
         byte[] digest = _messageDigest.digest(_data);
 
         return _cipher.doFinal(digest);
