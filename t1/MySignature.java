@@ -1,19 +1,20 @@
 import java.security.PrivateKey;
 import java.security.PublicKey;
+import java.security.MessageDigest;
+import javax.crypto.Cipher;
+import java.security.NoSuchAlgorithmException;
 
 public class MySignature {
 
     private static MySignature _md5WithRsa = null;
 
-    private PrivateKey _privateKey;
-    private PublicKey _publicKey;
-    private String _digestMethodName;
-    private String _encryptionMethodName;
     private byte[] _data;
+    private MessageDigest _messageDigest;
+    private Cipher _cipher;
 
-    protected MySignature(String digestMethodName, String encryptionMethodName){
-        _digestMethodName = digestMethodName;
-        _encryptionMethodName = encryptionMethodName;
+    protected MySignature(String digestMethodName, String encryptionMethodName) throws NoSuchAlgorithmException{
+        _messageDigest = MessageDigest.getInstance(digestMethodName);
+        _cipher = Cipher.getInstance(encryptionMethodName);
     }
 
     public static MySignature getInstance(String method) throws IllegalArgumentException {
@@ -22,8 +23,6 @@ public class MySignature {
                 if(_md5WithRsa == null) {
                     _md5WithRsa = new MySignature( "MD5", "RSA");
                 }
-
-                _md5WithRsa.reset();
                 return _md5WithRsa;
 
             default:
@@ -33,7 +32,7 @@ public class MySignature {
     }
 
 	public void initSign(PrivateKey privateKey){
-        _privateKey = privateKey;
+        _cipher.init(Cipher.ENCRYPT_MODE, privateKey);
 	}
 
 	public void update(byte[] data){
@@ -41,19 +40,15 @@ public class MySignature {
 	}
 
 	public byte[] sign(){
-        return null; 
-	 }
+        byte[] digest = _messageDigest.digest(_data);
 
-	public void initVerity(PublicKey publicKey){
-        _publicKey = publicKey;
+        return _cipher.doFinal(digest);
+     }
+
+	public void initVerify(PublicKey publicKey){
 	}
 
 	public boolean verify(byte[] signature){
         return false;
 	}
-    
-    private void reset(){
-        _privateKey = null;
-        _publicKey = null;
-    }
 }
