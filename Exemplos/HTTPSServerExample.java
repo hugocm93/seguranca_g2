@@ -11,7 +11,7 @@ public class HTTPSServerExample {
     // cria um SSL socket usando a factory e alocando a porta 8080
     SSLServerSocketFactory sslsf =
       (SSLServerSocketFactory)SSLServerSocketFactory.getDefault();
-    ServerSocket ss = sslsf.createServerSocket(8080);
+    ServerSocket ss = sslsf.createServerSocket(5001);
     //
     // loop infinito
     while (true) {
@@ -27,7 +27,7 @@ public class HTTPSServerExample {
         //
         // cria uma resposta no formato HTML
         PrintWriter out = new PrintWriter( s.getOutputStream() );
-        out.println("<HTML><HEAD><TITLE>HTTPS Server Example</TITLE>" +
+        out.println("<!DOCTYPE html><HTML lang=\"en\"><HEAD><TITLE>HTTPS Server Example</TITLE>" +
                     "</HEAD><BODY><H1>Hello World!</H1></BODY></HTML>\n");
         //
         // fecha o stream e o socket
