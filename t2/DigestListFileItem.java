@@ -8,7 +8,7 @@ import java.util.AbstractMap.SimpleEntry;
  */
 public class DigestListFileItem
 {
-	public String _name;
-	public SimpleEntry< String, byte[] > _digest1;
-	public Optional< SimpleEntry< String, byte[] > > _digest2;
+    public String _name;
+    public SimpleEntry< String, byte[] > _digest1;
+    public Optional< SimpleEntry< String, byte[] > > _digest2;
 }

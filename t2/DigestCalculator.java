@@ -10,8 +10,8 @@ import org.apache.commons.io.IOUtils;
 @SuppressWarnings("deprecation")
 
 /*
- * Calcula os digests, compara com os que estão 
- * no arquivo de digest, e os reexibem no console 
+ * Calcula os digests, compara com os que estão
+ * no arquivo de digest, e os reexibem no console
  */
 public class DigestCalculator
 {
@@ -21,26 +21,26 @@ public class DigestCalculator
 	private static String _digestListFilePath;
 	private static Vector<String> _filePaths;
 
-    public static void main(String[] args)
-    {
+	public static void main(String[] args)
+	{
 		readInputParameters(args);
 
 		buildDigestCalculatorItems();
 
-        //TODO: Criar o controller DigestListFile, que vai tratar o arquivo de digests
+		//TODO: Criar o controller DigestListFile, que vai tratar o arquivo de digests
 
-        //TODO: para cada DigestCalculatorItem, chamar um método de DigestListFile que atualiza o 
-        // status do mesmo, e o inclui na lista se for o caso
+		//TODO: para cada DigestCalculatorItem, chamar um método de DigestListFile que atualiza o
+		// status do mesmo, e o inclui na lista se for o caso
 
-        //TODO: Método que escreve no console a lista DigestCalculatorItems
+		//TODO: Método que escreve no console a lista DigestCalculatorItems
 
-        //TODO: chamar método de DigestListFile que escreve a estutura em memória de volta para o arquivo em disco
-    }
+		//TODO: chamar método de DigestListFile que escreve a estutura em memória de volta para o arquivo em disco
+	}
 
-	
+
 	private static void readInputParameters(String[] args)
 	{
-		if(args.length < 3){
+		if(args.length < 3) {
 			System.err.println("Usage: DigestCalculator Tipo_Digest<SP>Caminho_Arq1..." +
 							   " Caminho_ArqN<SP>Caminho_ArqListaDigest");
 			System.exit(1);
@@ -55,29 +55,29 @@ public class DigestCalculator
 
 		_digestListFilePath = args[args.length - 1];
 	}
-	
-	
+
+
 	private static void buildDigestCalculatorItems()
 	{
 		try
 		{
 			MessageDigest messageDigest = MessageDigest.getInstance(_digestType);
-		
-			for(String p : _filePaths) 
+
+			for(String p : _filePaths)
 			{
 				DigestCalculatorItem item = new DigestCalculatorItem();
 
 				Path path = Paths.get(p);
 				item._name = path.getFileName().toString();
-		
+
 				FileInputStream inputStream = new FileInputStream(p);
 				String message = IOUtils.toString(inputStream);
 
 				messageDigest.update(message.getBytes(), 0, message.getBytes().length);
 				byte[] digest = messageDigest.digest();
 
-				SimpleEntry<String, byte[]> entry = 
-										new SimpleEntry<String, byte[]>(_digestType, digest);
+				SimpleEntry<String, byte[]> entry =
+					new SimpleEntry<String, byte[]>(_digestType, digest);
 				item._digest = entry;
 
 				_digestCalculatorItems.add(item);
