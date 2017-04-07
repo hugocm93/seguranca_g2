@@ -1,5 +1,3 @@
-package controller;
-
 /*
  * Responsável por abrir o arquivo de digests, carregá-los em uma lista de DigestListFileItem
  */ 
