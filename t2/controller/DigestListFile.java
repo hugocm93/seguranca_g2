@@ -177,10 +177,9 @@ public class DigestListFile
 
 				lineToWrite = name + " " + digestType + " " + digestHex;
 
-				if(item._digest2.isPresent()) {
-					lineToWrite = name + " " + digestType + " " + digestHex + "[" + item._digest2.get().getKey() + " " + item._digest2.get().getValue() + "]";
-				} else {
-					lineToWrite = name + " " + digestType + " " + digestHex;
+				if(item._digest2.isPresent())
+				{
+					lineToWrite += "[" + item._digest2.get().getKey() + " " + item._digest2.get().getValue() + "]";
 				}
 
 				out.write(lineToWrite +'\n');
