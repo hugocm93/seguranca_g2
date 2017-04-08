@@ -17,11 +17,12 @@ import org.apache.commons.io.IOUtils;
  */
 public class DigestCalculator
 {
-	private static Vector<DigestCalculatorItem> _digestCalculatorItems;
+	private static Vector<DigestCalculatorItem> _digestCalculatorItems = 
+						new Vector<DigestCalculatorItem>();
 
-	private static String _digestType;
-	private static String _digestListFilePath;
-	private static Vector<String> _filePaths;
+	private static String _digestType = "";
+	private static String _digestListFilePath = "";
+	private static Vector<String> _filePaths = new Vector<String>();
 
 	public static void main(String[] args)
 	{
@@ -91,9 +92,9 @@ public class DigestCalculator
 
 		_digestType = args[0];
 
-		for(byte i = 0; i < args.length - 1; i++)
+		for(byte i = 1; i <= args.length - 2; i++)
 		{
-			_filePaths.add(new String(args[i]));
+			_filePaths.add(args[i]);
 		}
 
 		_digestListFilePath = args[args.length - 1];

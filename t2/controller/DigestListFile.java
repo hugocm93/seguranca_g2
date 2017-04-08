@@ -19,8 +19,9 @@ import model.Status;
  */
 public class DigestListFile
 {
-    private Vector<DigestListFileItem> _digestListFileItems;
-    private String _filePath;
+    private Vector<DigestListFileItem> _digestListFileItems = 
+                                        new Vector<DigestListFileItem>();
+    private String _filePath = "";
 
     public DigestListFile(String filePath)
     {

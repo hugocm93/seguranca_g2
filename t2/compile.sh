@@ -1,3 +1,3 @@
 #!/bin/bash
 
-javac *.java -cp .:./commons-io-2.5.jar
+javac DigestCalculator.java model/*.java controller/*.java -cp .:./commons-io-2.5.jar
