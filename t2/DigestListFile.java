@@ -116,17 +116,20 @@ public class DigestListFile
             }
             else
             {
-                if(!item._name.equals(listItem._name))
-                {
-                    continue;
-                }
-                else
+                if(item._name.equals(listItem._name))
                 {
                     item._status = Status.NOT_OK;
                     return;
                 }
             }
         } 
+        
+        //Caso o item tenha colidido com algum parâmetro de entrada
+        if(item._status == Status.COLLISION)
+        {
+            return;
+        }
+    
         item._status = Status.NOT_FOUND;
 
         for(DigestListFileItem i : _digestListFileItems)
