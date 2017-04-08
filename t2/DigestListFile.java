@@ -85,6 +85,35 @@ public class DigestListFile
                     return;
                 }
             }
+            else if(item._name.equals(listItem._name))
+            {
+                    item._status = Status.NOT_OK;
+                    return;
+            }
+            
+            //Segundo digest
+            if(!listItem._digest2.isPresent())
+            {
+                continue;
+            }
+
+            digestListItem = listItem._digest2.get().getValue();
+            digestListMethod = listItem._digest2.get().getKey();
+
+            if(MessageDigest.isEqual(digestCalcItem, digestListItem) &&
+               digestCalcMethod.equals(digestListMethod))
+            {
+                if(!item._name.equals(listItem._name))
+                {
+                    item._status = Status.COLLISION;
+                    return;
+                }
+                else
+                {
+                    item._status = Status.OK;
+                    return;
+                }
+            }
             else
             {
                 if(!item._name.equals(listItem._name))
@@ -99,12 +128,26 @@ public class DigestListFile
             }
         } 
         item._status = Status.NOT_FOUND;
-        //TODO: add na lista _digestListFileItems
-        //TODO: verificar o segundo digest
+
+        for(DigestListFileItem i : _digestListFileItems)
+        {
+            if(i._name.equals(item._name) && item._status == Status.NOT_FOUND)
+            {
+                Optional<SimpleEntry<String, byte[]>> op = Optional.empty(); 
+                SimpleEntry<String, byte[]> entry = 
+                   new SimpleEntry<String, byte[]>(item._digest.getKey(),
+                                                   item._digest.getValue());
+                op = Optional.of(entry);
+                i._digest2 = op;
+                return;
+            }
+        }
+        DigestListFileItem newItem = new DigestListFileItem();
+        newItem._name = item._name;
+        newItem._digest1 = item._digest;
+        
+        _digestListFileItems.add(newItem);
     }
-    //TODO: Método que recebe um DigestCalculatorItem,
-    // atualiza seu status, e o adiciona na lista de
-    // DigestListFileItem se ele não estiver lá
 
     //TODO: método que escreve a estrutura de lista de volta para o arquivo
 }
