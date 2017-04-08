@@ -1,3 +1,4 @@
+import controller.DigestListFile;
 import java.io.FileInputStream;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -27,10 +28,27 @@ public class DigestCalculator
 
 		buildDigestCalculatorItems();
 
-		//TODO: Criar o controller DigestListFile, que vai tratar o arquivo de digests
+		DigestListFile digestListFile = new DigestListFile(_digestListFilePath);
 
-		//TODO: para cada DigestCalculatorItem, chamar um método de DigestListFile que atualiza o
-		// status do mesmo, e o inclui na lista se for o caso
+		for(DigestCalculatorItem item : _digestCalculatorItems)
+		{
+			digestListFile.updateItemStatus(item);
+		}
+
+		for(int i = 0; i < _digestCalculatorItems.length(); i++)
+		{
+			DigestCalculatorItem item1 = _digestCalculatorItems[i];
+			for(int j = i + 1; j < _digestCalculatorItems.length(); j++)
+			{
+				DigestCalculatorItem item2 = _digestCalculatorItems[j];
+				if(item1 == item2)
+				{
+					continue;
+				}
+			
+				compareAndUpdateStatus(item1, item2);
+			}
+		}
 
 		//TODO: Método que escreve no console a lista DigestCalculatorItems
 
@@ -89,6 +107,19 @@ public class DigestCalculator
 		{
 			//TODO:
 			e.printStackTrace();
+		}
+	}
+
+
+	private static void compareAndUpdateStatus(DigestCalculatorItem item1,
+											   DigestCalculatorItem item2)
+	{
+		byte[] digest1 = item1._digest.getValue();
+		byte[] digest2 = item2._digest.getValue();
+		if(MessageDigest.isEqual(item1, item2)
+		{
+			item1._status = Status.COLLISION;
+			item2._status = Status.COLLISION;
 		}
 	}
 }
