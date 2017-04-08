@@ -1,12 +1,15 @@
 package controller;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.lang.StringBuilder;
+import java.io.*;
+import java.security.*;
+import java.util.*;
+import java.io.FileInputStream;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.security.MessageDigest;
 import java.util.AbstractMap.SimpleEntry;
-import java.util.Optional;
 import java.util.Vector;
+import java.lang.StringBuilder;
 import model.DigestCalculatorItem;
 import model.DigestListFileItem;
 import model.Status;
@@ -153,22 +156,21 @@ public class DigestListFile
     }
 
     //TODO: método que escreve a estrutura de lista de volta para o arquivo
-	private void writeResult()
+	public void writeResult()
 	{
 		try{
 			FileWriter fw = new FileWriter(_filePath, false);
 			BufferedWriter out = new BufferedWriter(fw);
 			
-			for(int i = 0; i < _digestListFileItems.length(); i++) {
+			for(DigestListFileItem item : _digestListFileItems) {
 				String name, digestType, digestHex, lineToWrite;
-				DigestListFileItem item = _digestListFileItems[i];
-				name = item. _name;
-				digestHex = convertHexToString(item._digest.getValue());
-				digestType = item._digest.getKey();
+				name = item._name;
+				digestHex = convertHexToString(item._digest1.getValue());
+				digestType = item._digest1.getKey();
 
 				lineToWrite = name + " " + digestType + " " + digestHex;
 
-				if(item._digest2) {
+				if(item._digest2 != null) {
 					lineToWrite = name + " " + digestType + " " + digestHex + "[ item._digest2.getKey()" + " " + "item._digest2.getValue()" + "]";
 				} else {
 					lineToWrite = name + " " + digestType + " " + digestHex;

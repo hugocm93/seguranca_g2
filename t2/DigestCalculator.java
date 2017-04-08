@@ -51,17 +51,16 @@ public class DigestCalculator
 			}
 		}
 
-		//TODO: Método que escreve no console a lista DigestCalculatorItems
-
-		//TODO: chamar método de DigestListFile que escreve a estutura em memória de volta para o arquivo em disco
+		printInfo(_digestCalculatorItems);
+		
+		digestListFile.writeResult();
 	}
 
-	public void printInfo(Vector<DigestCalculatorItem> list)
+	public static void printInfo(Vector<DigestCalculatorItem> list)
 	{
 		String name, digestType, digestHex, status;
 
-		for(int i = 0; i < list.length(); i++) {
-			DigestCalculatorItem item = list[i];
+		for(DigestCalculatorItem item : list) {
 			name = item. _name;
 			status = item._status.getStatusName();
 			digestHex = convertHexToString(item._digest.getValue());
@@ -72,7 +71,7 @@ public class DigestCalculator
 		System.out.println(" ");
 	}
 
-	private String convertHexToString(byte[] data)
+	private static String convertHexToString(byte[] data)
 	{
 		StringBuffer buf = new StringBuffer();
 		for(int i = 0; i < data.length; i++) {
