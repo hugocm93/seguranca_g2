@@ -6,6 +6,7 @@ import java.security.MessageDigest;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.Vector;
 import model.DigestCalculatorItem;
+import model.Status;
 import org.apache.commons.io.IOUtils;
 
 @SuppressWarnings("deprecation")
@@ -35,12 +36,12 @@ public class DigestCalculator
 			digestListFile.updateItemStatus(item);
 		}
 
-		for(int i = 0; i < _digestCalculatorItems.length(); i++)
+		for(int i = 0; i < _digestCalculatorItems.size(); i++)
 		{
-			DigestCalculatorItem item1 = _digestCalculatorItems[i];
-			for(int j = i + 1; j < _digestCalculatorItems.length(); j++)
+			DigestCalculatorItem item1 = _digestCalculatorItems.elementAt(i);
+			for(int j = i + 1; j < _digestCalculatorItems.size(); j++)
 			{
-				DigestCalculatorItem item2 = _digestCalculatorItems[j];
+				DigestCalculatorItem item2 = _digestCalculatorItems.elementAt(j);
 				if(item1 == item2)
 				{
 					continue;
@@ -141,7 +142,7 @@ public class DigestCalculator
 	{
 		byte[] digest1 = item1._digest.getValue();
 		byte[] digest2 = item2._digest.getValue();
-		if(MessageDigest.isEqual(item1, item2)
+		if(MessageDigest.isEqual(digest1, digest2))
 		{
 			item1._status = Status.COLLISION;
 			item2._status = Status.COLLISION;
