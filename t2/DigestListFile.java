@@ -106,4 +106,44 @@ public class DigestListFile
     // DigestListFileItem se ele não estiver lá
 
     //TODO: método que escreve a estrutura de lista de volta para o arquivo
+	private void writeResult()
+	{
+		try{
+			FileWriter fw = new FileWriter(_filePath, false);
+			BufferedWriter out = new BufferedWriter(fw);
+			
+			for(int i = 0; i < _digestListFileItems.length(); i++) {
+				String name, digestType, digestHex, lineToWrite;
+				DigestListFileItem item = _digestListFileItems[i];
+				name = item. _name;
+				digestHex = convertHexToString(item._digest.getValue());
+				digestType = item._digest.getKey();
+
+				lineToWrite = name + " " + digestType + " " + digestHex;
+
+				if(item._digest2) {
+					lineToWrite = name + " " + digestType + " " + digestHex + "[ item._digest2.getKey()" + " " + "item._digest2.getValue()" + "]";
+				} else {
+					lineToWrite = name + " " + digestType + " " + digestHex;
+				}
+
+				out.write(lineToWrite +'\n');
+			}
+
+			out.close();
+		} catch(IOException e) {
+			e.printStackTrace();
+		}
+		
+	}
+
+	private String convertHexToString(byte[] data)
+	{
+		StringBuffer buf = new StringBuffer();
+		for(int i = 0; i < data.length; i++) {
+			String hex = Integer.toHexString(0x0100 + (data[i] & 0x00FF)).substring(1);
+			buf.append((hex.length() < 2 ? "0" : "") + hex);
+		}
+		return buf.toString();
+	}
 }
