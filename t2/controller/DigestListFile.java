@@ -192,7 +192,7 @@ public class DigestListFile
 		
 	}
 
-	private String convertHexToString(byte[] data)
+	public static String convertHexToString(byte[] data)
 	{
 		StringBuffer buf = new StringBuffer();
 		for(int i = 0; i < data.length; i++) {

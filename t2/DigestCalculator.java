@@ -64,22 +64,12 @@ public class DigestCalculator
 		for(DigestCalculatorItem item : list) {
 			name = item. _name;
 			status = item._status.getStatusName();
-			digestHex = convertHexToString(item._digest.getValue());
+			digestHex = DigestListFile.convertHexToString(item._digest.getValue());
 			digestType = item._digest.getKey();
 
 			System.out.println(name + " " + digestType + " " + digestHex + " " + status);
 		}
 		System.out.println(" ");
-	}
-
-	private static String convertHexToString(byte[] data)
-	{
-		StringBuffer buf = new StringBuffer();
-		for(int i = 0; i < data.length; i++) {
-			String hex = Integer.toHexString(0x0100 + (data[i] & 0x00FF)).substring(1);
-			buf.append((hex.length() < 2 ? "0" : "") + hex);
-		}
-		return buf.toString();
 	}
 
 	private static void readInputParameters(String[] args)
