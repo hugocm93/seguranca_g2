@@ -8,7 +8,7 @@ import java.util.AbstractMap.SimpleEntry;
  */
 public class DigestCalculatorItem
 {
-    public String _name;
-    public SimpleEntry< String, byte[] > _digest;
-    public Status _status;
+    public String _name = "";
+    public SimpleEntry< String, byte[] > _digest = new SimpleEntry<String, byte[]>("", null);
+    public Status _status = Status.NOT_DEFINED;
 }

@@ -5,7 +5,7 @@ package model;
  */
 public enum Status
 {
-	OK, NOT_OK, NOT_FOUND, COLLISION;
+	OK, NOT_OK, NOT_FOUND, COLLISION, NOT_DEFINED;
 
 	private String _name;
 
@@ -15,6 +15,7 @@ public enum Status
 		NOT_OK._name = "(NOT OK)";
 		NOT_FOUND._name = "(NOT FOUND)";
 		COLLISION._name = "(COLLISION)";
+		NOT_DEFINED._name = "(NOT_DEFINED)";
 	}
 
 	public String getStatusName()

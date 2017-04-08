@@ -30,11 +30,16 @@ public class DigestListFile
         try
         {
             BufferedReader br = new BufferedReader(new FileReader(_filePath));
-            String line = br.readLine();
+			String line;
 
-            while(line != null)
+			do
             {
-                line = br.readLine();
+				line = br.readLine();
+				if(line == null)
+				{
+					break;
+				}
+	
                 String[] splittedStr = line.split("\\s+");
 
                 DigestListFileItem item = new DigestListFileItem();
@@ -56,7 +61,8 @@ public class DigestListFile
                 item._digest2 = op;
 
                 _digestListFileItems.add(item);
-            }
+            }while(line != null);
+
             br.close();
         }
         catch(Exception e)
@@ -171,8 +177,8 @@ public class DigestListFile
 
 				lineToWrite = name + " " + digestType + " " + digestHex;
 
-				if(item._digest2 != null) {
-					lineToWrite = name + " " + digestType + " " + digestHex + "[ item._digest2.getKey()" + " " + "item._digest2.getValue()" + "]";
+				if(item._digest2.isPresent()) {
+					lineToWrite = name + " " + digestType + " " + digestHex + "[" + item._digest2.get().getKey() + " " + item._digest2.get().getValue() + "]";
 				} else {
 					lineToWrite = name + " " + digestType + " " + digestHex;
 				}
