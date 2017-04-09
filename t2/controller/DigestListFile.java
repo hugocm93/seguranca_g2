@@ -40,7 +40,9 @@ public class DigestListFile
 				{
 					break;
 				}
-	
+
+				line = line.replace("[", "");
+				line = line.replace("]", "");
                 String[] splittedStr = line.split("\\s+");
 
                 DigestListFileItem item = new DigestListFileItem();
@@ -96,7 +98,8 @@ public class DigestListFile
                     return;
                 }
             }
-            else if(item._name.equals(listItem._name))
+            else if(item._name.equals(listItem._name) && 
+                    digestCalcMethod.equals(digestListMethod))
             {
                     item._status = Status.NOT_OK;
                     return;
@@ -127,7 +130,8 @@ public class DigestListFile
             }
             else
             {
-                if(item._name.equals(listItem._name))
+                if(item._name.equals(listItem._name) &&
+                   digestCalcMethod.equals(digestListMethod))
                 {
                     item._status = Status.NOT_OK;
                     return;
@@ -176,11 +180,13 @@ public class DigestListFile
 				digestHex = convertHexToString(item._digest1.getValue());
 				digestType = item._digest1.getKey();
 
-				lineToWrite = name + " " + digestType + " " + digestHex;
+				lineToWrite = name + " " + digestType + " " + digestHex + " ";
 
 				if(item._digest2.isPresent())
 				{
-					lineToWrite += "[" + item._digest2.get().getKey() + " " + item._digest2.get().getValue() + "]";
+					digestHex = convertHexToString(item._digest2.get().getValue());
+					digestType = item._digest2.get().getKey();
+					lineToWrite += "[ " + digestType + " " + digestHex + " ]";
 				}
 				out.write(lineToWrite +'\n');
 			}
