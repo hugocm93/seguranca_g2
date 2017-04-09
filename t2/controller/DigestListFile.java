@@ -14,6 +14,8 @@ import model.DigestCalculatorItem;
 import model.DigestListFileItem;
 import model.Status;
 import org.apache.commons.codec.binary.Hex;
+import org.apache.commons.codec.DecoderException;
+import org.apache.commons.codec.EncoderException;
 
 /*
  * Responsável por abrir o arquivo de digests, carregá-los em uma lista de DigestListFileItem
@@ -67,11 +69,14 @@ public class DigestListFile
             }while(line != null);
 
             br.close();
-        }
-        catch(Exception e)
-        {
-			e.printStackTrace();
-        }       
+        } catch (FileNotFoundException e) {
+		System.out.println( _filePath + " created. ");
+	} catch (DecoderException e) {
+		e.printStackTrace();
+	} catch (IOException e) {
+		e.printStackTrace();
+	} 
+
     }
 
     public void updateItemStatus(DigestCalculatorItem item)
