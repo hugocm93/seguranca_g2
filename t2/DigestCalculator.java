@@ -30,13 +30,6 @@ public class DigestCalculator
 
 		buildDigestCalculatorItems();
 
-		DigestListFile digestListFile = new DigestListFile(_digestListFilePath);
-
-		for(DigestCalculatorItem item : _digestCalculatorItems)
-		{
-			digestListFile.updateItemStatus(item);
-		}
-
 		for(int i = 0; i < _digestCalculatorItems.size(); i++)
 		{
 			DigestCalculatorItem item1 = _digestCalculatorItems.elementAt(i);
@@ -50,6 +43,12 @@ public class DigestCalculator
 			
 				compareAndUpdateStatus(item1, item2);
 			}
+		}
+
+		DigestListFile digestListFile = new DigestListFile(_digestListFilePath);
+		for(DigestCalculatorItem item : _digestCalculatorItems)
+		{
+			digestListFile.updateItemStatus(item);
 		}
 
 		printInfo(_digestCalculatorItems);
