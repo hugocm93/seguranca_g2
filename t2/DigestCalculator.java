@@ -1,4 +1,5 @@
 import controller.DigestListFile;
+import java.io.*;
 import java.io.FileInputStream;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -92,12 +93,14 @@ public class DigestCalculator
 
 	private static void buildDigestCalculatorItems()
 	{
+		String pathToLog = "File" ;
 		try
 		{
 			MessageDigest messageDigest = MessageDigest.getInstance(_digestType);
 
 			for(String p : _filePaths)
 			{
+				pathToLog = p;
 				DigestCalculatorItem item = new DigestCalculatorItem();
 
 				Path path = Paths.get(p);
@@ -117,6 +120,10 @@ public class DigestCalculator
 
 				inputStream.close();
 			}
+		}
+		catch(FileNotFoundException e)
+		{
+			System.out.println(pathToLog + " not found. ");	
 		}
 		catch(Exception e)
 		{
