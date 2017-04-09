@@ -80,7 +80,7 @@ public class DigestCalculator
 			System.exit(1);
 		}
 
-		_digestType = args[0];
+		_digestType = args[0].toUpperCase();
 
 		for(byte i = 1; i <= args.length - 2; i++)
 		{
