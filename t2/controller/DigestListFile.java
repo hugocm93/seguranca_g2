@@ -1,18 +1,19 @@
 package controller;
 
 import java.io.*;
-import java.security.*;
-import java.util.*;
 import java.io.FileInputStream;
+import java.lang.StringBuilder;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.security.*;
 import java.security.MessageDigest;
+import java.util.*;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.Vector;
-import java.lang.StringBuilder;
 import model.DigestCalculatorItem;
 import model.DigestListFileItem;
 import model.Status;
+import org.apache.commons.codec.binary.Hex;
 
 /*
  * Responsável por abrir o arquivo de digests, carregá-los em uma lista de DigestListFileItem
@@ -45,7 +46,7 @@ public class DigestListFile
                 DigestListFileItem item = new DigestListFileItem();
                 item._name = splittedStr[0];
 
-                byte[] digest = splittedStr[2].getBytes();
+                byte[] digest = Hex.decodeHex(splittedStr[2].toCharArray());
                 SimpleEntry<String, byte[]> entry = 
                     new SimpleEntry<String, byte[]>(splittedStr[1], digest);
                 item._digest1 = entry;
@@ -53,7 +54,7 @@ public class DigestListFile
                 Optional<SimpleEntry<String, byte[]>> op = Optional.empty(); 
                 if(splittedStr.length == 5)
                 {
-                    digest = splittedStr[4].getBytes();
+					digest = Hex.decodeHex(splittedStr[4].toCharArray());
                     entry = 
                        new SimpleEntry<String, byte[]>(splittedStr[3], digest);
                     op = Optional.of(entry);
@@ -181,7 +182,6 @@ public class DigestListFile
 				{
 					lineToWrite += "[" + item._digest2.get().getKey() + " " + item._digest2.get().getValue() + "]";
 				}
-
 				out.write(lineToWrite +'\n');
 			}
 
