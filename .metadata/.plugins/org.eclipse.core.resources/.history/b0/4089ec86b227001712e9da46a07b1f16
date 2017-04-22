@@ -1,0 +1,100 @@
+package t3;
+
+import java.awt.EventQueue;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import java.awt.BorderLayout;
+import javax.swing.JLabel;
+import javax.swing.SwingConstants;
+import javax.swing.JTextField;
+import javax.swing.border.LineBorder;
+import java.awt.Color;
+import javax.swing.JButton;
+import java.awt.CardLayout;
+import java.awt.GridBagLayout;
+import java.awt.GridBagConstraints;
+import java.awt.Insets;
+import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.LayoutStyle.ComponentPlacement;
+
+public class LoginWindow {
+
+	private JFrame frame;
+	private JTextField textField;
+
+	/**
+	 * Launch the application.
+	 */
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					LoginWindow window = new LoginWindow();
+					window.frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+
+	/**
+	 * Create the application.
+	 */
+	public LoginWindow() {
+		initialize();
+	}
+
+	/**
+	 * Initialize the contents of the frame.
+	 */
+	private void initialize() {
+		frame = new JFrame();
+		frame.setBounds(100, 100, 450, 300);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.getContentPane().setLayout(new CardLayout(0, 0));
+		
+		JPanel loginPanel = new JPanel();
+		frame.getContentPane().add(loginPanel, "name_122141787324933");
+		
+		JLabel lblNewLabel = new JLabel("Primeira etapa");
+		lblNewLabel.setHorizontalAlignment(SwingConstants.LEFT);
+		
+		JLabel lblLogin = new JLabel("login name:");
+		lblLogin.setHorizontalAlignment(SwingConstants.CENTER);
+		
+		textField = new JTextField();
+		textField.setColumns(10);
+		GroupLayout gl_loginPanel = new GroupLayout(loginPanel);
+		gl_loginPanel.setHorizontalGroup(
+			gl_loginPanel.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_loginPanel.createSequentialGroup()
+					.addGroup(gl_loginPanel.createParallelGroup(Alignment.LEADING)
+						.addComponent(lblNewLabel, GroupLayout.PREFERRED_SIZE, 453, GroupLayout.PREFERRED_SIZE)
+						.addGroup(gl_loginPanel.createSequentialGroup()
+							.addComponent(lblLogin, GroupLayout.PREFERRED_SIZE, 144, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(textField, GroupLayout.PREFERRED_SIZE, 229, GroupLayout.PREFERRED_SIZE)))
+					.addGap(-3))
+		);
+		gl_loginPanel.setVerticalGroup(
+			gl_loginPanel.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_loginPanel.createSequentialGroup()
+					.addComponent(lblNewLabel, GroupLayout.PREFERRED_SIZE, 14, GroupLayout.PREFERRED_SIZE)
+					.addGroup(gl_loginPanel.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_loginPanel.createSequentialGroup()
+							.addGap(5)
+							.addComponent(lblLogin, GroupLayout.PREFERRED_SIZE, 54, GroupLayout.PREFERRED_SIZE))
+						.addGroup(gl_loginPanel.createSequentialGroup()
+							.addGap(57)
+							.addComponent(textField, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE)))
+					.addGap(167))
+		);
+		loginPanel.setLayout(gl_loginPanel);
+		
+		JPanel passwordPanel = new JPanel();
+		frame.getContentPane().add(passwordPanel, "name_121998062004921");
+	}
+}
