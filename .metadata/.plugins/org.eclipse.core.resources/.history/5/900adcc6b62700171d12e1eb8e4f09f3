@@ -25,8 +25,6 @@ public class LoginWindow {
 
 	private JFrame frame;
 	private JTextField loginNameTextField;
-	private JTextField binPathJTextField;
-	private JTextField secretPhraseJTextField;
 
 	/**
 	 * Launch the application.
@@ -76,21 +74,21 @@ public class LoginWindow {
 		firstWarningLabel.setForeground(Color.RED);
 		GroupLayout gl_loginPanel = new GroupLayout(loginPanel);
 		gl_loginPanel.setHorizontalGroup(
-			gl_loginPanel.createParallelGroup(Alignment.TRAILING)
+			gl_loginPanel.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_loginPanel.createSequentialGroup()
 					.addGroup(gl_loginPanel.createParallelGroup(Alignment.LEADING)
-						.addGroup(gl_loginPanel.createSequentialGroup()
-							.addGap(135)
-							.addComponent(lblLogin)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(loginNameTextField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 						.addGroup(gl_loginPanel.createSequentialGroup()
 							.addGap(28)
 							.addGroup(gl_loginPanel.createParallelGroup(Alignment.LEADING)
 								.addComponent(firstWarningLabel)
-								.addComponent(label))))
+								.addComponent(label)))
+						.addGroup(gl_loginPanel.createSequentialGroup()
+							.addGap(135)
+							.addComponent(lblLogin)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(loginNameTextField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
 					.addContainerGap(136, Short.MAX_VALUE))
-				.addGroup(gl_loginPanel.createSequentialGroup()
+				.addGroup(Alignment.TRAILING, gl_loginPanel.createSequentialGroup()
 					.addContainerGap(197, Short.MAX_VALUE)
 					.addComponent(sendButton)
 					.addGap(171))
@@ -106,9 +104,9 @@ public class LoginWindow {
 						.addComponent(lblLogin))
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(sendButton)
-					.addPreferredGap(ComponentPlacement.RELATED, 72, Short.MAX_VALUE)
+					.addPreferredGap(ComponentPlacement.RELATED, 57, Short.MAX_VALUE)
 					.addComponent(firstWarningLabel)
-					.addGap(26))
+					.addGap(41))
 		);
 		loginPanel.setLayout(gl_loginPanel);
 		
@@ -139,112 +137,48 @@ public class LoginWindow {
 		gl_passwordPanel.setHorizontalGroup(
 			gl_passwordPanel.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_passwordPanel.createSequentialGroup()
+					.addContainerGap(206, Short.MAX_VALUE)
+					.addComponent(senhaLabel)
+					.addGap(203))
+				.addGroup(gl_passwordPanel.createSequentialGroup()
 					.addGap(28)
 					.addGroup(gl_passwordPanel.createParallelGroup(Alignment.LEADING)
-						.addComponent(secondWarningLabel)
-						.addComponent(lblEtapa)
 						.addGroup(gl_passwordPanel.createSequentialGroup()
 							.addGap(38)
 							.addComponent(b1JButton, GroupLayout.PREFERRED_SIZE, 56, GroupLayout.PREFERRED_SIZE)
 							.addPreferredGap(ComponentPlacement.UNRELATED)
 							.addComponent(b2JButton, GroupLayout.PREFERRED_SIZE, 56, GroupLayout.PREFERRED_SIZE)
 							.addPreferredGap(ComponentPlacement.UNRELATED)
-							.addGroup(gl_passwordPanel.createParallelGroup(Alignment.LEADING)
-								.addComponent(senhaLabel)
-								.addGroup(gl_passwordPanel.createSequentialGroup()
-									.addComponent(b3JButton, GroupLayout.PREFERRED_SIZE, 56, GroupLayout.PREFERRED_SIZE)
-									.addPreferredGap(ComponentPlacement.UNRELATED)
-									.addComponent(b4JButton, GroupLayout.PREFERRED_SIZE, 56, GroupLayout.PREFERRED_SIZE)
-									.addPreferredGap(ComponentPlacement.UNRELATED)
-									.addComponent(b5JButton, GroupLayout.PREFERRED_SIZE, 56, GroupLayout.PREFERRED_SIZE)))))
+							.addComponent(b3JButton, GroupLayout.PREFERRED_SIZE, 56, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(ComponentPlacement.UNRELATED)
+							.addComponent(b4JButton, GroupLayout.PREFERRED_SIZE, 56, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(ComponentPlacement.UNRELATED)
+							.addComponent(b5JButton, GroupLayout.PREFERRED_SIZE, 56, GroupLayout.PREFERRED_SIZE))
+						.addComponent(lblEtapa))
 					.addContainerGap(56, Short.MAX_VALUE))
+				.addGroup(gl_passwordPanel.createSequentialGroup()
+					.addGap(36)
+					.addComponent(secondWarningLabel)
+					.addContainerGap(286, Short.MAX_VALUE))
 		);
 		gl_passwordPanel.setVerticalGroup(
 			gl_passwordPanel.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_passwordPanel.createSequentialGroup()
 					.addContainerGap()
 					.addComponent(lblEtapa)
-					.addGap(49)
+					.addGap(25)
 					.addComponent(senhaLabel)
-					.addGap(18)
+					.addGap(42)
 					.addGroup(gl_passwordPanel.createParallelGroup(Alignment.BASELINE)
 						.addComponent(b5JButton, GroupLayout.PREFERRED_SIZE, 53, GroupLayout.PREFERRED_SIZE)
 						.addComponent(b4JButton, GroupLayout.PREFERRED_SIZE, 53, GroupLayout.PREFERRED_SIZE)
 						.addComponent(b3JButton, GroupLayout.PREFERRED_SIZE, 53, GroupLayout.PREFERRED_SIZE)
 						.addComponent(b2JButton, GroupLayout.PREFERRED_SIZE, 53, GroupLayout.PREFERRED_SIZE)
 						.addComponent(b1JButton, GroupLayout.PREFERRED_SIZE, 53, GroupLayout.PREFERRED_SIZE))
-					.addGap(81)
+					.addGap(74)
 					.addComponent(secondWarningLabel)
-					.addGap(23))
+					.addGap(30))
 		);
 		passwordPanel.setLayout(gl_passwordPanel);
-		
-		JPanel privateKeyPanel = new JPanel();
-		frame.getContentPane().add(privateKeyPanel, "name_124689972447600");
-		
-		JLabel thirdWarningLabel = new JLabel("Warning placeholder");
-		thirdWarningLabel.setForeground(Color.RED);
-		
-		JLabel lblTerceiraEtapa = new JLabel("Terceira etapa");
-		
-		JLabel lblCami = new JLabel("Caminho para o arquivo binário:");
-		
-		binPathJTextField = new JTextField();
-		binPathJTextField.setColumns(10);
-		
-		JButton browseJButton = new JButton("Localizar");
-		
-		JLabel lblFraseSecreta = new JLabel("Frase secreta:");
-		
-		secretPhraseJTextField = new JTextField();
-		secretPhraseJTextField.setColumns(10);
-		
-		JButton authenticateJButton = new JButton("Autenticar");
-		GroupLayout gl_privateKeyPanel = new GroupLayout(privateKeyPanel);
-		gl_privateKeyPanel.setHorizontalGroup(
-			gl_privateKeyPanel.createParallelGroup(Alignment.TRAILING)
-				.addGroup(Alignment.LEADING, gl_privateKeyPanel.createSequentialGroup()
-					.addGap(28)
-					.addGroup(gl_privateKeyPanel.createParallelGroup(Alignment.LEADING)
-						.addGroup(gl_privateKeyPanel.createSequentialGroup()
-							.addComponent(thirdWarningLabel)
-							.addContainerGap())
-						.addGroup(gl_privateKeyPanel.createSequentialGroup()
-							.addGroup(gl_privateKeyPanel.createParallelGroup(Alignment.LEADING)
-								.addGroup(gl_privateKeyPanel.createSequentialGroup()
-									.addComponent(lblFraseSecreta)
-									.addPreferredGap(ComponentPlacement.UNRELATED)
-									.addComponent(secretPhraseJTextField))
-								.addComponent(authenticateJButton, Alignment.TRAILING)
-								.addComponent(lblTerceiraEtapa)
-								.addGroup(gl_privateKeyPanel.createSequentialGroup()
-									.addComponent(lblCami)
-									.addPreferredGap(ComponentPlacement.UNRELATED)
-									.addComponent(browseJButton))
-								.addComponent(binPathJTextField, GroupLayout.PREFERRED_SIZE, 387, GroupLayout.PREFERRED_SIZE))
-							.addContainerGap(238, Short.MAX_VALUE))))
-		);
-		gl_privateKeyPanel.setVerticalGroup(
-			gl_privateKeyPanel.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_privateKeyPanel.createSequentialGroup()
-					.addContainerGap()
-					.addComponent(lblTerceiraEtapa)
-					.addGap(38)
-					.addGroup(gl_privateKeyPanel.createParallelGroup(Alignment.BASELINE)
-						.addComponent(lblCami)
-						.addComponent(browseJButton))
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(binPathJTextField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-					.addGap(31)
-					.addGroup(gl_privateKeyPanel.createParallelGroup(Alignment.BASELINE)
-						.addComponent(lblFraseSecreta)
-						.addComponent(secretPhraseJTextField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-					.addGap(18)
-					.addComponent(authenticateJButton)
-					.addGap(9)
-					.addComponent(thirdWarningLabel)
-					.addGap(24))
-		);
-		privateKeyPanel.setLayout(gl_privateKeyPanel);
 	}
 }
