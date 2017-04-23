@@ -1,0 +1,9 @@
+package presenter;
+
+import view.LoginWindow;
+
+public class MenuPresenter implements MenuPresenterListener{
+	
+	private MenuWindow _menuWindow;
+
+}

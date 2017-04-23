@@ -1,0 +1,10 @@
+2017-04-23 12:52:37,570 INFO  [org.eclim.eclipse.EclimDaemon] Workspace: /Users/hugocm93/Google_Drive/PUC-Rio/2017.1/INF1416/seguranca_g2
+2017-04-23 12:52:37,573 INFO  [org.eclim.eclipse.EclimDaemon] Home: /Applications/Eclipse.app/Contents/Eclipse/plugins/org.eclim_2.6.0/
+2017-04-23 12:52:37,573 INFO  [org.eclim.eclipse.EclimDaemon] Starting eclim...
+2017-04-23 12:52:37,590 INFO  [org.eclim.eclipse.EclimDaemon] Loading plugin org.eclim
+2017-04-23 12:52:37,594 INFO  [org.eclim.eclipse.EclimDaemon] Loading plugin org.eclim.core
+2017-04-23 12:52:37,793 INFO  [org.eclim.plugin.core.CorePlugin] Loading eclim plugins...
+2017-04-23 12:52:37,806 INFO  [org.eclim.plugin.core.CorePlugin] Loading plugin org.eclim.jdt
+2017-04-23 12:52:37,822 INFO  [org.eclim.plugin.core.CorePlugin] Plugins loaded.
+2017-04-23 12:52:37,822 INFO  [org.eclim.eclipse.EclimDaemon] Loaded plugin org.eclim.core
+2017-04-23 12:52:37,823 INFO  [org.eclim.eclipse.EclimDaemon] Eclim Server Started on: 127.0.0.1:9091

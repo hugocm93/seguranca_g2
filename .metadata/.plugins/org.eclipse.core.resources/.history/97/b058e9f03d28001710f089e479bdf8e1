@@ -1,0 +1,28 @@
+package presenter;
+
+import view.LoginWindow;
+
+public class LoginPresenter implements LoginPresenterListener{
+	
+	private LoginWindow _loginWindow;
+	
+	
+	public LoginPresenter() {
+		super();
+
+		_loginWindow = new LoginWindow(this);
+	}
+	
+	public void showWindow(){
+		_loginWindow.show();
+	}
+
+	@Override
+	public void loginButtonPressed() {
+		System.out.println("Enviar");
+		
+		loginNameSucceded();
+		
+	}
+
+}

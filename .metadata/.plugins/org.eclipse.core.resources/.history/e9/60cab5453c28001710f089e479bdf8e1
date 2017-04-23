@@ -1,0 +1,13 @@
+package presenter;
+
+public class LoginPresenter implements LoginPresenterListener{
+	
+	private LoginWindow _loginWindow;
+
+	@Override
+	public void loginButtonPressed() {
+		System.out.println("Enviar");
+		
+	}
+
+}

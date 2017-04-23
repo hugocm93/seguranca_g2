@@ -5,6 +5,8 @@ import javax.swing.JPanel;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import java.awt.Color;
+import java.awt.Container;
+
 import javax.swing.JButton;
 import java.awt.CardLayout;
 import javax.swing.GroupLayout;
@@ -29,7 +31,7 @@ public class LoginWindow {
 
 	
 	/**
-	 * Create the application.
+	 * Cria a interface
 	 */
 	public LoginWindow(LoginPresenterListener listener) {
 		_listener = listener;
@@ -37,10 +39,35 @@ public class LoginWindow {
 	}
 	
 	/**
-	 * Shows the window
+	 * Mostra a janela
 	 */
 	public void show(){
 		_frmLogin.setVisible(true);
+	}
+	
+	/**
+	 * Avança para a tela de senha
+	 */
+	public void loginNameSucceded(){
+		Container mainContainer = _frmLogin.getContentPane();
+		CardLayout cardsLayout = (CardLayout)(mainContainer.getLayout());
+		cardsLayout.show(mainContainer, "passwordPanel");
+	}
+	
+	/**
+	 * Avança para a tela de chave privada
+	 */
+	public void passwordSucceded(){
+		Container mainContainer = _frmLogin.getContentPane();
+		CardLayout cardsLayout = (CardLayout)(mainContainer.getLayout());
+		cardsLayout.show(mainContainer, "privateKeyPanel");
+	}
+	
+	/**
+	 * @return Frame principal da janela
+	 */
+	public JFrame getFrame() {
+		return _frmLogin;
 	}
 
 	/**
@@ -112,7 +139,7 @@ public class LoginWindow {
 		loginPanel.setLayout(gl_loginPanel);
 		
 		JPanel passwordPanel = new JPanel();
-		_frmLogin.getContentPane().add(passwordPanel, "name_122141787324933");
+		_frmLogin.getContentPane().add(passwordPanel, "passwordPanel");
 		
 		JLabel lblEtapa = new JLabel("Segunda etapa");
 		
@@ -122,18 +149,39 @@ public class LoginWindow {
 		secondWarningLabel.setForeground(Color.RED);
 		
 		JButton b1JButton = new JButton("b1");
+		b1JButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				_listener.passwordButtonPressed(b1JButton.getName());
+			}
+		});
 		
 		JButton b2JButton = new JButton("b2");
+		b2JButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				_listener.passwordButtonPressed(b2JButton.getName());
+			}
+		});
 		
 		JButton b3JButton = new JButton("b3");
 		b3JButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				_listener.passwordButtonPressed(b3JButton.getName());
 			}
 		});
 		
 		JButton b4JButton = new JButton("b4");
+		b4JButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				_listener.passwordButtonPressed(b4JButton.getName());
+			}
+		});
 		
 		JButton b5JButton = new JButton("b5");
+		b5JButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				_listener.passwordButtonPressed(b5JButton.getName());
+			}
+		});
 		GroupLayout gl_passwordPanel = new GroupLayout(passwordPanel);
 		gl_passwordPanel.setHorizontalGroup(
 			gl_passwordPanel.createParallelGroup(Alignment.LEADING)
@@ -179,7 +227,7 @@ public class LoginWindow {
 		passwordPanel.setLayout(gl_passwordPanel);
 		
 		JPanel privateKeyPanel = new JPanel();
-		_frmLogin.getContentPane().add(privateKeyPanel, "name_124689972447600");
+		_frmLogin.getContentPane().add(privateKeyPanel, "privateKeyPanel");
 		
 		JLabel thirdWarningLabel = new JLabel("Warning placeholder");
 		thirdWarningLabel.setForeground(Color.RED);
@@ -199,29 +247,32 @@ public class LoginWindow {
 		secretPhraseJTextField.setColumns(10);
 		
 		JButton authenticateJButton = new JButton("Autenticar");
+		authenticateJButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				_listener.authenticateButtonPressed();
+			}
+		});
 		GroupLayout gl_privateKeyPanel = new GroupLayout(privateKeyPanel);
 		gl_privateKeyPanel.setHorizontalGroup(
-			gl_privateKeyPanel.createParallelGroup(Alignment.TRAILING)
-				.addGroup(Alignment.LEADING, gl_privateKeyPanel.createSequentialGroup()
+			gl_privateKeyPanel.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_privateKeyPanel.createSequentialGroup()
 					.addGap(28)
 					.addGroup(gl_privateKeyPanel.createParallelGroup(Alignment.LEADING)
 						.addGroup(gl_privateKeyPanel.createSequentialGroup()
 							.addComponent(thirdWarningLabel)
-							.addContainerGap())
+							.addPreferredGap(ComponentPlacement.RELATED, 179, Short.MAX_VALUE)
+							.addComponent(authenticateJButton))
 						.addGroup(gl_privateKeyPanel.createSequentialGroup()
-							.addGroup(gl_privateKeyPanel.createParallelGroup(Alignment.LEADING)
-								.addGroup(gl_privateKeyPanel.createSequentialGroup()
-									.addComponent(lblFraseSecreta)
-									.addPreferredGap(ComponentPlacement.UNRELATED)
-									.addComponent(secretPhraseJTextField))
-								.addComponent(authenticateJButton, Alignment.TRAILING)
-								.addComponent(lblTerceiraEtapa)
-								.addGroup(gl_privateKeyPanel.createSequentialGroup()
-									.addComponent(lblCami)
-									.addPreferredGap(ComponentPlacement.UNRELATED)
-									.addComponent(browseJButton))
-								.addComponent(binPathJTextField, GroupLayout.PREFERRED_SIZE, 387, GroupLayout.PREFERRED_SIZE))
-							.addContainerGap(238, Short.MAX_VALUE))))
+							.addComponent(lblFraseSecreta)
+							.addPreferredGap(ComponentPlacement.UNRELATED)
+							.addComponent(secretPhraseJTextField, 289, 289, 289))
+						.addComponent(lblTerceiraEtapa)
+						.addGroup(gl_privateKeyPanel.createSequentialGroup()
+							.addComponent(lblCami)
+							.addPreferredGap(ComponentPlacement.UNRELATED)
+							.addComponent(browseJButton))
+						.addComponent(binPathJTextField, GroupLayout.PREFERRED_SIZE, 387, GroupLayout.PREFERRED_SIZE))
+					.addContainerGap())
 		);
 		gl_privateKeyPanel.setVerticalGroup(
 			gl_privateKeyPanel.createParallelGroup(Alignment.LEADING)
@@ -238,11 +289,14 @@ public class LoginWindow {
 					.addGroup(gl_privateKeyPanel.createParallelGroup(Alignment.BASELINE)
 						.addComponent(lblFraseSecreta)
 						.addComponent(secretPhraseJTextField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-					.addGap(18)
-					.addComponent(authenticateJButton)
-					.addGap(9)
-					.addComponent(thirdWarningLabel)
-					.addGap(24))
+					.addGap(56)
+					.addGroup(gl_privateKeyPanel.createParallelGroup(Alignment.TRAILING)
+						.addGroup(gl_privateKeyPanel.createSequentialGroup()
+							.addComponent(thirdWarningLabel)
+							.addGap(24))
+						.addGroup(gl_privateKeyPanel.createSequentialGroup()
+							.addComponent(authenticateJButton)
+							.addContainerGap())))
 		);
 		privateKeyPanel.setLayout(gl_privateKeyPanel);
 	}

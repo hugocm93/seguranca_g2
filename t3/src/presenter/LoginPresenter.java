@@ -1,11 +1,42 @@
 package presenter;
 
+import view.LoginWindow;
+
 public class LoginPresenter implements LoginPresenterListener{
+	
+	private LoginWindow _loginWindow;
+	
+	
+	public LoginPresenter() {
+		super();
+
+		_loginWindow = new LoginWindow(this);
+	}
+	
+	public void showWindow(){
+		_loginWindow.show();
+	}
 
 	@Override
 	public void loginButtonPressed() {
-		System.out.println("Enviar");
+		//TODO
+		_loginWindow.loginNameSucceded();
+	}
+
+	@Override
+	public void passwordButtonPressed(String buttonName){
+		//TODO
+		_loginWindow.passwordSucceded();
 		
 	}
 
+	@Override
+	public void authenticateButtonPressed() {
+		_loginWindow.getFrame().setVisible(false);
+		_loginWindow.getFrame().dispose();
+		
+		MenuPresenter menuPresenter = new MenuPresenter();
+		menuPresenter.showWindow();
+	}
+	
 }

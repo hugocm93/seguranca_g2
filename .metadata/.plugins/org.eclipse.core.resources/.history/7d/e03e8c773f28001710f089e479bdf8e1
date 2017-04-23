@@ -1,0 +1,17 @@
+package presenter;
+
+public interface LoginPresenterListener {
+	
+	/**
+	 * Método chamado ao clicar no botão de login
+	 */
+	public void loginButtonPressed();
+	
+	/**
+	 * Password button Pressed
+	 */
+	public void pressedPasswordButton(String buttonName){
+		
+	}
+
+}

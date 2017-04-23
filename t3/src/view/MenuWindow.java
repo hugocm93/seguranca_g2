@@ -1,14 +1,13 @@
 package view;
 
+import presenter.MenuPresenterListener;
+
 import javax.swing.JFrame;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JPanel;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.border.EtchedBorder;
-
-import presenter.MenuPresenterListener;
-
 import javax.swing.JLabel;
 import java.awt.CardLayout;
 import javax.swing.JButton;
@@ -20,10 +19,16 @@ import javax.swing.JSeparator;
 import java.awt.Color;
 import javax.swing.SwingConstants;
 import javax.swing.JTable;
+import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.ActionEvent;
 
 public class MenuWindow {
 
 	private JFrame _frmMenu;
+	private JPanel _body2;
+	private JPanel _body1;
+	private JPanel _header;
 	private JTextField filePath2JTextField;
 	private JPasswordField passwordField;
 	private JPasswordField password2JTextField;
@@ -31,7 +36,6 @@ public class MenuWindow {
 	private JTable listarJButton;
 	
 	private MenuPresenterListener _listener;
-
 	
 	/**
 	 * Create the application.
@@ -45,7 +49,19 @@ public class MenuWindow {
 	 * Shows the window
 	 */
 	public void show(){
+		goToMenu();
 		_frmMenu.setVisible(true);
+	}
+	
+	/**
+	 * Mostra o card de menu
+	 */
+	private void goToMenu(){
+		CardLayout cardsLayout = (CardLayout)(_body2.getLayout());
+		cardsLayout.show(_body2, "menuPanel");
+		
+		cardsLayout = (CardLayout)(_body1.getLayout());
+		cardsLayout.show(_body1, "totalAcessosJPanel");
 	}
 
 	/**
@@ -58,46 +74,56 @@ public class MenuWindow {
 		_frmMenu.setBounds(100, 100, 600, 400);
 		_frmMenu.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
-		JPanel header = new JPanel();
-		header.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
+		_header = new JPanel();
+		_header.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
 		
-		JPanel body1 = new JPanel();
-		body1.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
+		_body1 = new JPanel();
+		_body1.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
 		
-		JPanel body2 = new JPanel();
-		body2.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
+		_body2 = new JPanel();
+		_body2.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
 		GroupLayout groupLayout = new GroupLayout(_frmMenu.getContentPane());
 		groupLayout.setHorizontalGroup(
 			groupLayout.createParallelGroup(Alignment.TRAILING)
 				.addGroup(Alignment.LEADING, groupLayout.createSequentialGroup()
 					.addContainerGap()
 					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-						.addComponent(header, GroupLayout.DEFAULT_SIZE, 588, Short.MAX_VALUE)
-						.addComponent(body1, GroupLayout.PREFERRED_SIZE, 588, Short.MAX_VALUE)
-						.addComponent(body2, GroupLayout.PREFERRED_SIZE, 588, Short.MAX_VALUE))
+						.addComponent(_header, GroupLayout.DEFAULT_SIZE, 588, Short.MAX_VALUE)
+						.addComponent(_body1, GroupLayout.PREFERRED_SIZE, 588, Short.MAX_VALUE)
+						.addComponent(_body2, GroupLayout.PREFERRED_SIZE, 588, Short.MAX_VALUE))
 					.addContainerGap())
 		);
 		groupLayout.setVerticalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(groupLayout.createSequentialGroup()
 					.addContainerGap()
-					.addComponent(header, GroupLayout.PREFERRED_SIZE, 97, GroupLayout.PREFERRED_SIZE)
+					.addComponent(_header, GroupLayout.PREFERRED_SIZE, 97, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(body1, GroupLayout.PREFERRED_SIZE, 48, GroupLayout.PREFERRED_SIZE)
+					.addComponent(_body1, GroupLayout.PREFERRED_SIZE, 48, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(body2, GroupLayout.DEFAULT_SIZE, 209, Short.MAX_VALUE)
+					.addComponent(_body2, GroupLayout.DEFAULT_SIZE, 209, Short.MAX_VALUE)
 					.addContainerGap())
 		);
-		body2.setLayout(new CardLayout(0, 0));
+		_body2.setLayout(new CardLayout(0, 0));
 		
 		JPanel sairPanel = new JPanel();
-		body2.add(sairPanel, "name_132801311115142");
+		_body2.add(sairPanel, "sairPanel");
 		
 		JButton sairJButton = new JButton("Sair");
+		sairJButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				_frmMenu.dispatchEvent(new WindowEvent(_frmMenu, WindowEvent.WINDOW_CLOSING));
+			}
+		});
 		
 		JLabel lblSaidaDoSistema = new JLabel("Saída do sistema:");
 		
 		JButton back1JButton = new JButton("Voltar ao menu");
+		back1JButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				goToMenu();
+			}
+		});
 		
 		JLabel lblPressioneOBotao = new JLabel("Pressione o botão Sair para confirmar.");
 		GroupLayout gl_sairPanel = new GroupLayout(sairPanel);
@@ -135,7 +161,7 @@ public class MenuWindow {
 		sairPanel.setLayout(gl_sairPanel);
 		
 		JPanel arquivosPanel = new JPanel();
-		body2.add(arquivosPanel, "name_130704517751394");
+		_body2.add(arquivosPanel, "arquivosPanel");
 		
 		JLabel lblCaminhoDaPasta = new JLabel("Caminho da pasta:");
 		
@@ -143,6 +169,11 @@ public class MenuWindow {
 		filePath1JTextField.setColumns(10);
 		
 		JButton back2JButton = new JButton("Voltar ao menu");
+		back2JButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				goToMenu();
+			}
+		});
 		
 		JButton browse1JButton = new JButton("Localizar");
 		
@@ -189,11 +220,16 @@ public class MenuWindow {
 		arquivosPanel.setLayout(gl_arquivosPanel);
 		
 		JPanel certificadoPanel = new JPanel();
-		body2.add(certificadoPanel, "name_130069326585595");
+		_body2.add(certificadoPanel, "certificadoPanel");
 		
 		JLabel lblChavePrivada = new JLabel("Chave privada:");
 		
 		JButton back3JButton = new JButton("Voltar ao menu");
+		back3JButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				goToMenu();
+			}
+		});
 		
 		JLabel lblCertificado = new JLabel("Certificado:");
 		
@@ -249,7 +285,7 @@ public class MenuWindow {
 		certificadoPanel.setLayout(gl_certificadoPanel);
 		
 		JPanel cadastroPanel = new JPanel();
-		body2.add(cadastroPanel, "name_129271784350853");
+		_body2.add(cadastroPanel, "cadastroPanel");
 		
 		JLabel lblFormularioDeCadastro = new JLabel("Formulário de Cadastro:");
 		
@@ -273,6 +309,11 @@ public class MenuWindow {
 		passwordField = new JPasswordField();
 		
 		JButton back4JButton = new JButton("Voltar ao menu");
+		back4JButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				goToMenu();
+			}
+		});
 		
 		password2JTextField = new JPasswordField();
 		GroupLayout gl_cadastroPanel = new GroupLayout(cadastroPanel);
@@ -341,17 +382,53 @@ public class MenuWindow {
 		cadastroPanel.setLayout(gl_cadastroPanel);
 		
 		JPanel menuPanel = new JPanel();
-		body2.add(menuPanel, "name_128964056480967");
+		_body2.add(menuPanel, "menuPanel");
 		
 		JLabel lblMenuPrincipal = new JLabel("Menu Principal:");
 		
 		JButton cadastrarMenuJButton = new JButton("Cadastrar um novo usuário");
+		cadastrarMenuJButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				CardLayout cardsLayout = (CardLayout)(_body2.getLayout());
+				cardsLayout.show(_body2, "cadastroPanel");
+				
+				cardsLayout = (CardLayout)(_body1.getLayout());
+				cardsLayout.show(_body1, "totalUsuariosJPanel");
+			}
+		});
 		
 		JButton listarMenuJButton = new JButton("Listar chave privada e certificado digital do usuário");
+		listarMenuJButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				CardLayout cardsLayout = (CardLayout)(_body2.getLayout());
+				cardsLayout.show(_body2, "certificadoPanel");
+				
+				cardsLayout = (CardLayout)(_body1.getLayout());
+				cardsLayout.show(_body1, "totalListagemJPanel");
+			}
+		});
 		
 		JButton consultarMenuJButton = new JButton("Consultar pasta de arquivos secretos do usuário");
+		consultarMenuJButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				CardLayout cardsLayout = (CardLayout)(_body2.getLayout());
+				cardsLayout.show(_body2, "arquivosPanel");
+				
+				cardsLayout = (CardLayout)(_body1.getLayout());
+				cardsLayout.show(_body1, "totalConsultasJPanel");
+			}
+		});
 		
 		JButton sairMenuJButton = new JButton("Sair do Sistema");
+		sairMenuJButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				CardLayout cardsLayout = (CardLayout)(_body2.getLayout());
+				cardsLayout.show(_body2, "sairPanel");
+				
+				cardsLayout = (CardLayout)(_body1.getLayout());
+				cardsLayout.show(_body1, "totalAcessosJPanel");
+			}
+		});
 		GroupLayout gl_menuPanel = new GroupLayout(menuPanel);
 		gl_menuPanel.setHorizontalGroup(
 			gl_menuPanel.createParallelGroup(Alignment.TRAILING)
@@ -385,10 +462,10 @@ public class MenuWindow {
 					.addContainerGap(24, Short.MAX_VALUE))
 		);
 		menuPanel.setLayout(gl_menuPanel);
-		body1.setLayout(new CardLayout(0, 0));
+		_body1.setLayout(new CardLayout(0, 0));
 		
 		JPanel totalListagemJPanel = new JPanel();
-		body1.add(totalListagemJPanel, "name_132054033726482");
+		_body1.add(totalListagemJPanel, "totalListagemJPanel");
 		
 		JLabel totalListagemLabel = new JLabel("Total de listagem do usuário:");
 		
@@ -419,7 +496,7 @@ public class MenuWindow {
 		totalListagemJPanel.setLayout(gl_totalListagemJPanel);
 		
 		JPanel totalConsultasJPanel = new JPanel();
-		body1.add(totalConsultasJPanel, "name_131876733954568");
+		_body1.add(totalConsultasJPanel, "totalConsultasJPanel");
 		
 		JLabel totalConsultasLabel = new JLabel("Total de consultas do usuário:");
 		
@@ -448,7 +525,7 @@ public class MenuWindow {
 		totalConsultasJPanel.setLayout(gl_totalConsultasJPanel);
 		
 		JPanel totalUsuariosJPanel = new JPanel();
-		body1.add(totalUsuariosJPanel, "name_128809415281247");
+		_body1.add(totalUsuariosJPanel, "totalUsuariosJPanel");
 		
 		JLabel totalUsuariosLabel = new JLabel("Total de usuários do sistema:");
 		
@@ -481,7 +558,7 @@ public class MenuWindow {
 		JLabel acessosLabel = new JLabel("placeholder");
 		
 		JLabel totalAcessosLabel = new JLabel("Total de acessos do usuário:");
-		body1.add(totalAcessosJPanel, "name_128623681557462");
+		_body1.add(totalAcessosJPanel, "totalAcessosJPanel");
 		GroupLayout gl_totalAcessosJPanel = new GroupLayout(totalAcessosJPanel);
 		gl_totalAcessosJPanel.setHorizontalGroup(
 			gl_totalAcessosJPanel.createParallelGroup(Alignment.LEADING)
@@ -514,41 +591,41 @@ public class MenuWindow {
 		JLabel grupoLabel = new JLabel("grupoPlaceholder");
 		
 		JLabel nomeLabel = new JLabel("nomePlaceholder");
-		GroupLayout gl_header = new GroupLayout(header);
-		gl_header.setHorizontalGroup(
-			gl_header.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_header.createSequentialGroup()
+		GroupLayout gl__header = new GroupLayout(_header);
+		gl__header.setHorizontalGroup(
+			gl__header.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl__header.createSequentialGroup()
 					.addGap(33)
-					.addGroup(gl_header.createParallelGroup(Alignment.TRAILING)
+					.addGroup(gl__header.createParallelGroup(Alignment.TRAILING)
 						.addComponent(lblNome)
-						.addGroup(gl_header.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl__header.createParallelGroup(Alignment.LEADING)
 							.addComponent(lblLogin)
 							.addComponent(lblNewLabel)))
 					.addGap(24)
-					.addGroup(gl_header.createParallelGroup(Alignment.LEADING)
+					.addGroup(gl__header.createParallelGroup(Alignment.LEADING)
 						.addComponent(loginLabel)
 						.addComponent(grupoLabel)
 						.addComponent(nomeLabel))
 					.addContainerGap(374, Short.MAX_VALUE))
 		);
-		gl_header.setVerticalGroup(
-			gl_header.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_header.createSequentialGroup()
+		gl__header.setVerticalGroup(
+			gl__header.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl__header.createSequentialGroup()
 					.addGap(12)
-					.addGroup(gl_header.createParallelGroup(Alignment.BASELINE)
+					.addGroup(gl__header.createParallelGroup(Alignment.BASELINE)
 						.addComponent(lblLogin)
 						.addComponent(loginLabel))
 					.addPreferredGap(ComponentPlacement.RELATED)
-					.addGroup(gl_header.createParallelGroup(Alignment.BASELINE)
+					.addGroup(gl__header.createParallelGroup(Alignment.BASELINE)
 						.addComponent(lblNewLabel)
 						.addComponent(grupoLabel))
 					.addPreferredGap(ComponentPlacement.RELATED)
-					.addGroup(gl_header.createParallelGroup(Alignment.BASELINE)
+					.addGroup(gl__header.createParallelGroup(Alignment.BASELINE)
 						.addComponent(lblNome)
 						.addComponent(nomeLabel))
 					.addContainerGap(21, Short.MAX_VALUE))
 		);
-		header.setLayout(gl_header);
+		_header.setLayout(gl__header);
 		_frmMenu.getContentPane().setLayout(groupLayout);
 	}
 }
