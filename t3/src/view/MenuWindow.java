@@ -1,17 +1,14 @@
 package view;
 
-import java.awt.EventQueue;
-
 import javax.swing.JFrame;
-import javax.swing.BoxLayout;
-import com.jgoodies.forms.layout.FormLayout;
-import com.jgoodies.forms.layout.ColumnSpec;
-import com.jgoodies.forms.layout.RowSpec;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JPanel;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.border.EtchedBorder;
+
+import presenter.MenuPresenterListener;
+
 import javax.swing.JLabel;
 import java.awt.CardLayout;
 import javax.swing.JButton;
@@ -26,45 +23,40 @@ import javax.swing.JTable;
 
 public class MenuWindow {
 
-	private JFrame frmMenu;
+	private JFrame _frmMenu;
 	private JTextField filePath2JTextField;
 	private JPasswordField passwordField;
 	private JPasswordField password2JTextField;
 	private JTextField filePath1JTextField;
 	private JTable listarJButton;
+	
+	private MenuPresenterListener _listener;
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					MenuWindow window = new MenuWindow();
-					window.frmMenu.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
+	
 	/**
 	 * Create the application.
 	 */
-	public MenuWindow() {
+	public MenuWindow(MenuPresenterListener listener) {
+		_listener = listener;
 		initialize();
+	}
+	
+	/**
+	 * Shows the window
+	 */
+	public void show(){
+		_frmMenu.setVisible(true);
 	}
 
 	/**
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		frmMenu = new JFrame();
-		frmMenu.setResizable(false);
-		frmMenu.setTitle("Menu");
-		frmMenu.setBounds(100, 100, 600, 400);
-		frmMenu.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		_frmMenu = new JFrame();
+		_frmMenu.setResizable(false);
+		_frmMenu.setTitle("Menu");
+		_frmMenu.setBounds(100, 100, 600, 400);
+		_frmMenu.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		JPanel header = new JPanel();
 		header.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
@@ -74,7 +66,7 @@ public class MenuWindow {
 		
 		JPanel body2 = new JPanel();
 		body2.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
-		GroupLayout groupLayout = new GroupLayout(frmMenu.getContentPane());
+		GroupLayout groupLayout = new GroupLayout(_frmMenu.getContentPane());
 		groupLayout.setHorizontalGroup(
 			groupLayout.createParallelGroup(Alignment.TRAILING)
 				.addGroup(Alignment.LEADING, groupLayout.createSequentialGroup()
@@ -557,6 +549,6 @@ public class MenuWindow {
 					.addContainerGap(21, Short.MAX_VALUE))
 		);
 		header.setLayout(gl_header);
-		frmMenu.getContentPane().setLayout(groupLayout);
+		_frmMenu.getContentPane().setLayout(groupLayout);
 	}
 }

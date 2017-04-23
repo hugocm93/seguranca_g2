@@ -1,0 +1,558 @@
+package view;
+
+import java.awt.EventQueue;
+
+import javax.swing.JFrame;
+import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.JPanel;
+import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.border.EtchedBorder;
+import javax.swing.JLabel;
+import java.awt.CardLayout;
+import javax.swing.JButton;
+import javax.swing.JTextField;
+import javax.swing.JComboBox;
+import javax.swing.JPasswordField;
+import javax.swing.JTextPane;
+import javax.swing.JSeparator;
+import java.awt.Color;
+import javax.swing.SwingConstants;
+import javax.swing.JTable;
+
+public class MenuWindow {
+
+	private JFrame frmMenu;
+	private JTextField filePath2JTextField;
+	private JPasswordField passwordField;
+	private JPasswordField password2JTextField;
+	private JTextField filePath1JTextField;
+	private JTable listarJButton;
+
+	/**
+	 * Launch the application.
+	 */
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					MenuWindow window = new MenuWindow();
+					window.frmMenu.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+
+	/**
+	 * Create the application.
+	 */
+	public MenuWindow() {
+		initialize();
+	}
+
+	/**
+	 * Initialize the contents of the frame.
+	 */
+	private void initialize() {
+		frmMenu = new JFrame();
+		frmMenu.setResizable(false);
+		frmMenu.setTitle("Menu");
+		frmMenu.setBounds(100, 100, 600, 400);
+		frmMenu.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+		JPanel header = new JPanel();
+		header.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
+		
+		JPanel body1 = new JPanel();
+		body1.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
+		
+		JPanel body2 = new JPanel();
+		body2.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
+		GroupLayout groupLayout = new GroupLayout(frmMenu.getContentPane());
+		groupLayout.setHorizontalGroup(
+			groupLayout.createParallelGroup(Alignment.TRAILING)
+				.addGroup(Alignment.LEADING, groupLayout.createSequentialGroup()
+					.addContainerGap()
+					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+						.addComponent(header, GroupLayout.DEFAULT_SIZE, 588, Short.MAX_VALUE)
+						.addComponent(body1, GroupLayout.PREFERRED_SIZE, 588, Short.MAX_VALUE)
+						.addComponent(body2, GroupLayout.PREFERRED_SIZE, 588, Short.MAX_VALUE))
+					.addContainerGap())
+		);
+		groupLayout.setVerticalGroup(
+			groupLayout.createParallelGroup(Alignment.LEADING)
+				.addGroup(groupLayout.createSequentialGroup()
+					.addContainerGap()
+					.addComponent(header, GroupLayout.PREFERRED_SIZE, 97, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(body1, GroupLayout.PREFERRED_SIZE, 48, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(body2, GroupLayout.DEFAULT_SIZE, 209, Short.MAX_VALUE)
+					.addContainerGap())
+		);
+		body2.setLayout(new CardLayout(0, 0));
+		
+		JPanel sairPanel = new JPanel();
+		body2.add(sairPanel, "name_132801311115142");
+		
+		JButton sairJButton = new JButton("Sair");
+		
+		JLabel lblSaidaDoSistema = new JLabel("Saída do sistema:");
+		
+		JButton back1JButton = new JButton("Voltar ao menu");
+		
+		JLabel lblPressioneOBotao = new JLabel("Pressione o botão Sair para confirmar.");
+		GroupLayout gl_sairPanel = new GroupLayout(sairPanel);
+		gl_sairPanel.setHorizontalGroup(
+			gl_sairPanel.createParallelGroup(Alignment.TRAILING)
+				.addGroup(gl_sairPanel.createSequentialGroup()
+					.addGroup(gl_sairPanel.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_sairPanel.createSequentialGroup()
+							.addContainerGap()
+							.addComponent(back1JButton)
+							.addPreferredGap(ComponentPlacement.RELATED, 358, Short.MAX_VALUE)
+							.addComponent(sairJButton))
+						.addGroup(gl_sairPanel.createSequentialGroup()
+							.addGap(243)
+							.addComponent(lblSaidaDoSistema)))
+					.addContainerGap())
+				.addGroup(gl_sairPanel.createSequentialGroup()
+					.addContainerGap(181, Short.MAX_VALUE)
+					.addComponent(lblPressioneOBotao)
+					.addGap(164))
+		);
+		gl_sairPanel.setVerticalGroup(
+			gl_sairPanel.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_sairPanel.createSequentialGroup()
+					.addGap(13)
+					.addComponent(lblSaidaDoSistema)
+					.addGap(51)
+					.addComponent(lblPressioneOBotao)
+					.addPreferredGap(ComponentPlacement.RELATED, 74, Short.MAX_VALUE)
+					.addGroup(gl_sairPanel.createParallelGroup(Alignment.BASELINE)
+						.addComponent(back1JButton)
+						.addComponent(sairJButton))
+					.addContainerGap())
+		);
+		sairPanel.setLayout(gl_sairPanel);
+		
+		JPanel arquivosPanel = new JPanel();
+		body2.add(arquivosPanel, "name_130704517751394");
+		
+		JLabel lblCaminhoDaPasta = new JLabel("Caminho da pasta:");
+		
+		filePath1JTextField = new JTextField();
+		filePath1JTextField.setColumns(10);
+		
+		JButton back2JButton = new JButton("Voltar ao menu");
+		
+		JButton browse1JButton = new JButton("Localizar");
+		
+		JButton listJButton = new JButton("Listar");
+		
+		listarJButton = new JTable();
+		GroupLayout gl_arquivosPanel = new GroupLayout(arquivosPanel);
+		gl_arquivosPanel.setHorizontalGroup(
+			gl_arquivosPanel.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_arquivosPanel.createSequentialGroup()
+					.addContainerGap()
+					.addGroup(gl_arquivosPanel.createParallelGroup(Alignment.TRAILING)
+						.addGroup(gl_arquivosPanel.createSequentialGroup()
+							.addGap(8)
+							.addGroup(gl_arquivosPanel.createParallelGroup(Alignment.TRAILING)
+								.addComponent(listarJButton, GroupLayout.DEFAULT_SIZE, 564, Short.MAX_VALUE)
+								.addGroup(gl_arquivosPanel.createSequentialGroup()
+									.addComponent(lblCaminhoDaPasta)
+									.addPreferredGap(ComponentPlacement.RELATED)
+									.addComponent(filePath1JTextField, GroupLayout.PREFERRED_SIZE, 285, GroupLayout.PREFERRED_SIZE)
+									.addPreferredGap(ComponentPlacement.RELATED)
+									.addComponent(browse1JButton, GroupLayout.PREFERRED_SIZE, 99, GroupLayout.PREFERRED_SIZE))))
+						.addGroup(gl_arquivosPanel.createSequentialGroup()
+							.addComponent(back2JButton)
+							.addPreferredGap(ComponentPlacement.RELATED, 354, Short.MAX_VALUE)
+							.addComponent(listJButton)))
+					.addContainerGap())
+		);
+		gl_arquivosPanel.setVerticalGroup(
+			gl_arquivosPanel.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_arquivosPanel.createSequentialGroup()
+					.addContainerGap()
+					.addGroup(gl_arquivosPanel.createParallelGroup(Alignment.BASELINE)
+						.addComponent(lblCaminhoDaPasta)
+						.addComponent(filePath1JTextField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(browse1JButton))
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(listarJButton, GroupLayout.PREFERRED_SIZE, 119, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGroup(gl_arquivosPanel.createParallelGroup(Alignment.BASELINE)
+						.addComponent(back2JButton)
+						.addComponent(listJButton)))
+		);
+		arquivosPanel.setLayout(gl_arquivosPanel);
+		
+		JPanel certificadoPanel = new JPanel();
+		body2.add(certificadoPanel, "name_130069326585595");
+		
+		JLabel lblChavePrivada = new JLabel("Chave privada:");
+		
+		JButton back3JButton = new JButton("Voltar ao menu");
+		
+		JLabel lblCertificado = new JLabel("Certificado:");
+		
+		JTextPane privateKeyJTextPane = new JTextPane();
+		privateKeyJTextPane.setEditable(false);
+		privateKeyJTextPane.setText("Placeholder");
+		
+		JTextPane certificateJTextPane = new JTextPane();
+		certificateJTextPane.setEditable(false);
+		certificateJTextPane.setText("Placeholder");
+		
+		JSeparator separator = new JSeparator();
+		separator.setOrientation(SwingConstants.VERTICAL);
+		separator.setForeground(Color.LIGHT_GRAY);
+		GroupLayout gl_certificadoPanel = new GroupLayout(certificadoPanel);
+		gl_certificadoPanel.setHorizontalGroup(
+			gl_certificadoPanel.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_certificadoPanel.createSequentialGroup()
+					.addGap(14)
+					.addGroup(gl_certificadoPanel.createParallelGroup(Alignment.LEADING)
+						.addComponent(back3JButton)
+						.addGroup(gl_certificadoPanel.createParallelGroup(Alignment.LEADING)
+							.addComponent(privateKeyJTextPane, GroupLayout.PREFERRED_SIZE, 257, GroupLayout.PREFERRED_SIZE)
+							.addComponent(lblChavePrivada)))
+					.addGap(13)
+					.addComponent(separator, GroupLayout.PREFERRED_SIZE, 11, GroupLayout.PREFERRED_SIZE)
+					.addGap(18)
+					.addGroup(gl_certificadoPanel.createParallelGroup(Alignment.LEADING)
+						.addComponent(lblCertificado, GroupLayout.PREFERRED_SIZE, 209, GroupLayout.PREFERRED_SIZE)
+						.addComponent(certificateJTextPane, GroupLayout.PREFERRED_SIZE, 257, GroupLayout.PREFERRED_SIZE))
+					.addContainerGap(287, Short.MAX_VALUE))
+		);
+		gl_certificadoPanel.setVerticalGroup(
+			gl_certificadoPanel.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_certificadoPanel.createSequentialGroup()
+					.addGap(14)
+					.addGroup(gl_certificadoPanel.createParallelGroup(Alignment.BASELINE)
+						.addComponent(lblChavePrivada)
+						.addComponent(lblCertificado))
+					.addPreferredGap(ComponentPlacement.UNRELATED)
+					.addGroup(gl_certificadoPanel.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_certificadoPanel.createSequentialGroup()
+							.addComponent(privateKeyJTextPane, GroupLayout.PREFERRED_SIZE, 113, GroupLayout.PREFERRED_SIZE)
+							.addGap(15)
+							.addComponent(back3JButton))
+						.addComponent(certificateJTextPane, GroupLayout.PREFERRED_SIZE, 113, GroupLayout.PREFERRED_SIZE))
+					.addContainerGap(8, Short.MAX_VALUE))
+				.addGroup(Alignment.TRAILING, gl_certificadoPanel.createSequentialGroup()
+					.addContainerGap(27, Short.MAX_VALUE)
+					.addComponent(separator, GroupLayout.PREFERRED_SIZE, 157, GroupLayout.PREFERRED_SIZE)
+					.addGap(21))
+		);
+		certificadoPanel.setLayout(gl_certificadoPanel);
+		
+		JPanel cadastroPanel = new JPanel();
+		body2.add(cadastroPanel, "name_129271784350853");
+		
+		JLabel lblFormularioDeCadastro = new JLabel("Formulário de Cadastro:");
+		
+		JButton signupJButton = new JButton("Cadastrar");
+		
+		JLabel lblCaminhoDoArquivo = new JLabel("Caminho do arquivo do certificado digital:");
+		
+		filePath2JTextField = new JTextField();
+		filePath2JTextField.setColumns(10);
+		
+		JButton browse2JButton = new JButton("Localizar");
+		
+		JLabel lblGrupo = new JLabel("Grupo:");
+		
+		JComboBox groupJComboBox = new JComboBox();
+		
+		JLabel lblSenhaPessoal = new JLabel("Senha pessoal:");
+		
+		JLabel lblConfirmacaoDaSenha = new JLabel("Confirmação da senha pessoal:");
+		
+		passwordField = new JPasswordField();
+		
+		JButton back4JButton = new JButton("Voltar ao menu");
+		
+		password2JTextField = new JPasswordField();
+		GroupLayout gl_cadastroPanel = new GroupLayout(cadastroPanel);
+		gl_cadastroPanel.setHorizontalGroup(
+			gl_cadastroPanel.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_cadastroPanel.createSequentialGroup()
+					.addGroup(gl_cadastroPanel.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_cadastroPanel.createSequentialGroup()
+							.addGap(14)
+							.addGroup(gl_cadastroPanel.createParallelGroup(Alignment.LEADING, false)
+								.addGroup(gl_cadastroPanel.createSequentialGroup()
+									.addGroup(gl_cadastroPanel.createParallelGroup(Alignment.LEADING)
+										.addGroup(gl_cadastroPanel.createSequentialGroup()
+											.addComponent(lblCaminhoDoArquivo)
+											.addGap(12)
+											.addComponent(filePath2JTextField, GroupLayout.DEFAULT_SIZE, 172, Short.MAX_VALUE))
+										.addComponent(back4JButton))
+									.addPreferredGap(ComponentPlacement.RELATED)
+									.addGroup(gl_cadastroPanel.createParallelGroup(Alignment.TRAILING)
+										.addComponent(browse2JButton, GroupLayout.PREFERRED_SIZE, 99, GroupLayout.PREFERRED_SIZE)
+										.addComponent(signupJButton))
+									.addGap(283))
+								.addGroup(gl_cadastroPanel.createSequentialGroup()
+									.addComponent(lblSenhaPessoal)
+									.addGap(18)
+									.addComponent(passwordField, GroupLayout.PREFERRED_SIZE, 125, GroupLayout.PREFERRED_SIZE)
+									.addGap(114)
+									.addComponent(lblGrupo)
+									.addPreferredGap(ComponentPlacement.RELATED)
+									.addComponent(groupJComboBox, GroupLayout.PREFERRED_SIZE, 132, GroupLayout.PREFERRED_SIZE))
+								.addGroup(gl_cadastroPanel.createSequentialGroup()
+									.addComponent(lblConfirmacaoDaSenha, GroupLayout.PREFERRED_SIZE, 209, GroupLayout.PREFERRED_SIZE)
+									.addPreferredGap(ComponentPlacement.RELATED)
+									.addComponent(password2JTextField, GroupLayout.PREFERRED_SIZE, 125, GroupLayout.PREFERRED_SIZE))))
+						.addGroup(gl_cadastroPanel.createSequentialGroup()
+							.addGap(237)
+							.addComponent(lblFormularioDeCadastro)))
+					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+		);
+		gl_cadastroPanel.setVerticalGroup(
+			gl_cadastroPanel.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_cadastroPanel.createSequentialGroup()
+					.addGap(13)
+					.addComponent(lblFormularioDeCadastro)
+					.addGap(18)
+					.addGroup(gl_cadastroPanel.createParallelGroup(Alignment.BASELINE)
+						.addComponent(lblCaminhoDoArquivo)
+						.addComponent(filePath2JTextField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(browse2JButton))
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGroup(gl_cadastroPanel.createParallelGroup(Alignment.BASELINE)
+						.addComponent(lblSenhaPessoal)
+						.addComponent(groupJComboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(lblGrupo)
+						.addComponent(passwordField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGroup(gl_cadastroPanel.createParallelGroup(Alignment.BASELINE)
+						.addComponent(lblConfirmacaoDaSenha)
+						.addComponent(password2JTextField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+					.addGap(18)
+					.addGroup(gl_cadastroPanel.createParallelGroup(Alignment.BASELINE)
+						.addComponent(back4JButton)
+						.addComponent(signupJButton))
+					.addContainerGap())
+		);
+		cadastroPanel.setLayout(gl_cadastroPanel);
+		
+		JPanel menuPanel = new JPanel();
+		body2.add(menuPanel, "name_128964056480967");
+		
+		JLabel lblMenuPrincipal = new JLabel("Menu Principal:");
+		
+		JButton cadastrarMenuJButton = new JButton("Cadastrar um novo usuário");
+		
+		JButton listarMenuJButton = new JButton("Listar chave privada e certificado digital do usuário");
+		
+		JButton consultarMenuJButton = new JButton("Consultar pasta de arquivos secretos do usuário");
+		
+		JButton sairMenuJButton = new JButton("Sair do Sistema");
+		GroupLayout gl_menuPanel = new GroupLayout(menuPanel);
+		gl_menuPanel.setHorizontalGroup(
+			gl_menuPanel.createParallelGroup(Alignment.TRAILING)
+				.addGroup(gl_menuPanel.createSequentialGroup()
+					.addGroup(gl_menuPanel.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_menuPanel.createSequentialGroup()
+							.addGap(22)
+							.addGroup(gl_menuPanel.createParallelGroup(Alignment.LEADING)
+								.addComponent(listarMenuJButton)
+								.addComponent(cadastrarMenuJButton)
+								.addComponent(consultarMenuJButton)
+								.addComponent(sairMenuJButton)))
+						.addGroup(gl_menuPanel.createSequentialGroup()
+							.addGap(243)
+							.addComponent(lblMenuPrincipal)))
+					.addContainerGap(469, Short.MAX_VALUE))
+		);
+		gl_menuPanel.setVerticalGroup(
+			gl_menuPanel.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_menuPanel.createSequentialGroup()
+					.addGap(13)
+					.addComponent(lblMenuPrincipal)
+					.addGap(18)
+					.addComponent(cadastrarMenuJButton)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(listarMenuJButton)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(consultarMenuJButton)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(sairMenuJButton)
+					.addContainerGap(24, Short.MAX_VALUE))
+		);
+		menuPanel.setLayout(gl_menuPanel);
+		body1.setLayout(new CardLayout(0, 0));
+		
+		JPanel totalListagemJPanel = new JPanel();
+		body1.add(totalListagemJPanel, "name_132054033726482");
+		
+		JLabel totalListagemLabel = new JLabel("Total de listagem do usuário:");
+		
+		JLabel listagemLabel = new JLabel("placeholder");
+		GroupLayout gl_totalListagemJPanel = new GroupLayout(totalListagemJPanel);
+		gl_totalListagemJPanel.setHorizontalGroup(
+			gl_totalListagemJPanel.createParallelGroup(Alignment.LEADING)
+				.addGap(0, 857, Short.MAX_VALUE)
+				.addGap(0, 857, Short.MAX_VALUE)
+				.addGroup(gl_totalListagemJPanel.createSequentialGroup()
+					.addGap(32)
+					.addComponent(totalListagemLabel)
+					.addGap(18)
+					.addComponent(listagemLabel)
+					.addGap(281))
+		);
+		gl_totalListagemJPanel.setVerticalGroup(
+			gl_totalListagemJPanel.createParallelGroup(Alignment.LEADING)
+				.addGap(0, 44, Short.MAX_VALUE)
+				.addGap(0, 44, Short.MAX_VALUE)
+				.addGroup(gl_totalListagemJPanel.createSequentialGroup()
+					.addGap(14)
+					.addGroup(gl_totalListagemJPanel.createParallelGroup(Alignment.BASELINE)
+						.addComponent(totalListagemLabel)
+						.addComponent(listagemLabel))
+					.addContainerGap(14, Short.MAX_VALUE))
+		);
+		totalListagemJPanel.setLayout(gl_totalListagemJPanel);
+		
+		JPanel totalConsultasJPanel = new JPanel();
+		body1.add(totalConsultasJPanel, "name_131876733954568");
+		
+		JLabel totalConsultasLabel = new JLabel("Total de consultas do usuário:");
+		
+		JLabel consultasLabel = new JLabel("placeholder");
+		GroupLayout gl_totalConsultasJPanel = new GroupLayout(totalConsultasJPanel);
+		gl_totalConsultasJPanel.setHorizontalGroup(
+			gl_totalConsultasJPanel.createParallelGroup(Alignment.LEADING)
+				.addGap(0, 857, Short.MAX_VALUE)
+				.addGroup(gl_totalConsultasJPanel.createSequentialGroup()
+					.addGap(32)
+					.addComponent(totalConsultasLabel)
+					.addGap(18)
+					.addComponent(consultasLabel)
+					.addGap(281))
+		);
+		gl_totalConsultasJPanel.setVerticalGroup(
+			gl_totalConsultasJPanel.createParallelGroup(Alignment.LEADING)
+				.addGap(0, 44, Short.MAX_VALUE)
+				.addGroup(gl_totalConsultasJPanel.createSequentialGroup()
+					.addGap(14)
+					.addGroup(gl_totalConsultasJPanel.createParallelGroup(Alignment.BASELINE)
+						.addComponent(totalConsultasLabel)
+						.addComponent(consultasLabel))
+					.addContainerGap(14, Short.MAX_VALUE))
+		);
+		totalConsultasJPanel.setLayout(gl_totalConsultasJPanel);
+		
+		JPanel totalUsuariosJPanel = new JPanel();
+		body1.add(totalUsuariosJPanel, "name_128809415281247");
+		
+		JLabel totalUsuariosLabel = new JLabel("Total de usuários do sistema:");
+		
+		JLabel usuariosLabel = new JLabel("placeholder");
+		GroupLayout gl_totalUsuariosJPanel = new GroupLayout(totalUsuariosJPanel);
+		gl_totalUsuariosJPanel.setHorizontalGroup(
+			gl_totalUsuariosJPanel.createParallelGroup(Alignment.LEADING)
+				.addGap(0, 584, Short.MAX_VALUE)
+				.addGroup(gl_totalUsuariosJPanel.createSequentialGroup()
+					.addGap(32)
+					.addComponent(totalUsuariosLabel)
+					.addGap(18)
+					.addComponent(usuariosLabel)
+					.addGap(281))
+		);
+		gl_totalUsuariosJPanel.setVerticalGroup(
+			gl_totalUsuariosJPanel.createParallelGroup(Alignment.LEADING)
+				.addGap(0, 44, Short.MAX_VALUE)
+				.addGroup(gl_totalUsuariosJPanel.createSequentialGroup()
+					.addGap(14)
+					.addGroup(gl_totalUsuariosJPanel.createParallelGroup(Alignment.BASELINE)
+						.addComponent(totalUsuariosLabel)
+						.addComponent(usuariosLabel))
+					.addContainerGap(14, Short.MAX_VALUE))
+		);
+		totalUsuariosJPanel.setLayout(gl_totalUsuariosJPanel);
+		
+		JPanel totalAcessosJPanel = new JPanel();
+		
+		JLabel acessosLabel = new JLabel("placeholder");
+		
+		JLabel totalAcessosLabel = new JLabel("Total de acessos do usuário:");
+		body1.add(totalAcessosJPanel, "name_128623681557462");
+		GroupLayout gl_totalAcessosJPanel = new GroupLayout(totalAcessosJPanel);
+		gl_totalAcessosJPanel.setHorizontalGroup(
+			gl_totalAcessosJPanel.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_totalAcessosJPanel.createSequentialGroup()
+					.addGap(32)
+					.addComponent(totalAcessosLabel)
+					.addGap(18)
+					.addComponent(acessosLabel)
+					.addGap(281))
+		);
+		gl_totalAcessosJPanel.setVerticalGroup(
+			gl_totalAcessosJPanel.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_totalAcessosJPanel.createSequentialGroup()
+					.addGap(14)
+					.addGroup(gl_totalAcessosJPanel.createParallelGroup(Alignment.BASELINE)
+						.addComponent(totalAcessosLabel)
+						.addComponent(acessosLabel))
+					.addContainerGap(14, Short.MAX_VALUE))
+		);
+		totalAcessosJPanel.setLayout(gl_totalAcessosJPanel);
+		
+		JLabel lblLogin = new JLabel("Login:");
+		
+		JLabel lblNewLabel = new JLabel("Grupo:");
+		
+		JLabel lblNome = new JLabel("Nome:");
+		
+		JLabel loginLabel = new JLabel("loginPlaceholder");
+		
+		JLabel grupoLabel = new JLabel("grupoPlaceholder");
+		
+		JLabel nomeLabel = new JLabel("nomePlaceholder");
+		GroupLayout gl_header = new GroupLayout(header);
+		gl_header.setHorizontalGroup(
+			gl_header.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_header.createSequentialGroup()
+					.addGap(33)
+					.addGroup(gl_header.createParallelGroup(Alignment.TRAILING)
+						.addComponent(lblNome)
+						.addGroup(gl_header.createParallelGroup(Alignment.LEADING)
+							.addComponent(lblLogin)
+							.addComponent(lblNewLabel)))
+					.addGap(24)
+					.addGroup(gl_header.createParallelGroup(Alignment.LEADING)
+						.addComponent(loginLabel)
+						.addComponent(grupoLabel)
+						.addComponent(nomeLabel))
+					.addContainerGap(374, Short.MAX_VALUE))
+		);
+		gl_header.setVerticalGroup(
+			gl_header.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_header.createSequentialGroup()
+					.addGap(12)
+					.addGroup(gl_header.createParallelGroup(Alignment.BASELINE)
+						.addComponent(lblLogin)
+						.addComponent(loginLabel))
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGroup(gl_header.createParallelGroup(Alignment.BASELINE)
+						.addComponent(lblNewLabel)
+						.addComponent(grupoLabel))
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGroup(gl_header.createParallelGroup(Alignment.BASELINE)
+						.addComponent(lblNome)
+						.addComponent(nomeLabel))
+					.addContainerGap(21, Short.MAX_VALUE))
+		);
+		header.setLayout(gl_header);
+		frmMenu.getContentPane().setLayout(groupLayout);
+	}
+}

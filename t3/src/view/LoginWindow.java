@@ -1,86 +1,78 @@
 package view;
 
-import java.awt.EventQueue;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import java.awt.BorderLayout;
 import javax.swing.JLabel;
-import javax.swing.SwingConstants;
 import javax.swing.JTextField;
-import javax.swing.border.LineBorder;
 import java.awt.Color;
 import javax.swing.JButton;
 import java.awt.CardLayout;
-import java.awt.GridBagLayout;
-import java.awt.GridBagConstraints;
-import java.awt.Insets;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
+
+import presenter.LoginPresenterListener;
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
 public class LoginWindow {
 
-	private JFrame frmLogin;
-	private JTextField loginNameTextField;
+	private JFrame _frmLogin;
+	
+	private JTextField _loginNameTextField;
 	private JTextField binPathJTextField;
 	private JTextField secretPhraseJTextField;
-	private JButton sendButton;
+	private JButton _sendButton;
+	
+	private LoginPresenterListener _listener;
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					LoginWindow window = new LoginWindow();
-					window.frmLogin.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
+	
 	/**
 	 * Create the application.
 	 */
-	public LoginWindow() {
+	public LoginWindow(LoginPresenterListener listener) {
+		_listener = listener;
 		initialize();
+	}
+	
+	/**
+	 * Shows the window
+	 */
+	public void show(){
+		_frmLogin.setVisible(true);
 	}
 
 	/**
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		frmLogin = new JFrame();
-		frmLogin.setTitle("Login");
-		frmLogin.setResizable(false);
-		frmLogin.setBounds(100, 100, 450, 300);
-		frmLogin.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frmLogin.getContentPane().setLayout(new CardLayout(0, 0));
+		_frmLogin = new JFrame();
+		_frmLogin.setTitle("Login");
+		_frmLogin.setResizable(false);
+		_frmLogin.setBounds(100, 100, 450, 300);
+		_frmLogin.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		_frmLogin.getContentPane().setLayout(new CardLayout(0, 0));
 		
 		JPanel loginPanel = new JPanel();
-		frmLogin.getContentPane().add(loginPanel, "name_122878281770506");
+		_frmLogin.getContentPane().add(loginPanel, "name_122878281770506");
 		
-		JLabel label = new JLabel("Primeira etapa");
+		JLabel firstWarningLabel = new JLabel("Primeira etapa");
 		
 		JLabel lblLogin = new JLabel("Login:");
 		
-		loginNameTextField = new JTextField();
-		loginNameTextField.setColumns(10);
+		_loginNameTextField = new JTextField();
+		_loginNameTextField.setColumns(10);
 		
-		sendButton = new JButton("Enviar");
-		sendButton.addActionListener(new ActionListener() {
+		_sendButton = new JButton("Enviar");
+		_sendButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				_listener.loginButtonPressed();
 			}
 		});
 		
-		JLabel firstWarningLabel = new JLabel("Warning placeholder");
-		firstWarningLabel.setForeground(Color.RED);
+		JLabel _firstWarningLabel = new JLabel("Warning placeholder");
+		_firstWarningLabel.setForeground(Color.RED);
 		GroupLayout gl_loginPanel = new GroupLayout(loginPanel);
 		gl_loginPanel.setHorizontalGroup(
 			gl_loginPanel.createParallelGroup(Alignment.TRAILING)
@@ -90,37 +82,37 @@ public class LoginWindow {
 							.addGap(135)
 							.addComponent(lblLogin)
 							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(loginNameTextField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+							.addComponent(_loginNameTextField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 						.addGroup(gl_loginPanel.createSequentialGroup()
 							.addGap(28)
 							.addGroup(gl_loginPanel.createParallelGroup(Alignment.LEADING)
-								.addComponent(firstWarningLabel)
-								.addComponent(label))))
+								.addComponent(_firstWarningLabel)
+								.addComponent(firstWarningLabel))))
 					.addContainerGap(136, Short.MAX_VALUE))
 				.addGroup(gl_loginPanel.createSequentialGroup()
 					.addContainerGap(197, Short.MAX_VALUE)
-					.addComponent(sendButton)
+					.addComponent(_sendButton)
 					.addGap(171))
 		);
 		gl_loginPanel.setVerticalGroup(
 			gl_loginPanel.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_loginPanel.createSequentialGroup()
 					.addContainerGap()
-					.addComponent(label)
+					.addComponent(firstWarningLabel)
 					.addGap(79)
 					.addGroup(gl_loginPanel.createParallelGroup(Alignment.BASELINE)
-						.addComponent(loginNameTextField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(_loginNameTextField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 						.addComponent(lblLogin))
 					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(sendButton)
+					.addComponent(_sendButton)
 					.addPreferredGap(ComponentPlacement.RELATED, 72, Short.MAX_VALUE)
-					.addComponent(firstWarningLabel)
+					.addComponent(_firstWarningLabel)
 					.addGap(26))
 		);
 		loginPanel.setLayout(gl_loginPanel);
 		
 		JPanel passwordPanel = new JPanel();
-		frmLogin.getContentPane().add(passwordPanel, "name_122141787324933");
+		_frmLogin.getContentPane().add(passwordPanel, "name_122141787324933");
 		
 		JLabel lblEtapa = new JLabel("Segunda etapa");
 		
@@ -187,7 +179,7 @@ public class LoginWindow {
 		passwordPanel.setLayout(gl_passwordPanel);
 		
 		JPanel privateKeyPanel = new JPanel();
-		frmLogin.getContentPane().add(privateKeyPanel, "name_124689972447600");
+		_frmLogin.getContentPane().add(privateKeyPanel, "name_124689972447600");
 		
 		JLabel thirdWarningLabel = new JLabel("Warning placeholder");
 		thirdWarningLabel.setForeground(Color.RED);
