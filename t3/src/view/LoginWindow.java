@@ -13,22 +13,36 @@ import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
+import model.Pair;
 import presenter.LoginPresenterListener;
 
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 
 public class LoginWindow {
 
+	// Primeira Etapa
+	public JTextField _loginNameTextField;
+	public JLabel _firstWarningLabel;
+	
+	// Segunda Etapa
+	public JLabel _secondWarningLabel;
+	public JButton _confirmButton;
+	public JLabel _passwordDummyLabel;
+	private JButton _b1JButton;
+	private JButton _b2JButton;
+	private JButton _b3JButton;
+	private JButton _b4JButton;
+	private JButton _b5JButton;
+	
+	public JTextField _binPathJTextField;
+	public JTextField _secretPhraseJTextField;
+	
 	private JFrame _frmLogin;
-	
-	private JTextField _loginNameTextField;
-	private JTextField binPathJTextField;
-	private JTextField secretPhraseJTextField;
 	private JButton _sendButton;
-	
 	private LoginPresenterListener _listener;
-
+	
 	
 	/**
 	 * Cria a interface
@@ -46,9 +60,24 @@ public class LoginWindow {
 	}
 	
 	/**
+	 * Volta para a tela de login
+	 */
+	public void login(){
+		resetFirstLoginStep();
+		resetSecondLoginStep();
+		
+		Container mainContainer = _frmLogin.getContentPane();
+		CardLayout cardsLayout = (CardLayout)(mainContainer.getLayout());
+		cardsLayout.show(mainContainer, "loginPanel");
+	}
+	
+	/**
 	 * Avança para a tela de senha
 	 */
 	public void loginNameSucceded(){
+		resetFirstLoginStep();
+		resetSecondLoginStep();
+		
 		Container mainContainer = _frmLogin.getContentPane();
 		CardLayout cardsLayout = (CardLayout)(mainContainer.getLayout());
 		cardsLayout.show(mainContainer, "passwordPanel");
@@ -58,9 +87,26 @@ public class LoginWindow {
 	 * Avança para a tela de chave privada
 	 */
 	public void passwordSucceded(){
+		resetFirstLoginStep();
+		resetSecondLoginStep();
+		
 		Container mainContainer = _frmLogin.getContentPane();
 		CardLayout cardsLayout = (CardLayout)(mainContainer.getLayout());
 		cardsLayout.show(mainContainer, "privateKeyPanel");
+	}
+	
+	private void resetFirstLoginStep()
+	{
+		_loginNameTextField.setText("");;
+		_firstWarningLabel.setText("");
+		_firstWarningLabel.setVisible(false);
+	}
+	
+	private void resetSecondLoginStep()
+	{
+		_secondWarningLabel.setVisible(false);
+		_passwordDummyLabel.setText("");
+		enableVirtualButtons(true);
 	}
 	
 	/**
@@ -82,13 +128,18 @@ public class LoginWindow {
 		_frmLogin.getContentPane().setLayout(new CardLayout(0, 0));
 		
 		JPanel loginPanel = new JPanel();
-		_frmLogin.getContentPane().add(loginPanel, "name_122878281770506");
+		_frmLogin.getContentPane().add(loginPanel, "loginPanel");
 		
 		JLabel firstWarningLabel = new JLabel("Primeira etapa");
 		
 		JLabel lblLogin = new JLabel("Login:");
 		
 		_loginNameTextField = new JTextField();
+		_loginNameTextField.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				_listener.loginButtonPressed();
+			}
+		});
 		_loginNameTextField.setColumns(10);
 		
 		_sendButton = new JButton("Enviar");
@@ -98,8 +149,9 @@ public class LoginWindow {
 			}
 		});
 		
-		JLabel _firstWarningLabel = new JLabel("Warning placeholder");
+		_firstWarningLabel = new JLabel("Warning placeholder");
 		_firstWarningLabel.setForeground(Color.RED);
+		_firstWarningLabel.setVisible(false);
 		GroupLayout gl_loginPanel = new GroupLayout(loginPanel);
 		gl_loginPanel.setHorizontalGroup(
 			gl_loginPanel.createParallelGroup(Alignment.TRAILING)
@@ -145,41 +197,50 @@ public class LoginWindow {
 		
 		JLabel senhaLabel = new JLabel("Senha:");
 		
-		JLabel secondWarningLabel = new JLabel("Warning placeholder");
-		secondWarningLabel.setForeground(Color.RED);
+		_secondWarningLabel = new JLabel("Warning placeholder");
+		_secondWarningLabel.setForeground(Color.RED);
 		
-		JButton b1JButton = new JButton("b1");
-		b1JButton.addActionListener(new ActionListener() {
+		_b1JButton = new JButton("b1");
+		_b1JButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				_listener.passwordButtonPressed(b1JButton.getName());
+				_listener.passwordButtonPressed(_b1JButton.getText());
 			}
 		});
 		
-		JButton b2JButton = new JButton("b2");
-		b2JButton.addActionListener(new ActionListener() {
+		_b2JButton = new JButton("b2");
+		_b2JButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				_listener.passwordButtonPressed(b2JButton.getName());
+				_listener.passwordButtonPressed(_b2JButton.getText());
 			}
 		});
 		
-		JButton b3JButton = new JButton("b3");
-		b3JButton.addActionListener(new ActionListener() {
+		_b3JButton = new JButton("b3");
+		_b3JButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				_listener.passwordButtonPressed(b3JButton.getName());
+				_listener.passwordButtonPressed(_b3JButton.getText());
 			}
 		});
 		
-		JButton b4JButton = new JButton("b4");
-		b4JButton.addActionListener(new ActionListener() {
+		_b4JButton = new JButton("b4");
+		_b4JButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				_listener.passwordButtonPressed(b4JButton.getName());
+				_listener.passwordButtonPressed(_b4JButton.getText());
 			}
 		});
 		
-		JButton b5JButton = new JButton("b5");
-		b5JButton.addActionListener(new ActionListener() {
+		_b5JButton = new JButton("b5");
+		_b5JButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				_listener.passwordButtonPressed(b5JButton.getName());
+				_listener.passwordButtonPressed(_b5JButton.getText());
+			}
+		});
+		
+		_passwordDummyLabel = new JLabel("");
+		
+		_confirmButton = new JButton("Confirmar");
+		_confirmButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				_listener.confirmPasswordButtonPressed();
 			}
 		});
 		GroupLayout gl_passwordPanel = new GroupLayout(passwordPanel);
@@ -188,23 +249,34 @@ public class LoginWindow {
 				.addGroup(gl_passwordPanel.createSequentialGroup()
 					.addGap(28)
 					.addGroup(gl_passwordPanel.createParallelGroup(Alignment.LEADING)
-						.addComponent(secondWarningLabel)
-						.addComponent(lblEtapa)
 						.addGroup(gl_passwordPanel.createSequentialGroup()
-							.addGap(38)
-							.addComponent(b1JButton, GroupLayout.PREFERRED_SIZE, 56, GroupLayout.PREFERRED_SIZE)
-							.addPreferredGap(ComponentPlacement.UNRELATED)
-							.addComponent(b2JButton, GroupLayout.PREFERRED_SIZE, 56, GroupLayout.PREFERRED_SIZE)
-							.addPreferredGap(ComponentPlacement.UNRELATED)
 							.addGroup(gl_passwordPanel.createParallelGroup(Alignment.LEADING)
-								.addComponent(senhaLabel)
+								.addComponent(lblEtapa)
 								.addGroup(gl_passwordPanel.createSequentialGroup()
-									.addComponent(b3JButton, GroupLayout.PREFERRED_SIZE, 56, GroupLayout.PREFERRED_SIZE)
-									.addPreferredGap(ComponentPlacement.UNRELATED)
-									.addComponent(b4JButton, GroupLayout.PREFERRED_SIZE, 56, GroupLayout.PREFERRED_SIZE)
-									.addPreferredGap(ComponentPlacement.UNRELATED)
-									.addComponent(b5JButton, GroupLayout.PREFERRED_SIZE, 56, GroupLayout.PREFERRED_SIZE)))))
-					.addContainerGap(56, Short.MAX_VALUE))
+									.addGroup(gl_passwordPanel.createParallelGroup(Alignment.LEADING)
+										.addGroup(gl_passwordPanel.createSequentialGroup()
+											.addGap(38)
+											.addComponent(_b1JButton, GroupLayout.PREFERRED_SIZE, 56, GroupLayout.PREFERRED_SIZE)
+											.addPreferredGap(ComponentPlacement.UNRELATED)
+											.addComponent(_b2JButton, GroupLayout.PREFERRED_SIZE, 56, GroupLayout.PREFERRED_SIZE)
+											.addPreferredGap(ComponentPlacement.UNRELATED))
+										.addGroup(Alignment.TRAILING, gl_passwordPanel.createSequentialGroup()
+											.addComponent(senhaLabel)
+											.addPreferredGap(ComponentPlacement.RELATED)))
+									.addGroup(gl_passwordPanel.createParallelGroup(Alignment.LEADING)
+										.addGroup(gl_passwordPanel.createSequentialGroup()
+											.addComponent(_b3JButton, GroupLayout.PREFERRED_SIZE, 56, GroupLayout.PREFERRED_SIZE)
+											.addPreferredGap(ComponentPlacement.UNRELATED)
+											.addComponent(_b4JButton, GroupLayout.PREFERRED_SIZE, 56, GroupLayout.PREFERRED_SIZE)
+											.addPreferredGap(ComponentPlacement.UNRELATED)
+											.addComponent(_b5JButton, GroupLayout.PREFERRED_SIZE, 56, GroupLayout.PREFERRED_SIZE))
+										.addComponent(_passwordDummyLabel))))
+							.addContainerGap(56, Short.MAX_VALUE))
+						.addGroup(gl_passwordPanel.createSequentialGroup()
+							.addComponent(_secondWarningLabel)
+							.addPreferredGap(ComponentPlacement.RELATED, 171, Short.MAX_VALUE)
+							.addComponent(_confirmButton)
+							.addGap(16))))
 		);
 		gl_passwordPanel.setVerticalGroup(
 			gl_passwordPanel.createParallelGroup(Alignment.LEADING)
@@ -212,16 +284,20 @@ public class LoginWindow {
 					.addContainerGap()
 					.addComponent(lblEtapa)
 					.addGap(49)
-					.addComponent(senhaLabel)
+					.addGroup(gl_passwordPanel.createParallelGroup(Alignment.BASELINE)
+						.addComponent(senhaLabel)
+						.addComponent(_passwordDummyLabel))
 					.addGap(18)
 					.addGroup(gl_passwordPanel.createParallelGroup(Alignment.BASELINE)
-						.addComponent(b5JButton, GroupLayout.PREFERRED_SIZE, 53, GroupLayout.PREFERRED_SIZE)
-						.addComponent(b4JButton, GroupLayout.PREFERRED_SIZE, 53, GroupLayout.PREFERRED_SIZE)
-						.addComponent(b3JButton, GroupLayout.PREFERRED_SIZE, 53, GroupLayout.PREFERRED_SIZE)
-						.addComponent(b2JButton, GroupLayout.PREFERRED_SIZE, 53, GroupLayout.PREFERRED_SIZE)
-						.addComponent(b1JButton, GroupLayout.PREFERRED_SIZE, 53, GroupLayout.PREFERRED_SIZE))
+						.addComponent(_b5JButton, GroupLayout.PREFERRED_SIZE, 53, GroupLayout.PREFERRED_SIZE)
+						.addComponent(_b4JButton, GroupLayout.PREFERRED_SIZE, 53, GroupLayout.PREFERRED_SIZE)
+						.addComponent(_b3JButton, GroupLayout.PREFERRED_SIZE, 53, GroupLayout.PREFERRED_SIZE)
+						.addComponent(_b2JButton, GroupLayout.PREFERRED_SIZE, 53, GroupLayout.PREFERRED_SIZE)
+						.addComponent(_b1JButton, GroupLayout.PREFERRED_SIZE, 53, GroupLayout.PREFERRED_SIZE))
 					.addGap(81)
-					.addComponent(secondWarningLabel)
+					.addGroup(gl_passwordPanel.createParallelGroup(Alignment.BASELINE)
+						.addComponent(_secondWarningLabel)
+						.addComponent(_confirmButton))
 					.addGap(23))
 		);
 		passwordPanel.setLayout(gl_passwordPanel);
@@ -236,15 +312,15 @@ public class LoginWindow {
 		
 		JLabel lblCami = new JLabel("Caminho para o arquivo binário:");
 		
-		binPathJTextField = new JTextField();
-		binPathJTextField.setColumns(10);
+		_binPathJTextField = new JTextField();
+		_binPathJTextField.setColumns(10);
 		
 		JButton browseJButton = new JButton("Localizar");
 		
 		JLabel lblFraseSecreta = new JLabel("Frase secreta:");
 		
-		secretPhraseJTextField = new JTextField();
-		secretPhraseJTextField.setColumns(10);
+		_secretPhraseJTextField = new JTextField();
+		_secretPhraseJTextField.setColumns(10);
 		
 		JButton authenticateJButton = new JButton("Autenticar");
 		authenticateJButton.addActionListener(new ActionListener() {
@@ -265,13 +341,13 @@ public class LoginWindow {
 						.addGroup(gl_privateKeyPanel.createSequentialGroup()
 							.addComponent(lblFraseSecreta)
 							.addPreferredGap(ComponentPlacement.UNRELATED)
-							.addComponent(secretPhraseJTextField, 289, 289, 289))
+							.addComponent(_secretPhraseJTextField, 289, 289, 289))
 						.addComponent(lblTerceiraEtapa)
 						.addGroup(gl_privateKeyPanel.createSequentialGroup()
 							.addComponent(lblCami)
 							.addPreferredGap(ComponentPlacement.UNRELATED)
 							.addComponent(browseJButton))
-						.addComponent(binPathJTextField, GroupLayout.PREFERRED_SIZE, 387, GroupLayout.PREFERRED_SIZE))
+						.addComponent(_binPathJTextField, GroupLayout.PREFERRED_SIZE, 387, GroupLayout.PREFERRED_SIZE))
 					.addContainerGap())
 		);
 		gl_privateKeyPanel.setVerticalGroup(
@@ -284,11 +360,11 @@ public class LoginWindow {
 						.addComponent(lblCami)
 						.addComponent(browseJButton))
 					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(binPathJTextField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+					.addComponent(_binPathJTextField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 					.addGap(31)
 					.addGroup(gl_privateKeyPanel.createParallelGroup(Alignment.BASELINE)
 						.addComponent(lblFraseSecreta)
-						.addComponent(secretPhraseJTextField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+						.addComponent(_secretPhraseJTextField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 					.addGap(56)
 					.addGroup(gl_privateKeyPanel.createParallelGroup(Alignment.TRAILING)
 						.addGroup(gl_privateKeyPanel.createSequentialGroup()
@@ -299,5 +375,21 @@ public class LoginWindow {
 							.addContainerGap())))
 		);
 		privateKeyPanel.setLayout(gl_privateKeyPanel);
+	}
+
+	public void populatePasswordButtons(ArrayList<Pair<String, String>> buttons) {
+		_b1JButton.setText(buttons.get(0).first + "-" + buttons.get(0).second);
+		_b2JButton.setText(buttons.get(1).first + "-" + buttons.get(1).second);
+		_b3JButton.setText(buttons.get(2).first + "-" + buttons.get(2).second);
+		_b4JButton.setText(buttons.get(3).first + "-" + buttons.get(3).second);
+		_b5JButton.setText(buttons.get(4).first + "-" + buttons.get(4).second);
+	}
+
+	public void enableVirtualButtons(boolean enable) {
+		_b1JButton.setEnabled(enable);
+		_b2JButton.setEnabled(enable);
+		_b3JButton.setEnabled(enable);
+		_b4JButton.setEnabled(enable);
+		_b5JButton.setEnabled(enable);
 	}
 }

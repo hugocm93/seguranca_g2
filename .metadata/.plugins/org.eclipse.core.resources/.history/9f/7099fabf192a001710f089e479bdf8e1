@@ -1,0 +1,55 @@
+package model;
+
+import java.io.Serializable;
+import java.sql.Timestamp;
+
+public class User implements Serializable{
+	
+	private String  _loginName;
+	private String _passwordHash;
+	private String _salt;
+	private Group _group;
+	private Timestamp _allowAccessAfter;
+	
+	public String get_loginName() {
+		return _loginName;
+	}
+	
+	public void set_loginName(String _loginName) {
+		this._loginName = _loginName;
+	}
+	
+	public String get_passwordHash() {
+		return _passwordHash;
+	}
+	
+	public void set_passwordHash(String _passwordHash) {
+		this._passwordHash = _passwordHash;
+	}
+	
+	public String get_salt() {
+		return _salt;
+	}
+	
+	public void set_salt(String _salt) {
+		this._salt = _salt;
+	}
+	
+	public Group get_group() {
+		return _group;
+	}
+	
+	public void set_group(Group _group) {
+		this._group = _group;
+	}
+	
+	public Timestamp get_allowAccessAfter() {
+		return _allowAccessAfter;
+	}
+	
+	public void set_allowAccessAfter(Timestamp _allowAccessAfter) {
+		this._allowAccessAfter = _allowAccessAfter;
+	}
+
+
+}

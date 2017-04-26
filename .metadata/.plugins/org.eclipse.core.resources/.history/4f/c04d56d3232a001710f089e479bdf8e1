@@ -1,0 +1,72 @@
+package presenter;
+
+import java.sql.Timestamp;
+
+import model.User;
+import model.UserDAOMockImplementation;
+import model.UserSession;
+import view.LoginWindow;
+
+public class LoginPresenter implements LoginPresenterListener{
+	
+	private LoginWindow _loginWindow;
+	private UserDAOMockImplementation _userDAO;
+	private UserSession _session;
+	
+	
+	public LoginPresenter() {
+		super();
+
+		_loginWindow = new LoginWindow(this);
+		_userDAO = new UserDAOMockImplementation();
+	}
+	
+	public void showWindow(){
+		_loginWindow.show();
+	}
+
+	@Override
+	public void loginButtonPressed() {
+		String loginName = _loginWindow._loginNameTextField.getText();
+		User user = _userDAO.getUserByLoginName(loginName);
+		
+		if(user != null){
+			Timestamp currentTime = new Timestamp(System.currentTimeMillis() - 100000);
+			if(currentTime.after(user.get_allowAccessAfter())){
+				_session = new UserSession(user);
+				_loginWindow.loginNameSucceded();
+			}
+			else{
+				double timeDifference = user.get_allowAccessAfter().getTime() - currentTime.getTime();
+				timeDifference /= 1000; // em segundos
+				String message = "Acesso bloqueado. Tente novamente em " + 
+								 String.format("%.2f", timeDifference) + " segundos";
+				
+				_loginWindow._firstWarningLabel.setVisible(true);
+				_loginWindow._firstWarningLabel.setText(message);
+			}
+			
+		}
+		else{
+			_loginWindow._firstWarningLabel.setVisible(true);
+			_loginWindow._firstWarningLabel.setText("Identificação inválida");
+		}
+	}
+
+	@Override
+	public void passwordButtonPressed(String buttonName){
+		//TODO
+		_loginWindow.passwordSucceded();
+		
+	}
+
+	@Override
+	public void authenticateButtonPressed() {
+		_loginWindow.getFrame().setVisible(false);
+		_loginWindow.getFrame().dispose();
+		
+		MenuPresenter menuPresenter = new MenuPresenter();
+		menuPresenter.showWindow();
+	}
+	
+}

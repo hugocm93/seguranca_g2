@@ -1,0 +1,12 @@
+package model;
+
+public class User {
+	
+	private Group _group;
+	String  _loginName; (vem do certificado)
+	String _passwordHash;
+	String _salt;
+	bool _blockedAccess;
+	int numberOfAttempts;
+
+}

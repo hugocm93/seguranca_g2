@@ -1,0 +1,8 @@
+package model;
+
+public class UserSession {
+	
+	private User _user;
+	private int _numberOfAttempts;
+
+}

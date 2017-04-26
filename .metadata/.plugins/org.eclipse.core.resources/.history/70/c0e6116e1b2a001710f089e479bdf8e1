@@ -1,0 +1,27 @@
+package model;
+
+public class UserSession {
+	
+	private User _user = null;
+	private int _numberOfAttempts = 0;
+	
+	public UserSession(){
+		super();
+	}
+	
+	public User get_user() {
+		return _user;
+	}
+	
+	public void set_user(User _user) {
+		this._user = _user;
+	}
+	
+	public int get_numberOfAttempts() {
+		return _numberOfAttempts;
+	}
+	
+	public void set_numberOfAttempts(int _numberOfAttempts) {
+		this._numberOfAttempts = _numberOfAttempts;
+	}
+}

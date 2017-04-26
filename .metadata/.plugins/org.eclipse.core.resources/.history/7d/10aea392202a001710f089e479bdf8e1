@@ -1,0 +1,59 @@
+package presenter;
+
+import model.User;
+import model.UserDAOMockImplementation;
+import model.UserSession;
+import view.LoginWindow;
+
+public class LoginPresenter implements LoginPresenterListener{
+	
+	private LoginWindow _loginWindow;
+	private UserDAOMockImplementation _userDAO;
+	private UserSession _session;
+	
+	
+	public LoginPresenter() {
+		super();
+
+		_loginWindow = new LoginWindow(this);
+		_userDAO = new UserDAOMockImplementation();
+	}
+	
+	public void showWindow(){
+		_loginWindow.show();
+	}
+
+	@Override
+	public void loginButtonPressed() {
+		
+		String loginName = _loginWindow._loginNameTextField.getText();
+		User user = _userDAO.getUserByLoginName(loginName);
+		if(user != null)
+		{
+			_session = new UserSession(user);
+			_loginWindow.loginNameSucceded();
+		}
+		else
+		{
+			_loginWindow._firstWarningLabel.setVisible(true);
+			_loginWindow._firstWarningLabel.setText("Identificação inválida");
+		}
+	}
+
+	@Override
+	public void passwordButtonPressed(String buttonName){
+		//TODO
+		_loginWindow.passwordSucceded();
+		
+	}
+
+	@Override
+	public void authenticateButtonPressed() {
+		_loginWindow.getFrame().setVisible(false);
+		_loginWindow.getFrame().dispose();
+		
+		MenuPresenter menuPresenter = new MenuPresenter();
+		menuPresenter.showWindow();
+	}
+	
+}

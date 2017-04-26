@@ -1,0 +1,12 @@
+package model;
+
+public class User {
+	
+	private Group _group;
+	String  _loginName;
+	String _passwordHash;
+	String _salt;
+	boolean _blockedAccess;
+	int numberOfAttempts;
+
+}

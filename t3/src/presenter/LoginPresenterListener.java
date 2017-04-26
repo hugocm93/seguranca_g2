@@ -16,5 +16,10 @@ public interface LoginPresenterListener {
 	 * Método chamado ao clicar no botão Autenticar
 	 */
 	public void authenticateButtonPressed();
+	
+	/**
+	 * Método chamado ao clicar no botão Confirmar senha
+	 */
+	public void confirmPasswordButtonPressed();
 
 }

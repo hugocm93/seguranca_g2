@@ -7488,3 +7488,170 @@ Command-line arguments:  -os macosx -ws cocoa -arch x86_64 -product org.eclipse.
 
 !ENTRY org.eclipse.jdt.launching 4 150 2017-04-23 01:02:51.030
 !MESSAGE The archive: /t3/jgoodies-forms-1.8.0.jar which is referenced by the classpath, does not exist.
+
+!ENTRY org.eclipse.wb.core 4 4 2017-04-25 21:52:53.729
+!MESSAGE Designer [1.9.0.201608251253.201704252152]: 205 (Unable to parse source.). 
+		groupJComboBox.setModel(new javax.swing.DefaultComboBoxModel(Group.values())); line: 35 The method goToMenu() from the type MenuWindow is never used locally
+line: 36 The method initialize() from the type MenuWindow is never used locally
+line: 65 JComboBox is a raw type. References to generic type JComboBox<E> should be parameterized
+line: 65 JComboBox is a raw type. References to generic type JComboBox<E> should be parameterized
+line: 67 Type safety: The method setModel(ComboBoxModel) belongs to the raw type JComboBox. References to generic type JComboBox<E> should be parameterized
+line: 67 DefaultComboBoxModel is a raw type. References to generic type DefaultComboBoxModel<E> should be parameterized
+line: 67 Group cannot be resolved
+!STACK 0
+org.eclipse.wb.internal.core.utils.exception.DesignerException: 205 (Unable to parse source.). 
+		groupJComboBox.setModel(new javax.swing.DefaultComboBoxModel(Group.values())); line: 35 The method goToMenu() from the type MenuWindow is never used locally
+line: 36 The method initialize() from the type MenuWindow is never used locally
+line: 65 JComboBox is a raw type. References to generic type JComboBox<E> should be parameterized
+line: 65 JComboBox is a raw type. References to generic type JComboBox<E> should be parameterized
+line: 67 Type safety: The method setModel(ComboBoxModel) belongs to the raw type JComboBox. References to generic type JComboBox<E> should be parameterized
+line: 67 DefaultComboBoxModel is a raw type. References to generic type DefaultComboBoxModel<E> should be parameterized
+line: 67 Group cannot be resolved
+	at org.eclipse.wb.internal.core.utils.ast.AstParser.parseStatement(AstParser.java:162)
+	at org.eclipse.wb.internal.core.utils.ast.AstEditor.addStatement(AstEditor.java:1625)
+	at org.eclipse.wb.internal.core.utils.ast.AstEditor.addStatement(AstEditor.java:1579)
+	at org.eclipse.wb.core.model.JavaInfo.addExpressionStatement(JavaInfo.java:987)
+	at org.eclipse.wb.core.model.JavaInfo.addMethodInvocation(JavaInfo.java:951)
+	at org.eclipse.wb.core.model.JavaInfo.addMethodInvocation(JavaInfo.java:926)
+	at org.eclipse.wb.internal.core.model.property.accessor.SetterAccessor$5.run(SetterAccessor.java:147)
+	at org.eclipse.wb.internal.core.utils.execution.ExecutionUtils.run(ExecutionUtils.java:324)
+	at org.eclipse.wb.internal.core.model.property.accessor.SetterAccessor.setExpression(SetterAccessor.java:145)
+	at org.eclipse.wb.internal.core.model.property.GenericPropertyImpl.setExpressionUsingAccessor(GenericPropertyImpl.java:341)
+	at org.eclipse.wb.internal.core.model.property.GenericPropertyImpl.setExpression(GenericPropertyImpl.java:300)
+	at org.eclipse.wb.internal.swing.model.property.editor.models.combo.ComboBoxModelPropertyEditor.openDialog(ComboBoxModelPropertyEditor.java:126)
+	at org.eclipse.wb.internal.core.model.property.editor.TextDialogPropertyEditor$1.onClick(TextDialogPropertyEditor.java:35)
+	at org.eclipse.wb.internal.core.model.property.editor.presentation.ButtonPropertyEditorPresentationImpl$4.handleEvent(ButtonPropertyEditorPresentationImpl.java:124)
+	at org.eclipse.swt.widgets.EventTable.sendEvent(EventTable.java:84)
+	at org.eclipse.swt.widgets.Display.sendEvent(Display.java:4256)
+	at org.eclipse.swt.widgets.Widget.sendEvent(Widget.java:1501)
+	at org.eclipse.swt.widgets.Widget.sendEvent(Widget.java:1524)
+	at org.eclipse.swt.widgets.Widget.sendEvent(Widget.java:1509)
+	at org.eclipse.swt.widgets.Widget.notifyListeners(Widget.java:1313)
+	at org.eclipse.wb.core.controls.CFlatButton.fireSelectionEvent(CFlatButton.java:134)
+	at org.eclipse.wb.core.controls.CFlatButton.access$10(CFlatButton.java:130)
+	at org.eclipse.wb.core.controls.CFlatButton$3.handleEvent(CFlatButton.java:119)
+	at org.eclipse.swt.widgets.EventTable.sendEvent(EventTable.java:84)
+	at org.eclipse.swt.widgets.Display.sendEvent(Display.java:4256)
+	at org.eclipse.swt.widgets.Widget.sendEvent(Widget.java:1501)
+	at org.eclipse.swt.widgets.Widget.sendEvent(Widget.java:1524)
+	at org.eclipse.swt.widgets.Widget.sendEvent(Widget.java:1509)
+	at org.eclipse.swt.widgets.Widget.notifyListeners(Widget.java:1313)
+	at org.eclipse.swt.widgets.Display.runDeferredEvents(Display.java:4080)
+	at org.eclipse.swt.widgets.Display.readAndDispatch(Display.java:3706)
+	at org.eclipse.e4.ui.internal.workbench.swt.PartRenderingEngine$4.run(PartRenderingEngine.java:1121)
+	at org.eclipse.core.databinding.observable.Realm.runWithDefault(Realm.java:336)
+	at org.eclipse.e4.ui.internal.workbench.swt.PartRenderingEngine.run(PartRenderingEngine.java:1022)
+	at org.eclipse.e4.ui.internal.workbench.E4Workbench.createAndRunUI(E4Workbench.java:150)
+	at org.eclipse.ui.internal.Workbench$5.run(Workbench.java:693)
+	at org.eclipse.core.databinding.observable.Realm.runWithDefault(Realm.java:336)
+	at org.eclipse.ui.internal.Workbench.createAndRunWorkbench(Workbench.java:610)
+	at org.eclipse.ui.PlatformUI.createAndRunWorkbench(PlatformUI.java:148)
+	at org.eclipse.ui.internal.ide.application.IDEApplication.start(IDEApplication.java:138)
+	at org.eclipse.equinox.internal.app.EclipseAppHandle.run(EclipseAppHandle.java:196)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.runApplication(EclipseAppLauncher.java:134)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.start(EclipseAppLauncher.java:104)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:388)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:243)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:497)
+	at org.eclipse.equinox.launcher.Main.invokeFramework(Main.java:673)
+	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:610)
+	at org.eclipse.equinox.launcher.Main.run(Main.java:1519)
+Caused by: org.eclipse.wb.internal.core.utils.exception.DesignerException: 205 (Unable to parse source.). package view;
+import presenter.MenuPresenterListener;
+import javax.swing.JFrame;
+import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.JPanel;
+import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.border.EtchedBorder;
+import javax.swing.JLabel;
+import java.awt.CardLayout;
+import javax.swing.JButton;
+import javax.swing.JTextField;
+import javax.swing.JComboBox;
+import javax.swing.JPasswordField;
+import javax.swing.JTextPane;
+import javax.swing.JSeparator;
+import java.awt.Color;
+import javax.swing.SwingConstants;
+import javax.swing.JTable;
+import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.ActionEvent;
+class MenuWindow {
+javax.swing.JFrame _frmMenu=(javax.swing.JFrame) null;
+javax.swing.JPanel _body2=(javax.swing.JPanel) null;
+javax.swing.JPanel _body1=(javax.swing.JPanel) null;
+javax.swing.JPanel _header=(javax.swing.JPanel) null;
+javax.swing.JTextField filePath2JTextField=(javax.swing.JTextField) null;
+javax.swing.JPasswordField passwordField=(javax.swing.JPasswordField) null;
+javax.swing.JPasswordField password2JTextField=(javax.swing.JPasswordField) null;
+javax.swing.JTextField filePath1JTextField=(javax.swing.JTextField) null;
+javax.swing.JTable listarJButton=(javax.swing.JTable) null;
+presenter.MenuPresenterListener _listener=(presenter.MenuPresenterListener) null;
+public void show(){}
+private void goToMenu(){}
+private void initialize() {}
+MenuWindow(Object __wbp_param) {
+super();javax.swing.GroupLayout groupLayout = (javax.swing.GroupLayout) null;
+javax.swing.JPanel sairPanel = (javax.swing.JPanel) null;
+javax.swing.JButton sairJButton = (javax.swing.JButton) null;
+javax.swing.JLabel lblSaidaDoSistema = (javax.swing.JLabel) null;
+javax.swing.JButton back1JButton = (javax.swing.JButton) null;
+javax.swing.JLabel lblPressioneOBotao = (javax.swing.JLabel) null;
+javax.swing.GroupLayout gl_sairPanel = (javax.swing.GroupLayout) null;
+javax.swing.JPanel arquivosPanel = (javax.swing.JPanel) null;
+javax.swing.JLabel lblCaminhoDaPasta = (javax.swing.JLabel) null;
+javax.swing.JButton back2JButton = (javax.swing.JButton) null;
+javax.swing.JButton browse1JButton = (javax.swing.JButton) null;
+javax.swing.JButton listJButton = (javax.swing.JButton) null;
+javax.swing.GroupLayout gl_arquivosPanel = (javax.swing.GroupLayout) null;
+javax.swing.JPanel certificadoPanel = (javax.swing.JPanel) null;
+javax.swing.JLabel lblChavePrivada = (javax.swing.JLabel) null;
+javax.swing.JButton back3JButton = (javax.swing.JButton) null;
+javax.swing.JLabel lblCertificado = (javax.swing.JLabel) null;
+javax.swing.JTextPane privateKeyJTextPane = (javax.swing.JTextPane) null;
+javax.swing.JTextPane certificateJTextPane = (javax.swing.JTextPane) null;
+javax.swing.JSeparator separator = (javax.swing.JSeparator) null;
+javax.swing.GroupLayout gl_certificadoPanel = (javax.swing.GroupLayout) null;
+javax.swing.JPanel cadastroPanel = (javax.swing.JPanel) null;
+javax.swing.JLabel lblFormularioDeCadastro = (javax.swing.JLabel) null;
+javax.swing.JButton signupJButton = (javax.swing.JButton) null;
+javax.swing.JLabel lblCaminhoDoArquivo = (javax.swing.JLabel) null;
+javax.swing.JButton browse2JButton = (javax.swing.JButton) null;
+javax.swing.JLabel lblGrupo = (javax.swing.JLabel) null;
+javax.swing.JComboBox groupJComboBox = (javax.swing.JComboBox) null;
+
+		groupJComboBox.setModel(new javax.swing.DefaultComboBoxModel(Group.values()));}
+} line: 35 The method goToMenu() from the type MenuWindow is never used locally
+line: 36 The method initialize() from the type MenuWindow is never used locally
+line: 65 JComboBox is a raw type. References to generic type JComboBox<E> should be parameterized
+line: 65 JComboBox is a raw type. References to generic type JComboBox<E> should be parameterized
+line: 67 Type safety: The method setModel(ComboBoxModel) belongs to the raw type JComboBox. References to generic type JComboBox<E> should be parameterized
+line: 67 DefaultComboBoxModel is a raw type. References to generic type DefaultComboBoxModel<E> should be parameterized
+line: 67 Group cannot be resolved
+	at org.eclipse.wb.internal.core.utils.ast.AstParser.findNode(AstParser.java:773)
+	at org.eclipse.wb.internal.core.utils.ast.AstParser.parseStatement(AstParser.java:159)
+	... 51 more
+Caused by: org.eclipse.wb.internal.core.utils.check.AssertionFailedException: null argument
+	at org.eclipse.wb.internal.core.utils.check.Assert.fail(Assert.java:225)
+	at org.eclipse.wb.internal.core.utils.check.Assert.isNotNull(Assert.java:174)
+	at org.eclipse.wb.internal.core.utils.check.Assert.isNotNull(Assert.java:159)
+	at org.eclipse.wb.internal.core.utils.ast.AstParser$3.postVisit(AstParser.java:957)
+	at org.eclipse.jdt.core.dom.ASTNode.accept(ASTNode.java:2714)
+	at org.eclipse.jdt.core.dom.ASTNode.acceptChildren(ASTNode.java:2782)
+	at org.eclipse.jdt.core.dom.ClassInstanceCreation.accept0(ClassInstanceCreation.java:313)
+	at org.eclipse.jdt.core.dom.ASTNode.accept(ASTNode.java:2711)
+	at org.eclipse.jdt.core.dom.ASTNode.acceptChildren(ASTNode.java:2782)
+	at org.eclipse.jdt.core.dom.MethodInvocation.accept0(MethodInvocation.java:239)
+	at org.eclipse.jdt.core.dom.ASTNode.accept(ASTNode.java:2711)
+	at org.eclipse.jdt.core.dom.ASTNode.acceptChild(ASTNode.java:2759)
+	at org.eclipse.jdt.core.dom.ExpressionStatement.accept0(ExpressionStatement.java:145)
+	at org.eclipse.jdt.core.dom.ASTNode.accept(ASTNode.java:2711)
+	at org.eclipse.wb.internal.core.utils.ast.AstParser.copyBindings(AstParser.java:925)
+	at org.eclipse.wb.internal.core.utils.ast.AstParser.findNode0(AstParser.java:827)
+	at org.eclipse.wb.internal.core.utils.ast.AstParser.findNode(AstParser.java:770)
+	... 52 more

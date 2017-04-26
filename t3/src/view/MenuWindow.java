@@ -22,6 +22,8 @@ import javax.swing.JTable;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.ActionEvent;
+import javax.swing.DefaultComboBoxModel;
+import model.Group;
 
 public class MenuWindow {
 
@@ -301,6 +303,7 @@ public class MenuWindow {
 		JLabel lblGrupo = new JLabel("Grupo:");
 		
 		JComboBox groupJComboBox = new JComboBox();
+		groupJComboBox.setModel(new DefaultComboBoxModel(Group.values()));
 		
 		JLabel lblSenhaPessoal = new JLabel("Senha pessoal:");
 		
@@ -343,7 +346,7 @@ public class MenuWindow {
 									.addGap(114)
 									.addComponent(lblGrupo)
 									.addPreferredGap(ComponentPlacement.RELATED)
-									.addComponent(groupJComboBox, GroupLayout.PREFERRED_SIZE, 132, GroupLayout.PREFERRED_SIZE))
+									.addComponent(groupJComboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 								.addGroup(gl_cadastroPanel.createSequentialGroup()
 									.addComponent(lblConfirmacaoDaSenha, GroupLayout.PREFERRED_SIZE, 209, GroupLayout.PREFERRED_SIZE)
 									.addPreferredGap(ComponentPlacement.RELATED)

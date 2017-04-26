@@ -1,0 +1,14 @@
+package model;
+
+import java.sql.Timestamp;
+
+public class User implements Serializable{
+	
+	private String  _loginName;
+	private String _passwordHash;
+	private String _salt;
+	private Group _group;
+	private Timestamp _allowAccessAfter;
+
+
+}

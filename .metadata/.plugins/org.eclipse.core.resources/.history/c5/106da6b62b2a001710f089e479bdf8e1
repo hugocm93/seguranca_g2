@@ -1,0 +1,358 @@
+package view;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JLabel;
+import javax.swing.JTextField;
+import java.awt.Color;
+import java.awt.Container;
+
+import javax.swing.JButton;
+import java.awt.CardLayout;
+import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.LayoutStyle.ComponentPlacement;
+
+import model.Pair;
+import presenter.LoginPresenterListener;
+
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.awt.event.ActionEvent;
+
+public class LoginWindow {
+
+	// Primeira Etapa
+	public JTextField _loginNameTextField;
+	public JLabel _firstWarningLabel;
+	
+	// Segunda Etapa
+	private JLabel _secondWarningLabel;
+	private JButton _confirmButton;
+	private JLabel _passwordDummyLabel;
+	private JButton _b1JButton;
+	private JButton _b2JButton;
+	private JButton _b3JButton;
+	private JButton _b4JButton;
+	private JButton _b5JButton;
+	
+	public JTextField _binPathJTextField;
+	public JTextField _secretPhraseJTextField;
+	
+	private JFrame _frmLogin;
+	private JButton _sendButton;
+	private LoginPresenterListener _listener;
+	
+	
+	/**
+	 * Cria a interface
+	 */
+	public LoginWindow(LoginPresenterListener listener) {
+		_listener = listener;
+		initialize();
+	}
+	
+	/**
+	 * Mostra a janela
+	 */
+	public void show(){
+		_frmLogin.setVisible(true);
+	}
+	
+	/**
+	 * Avança para a tela de senha
+	 */
+	public void loginNameSucceded(){
+		Container mainContainer = _frmLogin.getContentPane();
+		CardLayout cardsLayout = (CardLayout)(mainContainer.getLayout());
+		cardsLayout.show(mainContainer, "passwordPanel");
+	}
+	
+	/**
+	 * Avança para a tela de chave privada
+	 */
+	public void passwordSucceded(){
+		resetFirstLoginStep();
+		Container mainContainer = _frmLogin.getContentPane();
+		CardLayout cardsLayout = (CardLayout)(mainContainer.getLayout());
+		cardsLayout.show(mainContainer, "privateKeyPanel");
+	}
+	
+	private void resetFirstLoginStep()
+	{
+		_loginNameTextField.setText("");;
+		_firstWarningLabel.setText("");
+		_firstWarningLabel.setVisible(false);
+	}
+	
+	/**
+	 * @return Frame principal da janela
+	 */
+	public JFrame getFrame() {
+		return _frmLogin;
+	}
+
+	/**
+	 * Initialize the contents of the frame.
+	 */
+	private void initialize() {
+		_frmLogin = new JFrame();
+		_frmLogin.setTitle("Login");
+		_frmLogin.setResizable(false);
+		_frmLogin.setBounds(100, 100, 450, 300);
+		_frmLogin.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		_frmLogin.getContentPane().setLayout(new CardLayout(0, 0));
+		
+		JPanel loginPanel = new JPanel();
+		_frmLogin.getContentPane().add(loginPanel, "name_122878281770506");
+		
+		JLabel firstWarningLabel = new JLabel("Primeira etapa");
+		
+		JLabel lblLogin = new JLabel("Login:");
+		
+		_loginNameTextField = new JTextField();
+		_loginNameTextField.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				_listener.loginButtonPressed();
+			}
+		});
+		_loginNameTextField.setColumns(10);
+		
+		_sendButton = new JButton("Enviar");
+		_sendButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				_listener.loginButtonPressed();
+			}
+		});
+		
+		_firstWarningLabel = new JLabel("Warning placeholder");
+		_firstWarningLabel.setForeground(Color.RED);
+		_firstWarningLabel.setVisible(false);
+		GroupLayout gl_loginPanel = new GroupLayout(loginPanel);
+		gl_loginPanel.setHorizontalGroup(
+			gl_loginPanel.createParallelGroup(Alignment.TRAILING)
+				.addGroup(gl_loginPanel.createSequentialGroup()
+					.addGroup(gl_loginPanel.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_loginPanel.createSequentialGroup()
+							.addGap(135)
+							.addComponent(lblLogin)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(_loginNameTextField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+						.addGroup(gl_loginPanel.createSequentialGroup()
+							.addGap(28)
+							.addGroup(gl_loginPanel.createParallelGroup(Alignment.LEADING)
+								.addComponent(_firstWarningLabel)
+								.addComponent(firstWarningLabel))))
+					.addContainerGap(136, Short.MAX_VALUE))
+				.addGroup(gl_loginPanel.createSequentialGroup()
+					.addContainerGap(197, Short.MAX_VALUE)
+					.addComponent(_sendButton)
+					.addGap(171))
+		);
+		gl_loginPanel.setVerticalGroup(
+			gl_loginPanel.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_loginPanel.createSequentialGroup()
+					.addContainerGap()
+					.addComponent(firstWarningLabel)
+					.addGap(79)
+					.addGroup(gl_loginPanel.createParallelGroup(Alignment.BASELINE)
+						.addComponent(_loginNameTextField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(lblLogin))
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(_sendButton)
+					.addPreferredGap(ComponentPlacement.RELATED, 72, Short.MAX_VALUE)
+					.addComponent(_firstWarningLabel)
+					.addGap(26))
+		);
+		loginPanel.setLayout(gl_loginPanel);
+		
+		JPanel passwordPanel = new JPanel();
+		_frmLogin.getContentPane().add(passwordPanel, "passwordPanel");
+		
+		JLabel lblEtapa = new JLabel("Segunda etapa");
+		
+		JLabel senhaLabel = new JLabel("Senha:");
+		
+		_secondWarningLabel = new JLabel("Warning placeholder");
+		_secondWarningLabel.setForeground(Color.RED);
+		
+		_b1JButton = new JButton("b1");
+		_b1JButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				_listener.passwordButtonPressed(_b1JButton.getName());
+			}
+		});
+		
+		_b2JButton = new JButton("b2");
+		_b2JButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				_listener.passwordButtonPressed(_b2JButton.getName());
+			}
+		});
+		
+		_b3JButton = new JButton("b3");
+		_b3JButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				_listener.passwordButtonPressed(_b3JButton.getName());
+			}
+		});
+		
+		_b4JButton = new JButton("b4");
+		_b4JButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				_listener.passwordButtonPressed(_b4JButton.getName());
+			}
+		});
+		
+		_b5JButton = new JButton("b5");
+		_b5JButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				_listener.passwordButtonPressed(_b5JButton.getName());
+			}
+		});
+		
+		_passwordDummyLabel = new JLabel("********");
+		
+		_confirmButton = new JButton("Confirmar");
+		GroupLayout gl_passwordPanel = new GroupLayout(passwordPanel);
+		gl_passwordPanel.setHorizontalGroup(
+			gl_passwordPanel.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_passwordPanel.createSequentialGroup()
+					.addGap(28)
+					.addGroup(gl_passwordPanel.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_passwordPanel.createSequentialGroup()
+							.addGroup(gl_passwordPanel.createParallelGroup(Alignment.LEADING)
+								.addComponent(lblEtapa)
+								.addGroup(gl_passwordPanel.createSequentialGroup()
+									.addGroup(gl_passwordPanel.createParallelGroup(Alignment.LEADING)
+										.addGroup(gl_passwordPanel.createSequentialGroup()
+											.addGap(38)
+											.addComponent(_b1JButton, GroupLayout.PREFERRED_SIZE, 56, GroupLayout.PREFERRED_SIZE)
+											.addPreferredGap(ComponentPlacement.UNRELATED)
+											.addComponent(_b2JButton, GroupLayout.PREFERRED_SIZE, 56, GroupLayout.PREFERRED_SIZE)
+											.addPreferredGap(ComponentPlacement.UNRELATED))
+										.addGroup(Alignment.TRAILING, gl_passwordPanel.createSequentialGroup()
+											.addComponent(senhaLabel)
+											.addPreferredGap(ComponentPlacement.RELATED)))
+									.addGroup(gl_passwordPanel.createParallelGroup(Alignment.LEADING)
+										.addGroup(gl_passwordPanel.createSequentialGroup()
+											.addComponent(_b3JButton, GroupLayout.PREFERRED_SIZE, 56, GroupLayout.PREFERRED_SIZE)
+											.addPreferredGap(ComponentPlacement.UNRELATED)
+											.addComponent(_b4JButton, GroupLayout.PREFERRED_SIZE, 56, GroupLayout.PREFERRED_SIZE)
+											.addPreferredGap(ComponentPlacement.UNRELATED)
+											.addComponent(_b5JButton, GroupLayout.PREFERRED_SIZE, 56, GroupLayout.PREFERRED_SIZE))
+										.addComponent(_passwordDummyLabel))))
+							.addContainerGap(56, Short.MAX_VALUE))
+						.addGroup(gl_passwordPanel.createSequentialGroup()
+							.addComponent(_secondWarningLabel)
+							.addPreferredGap(ComponentPlacement.RELATED, 171, Short.MAX_VALUE)
+							.addComponent(_confirmButton)
+							.addGap(16))))
+		);
+		gl_passwordPanel.setVerticalGroup(
+			gl_passwordPanel.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_passwordPanel.createSequentialGroup()
+					.addContainerGap()
+					.addComponent(lblEtapa)
+					.addGap(49)
+					.addGroup(gl_passwordPanel.createParallelGroup(Alignment.BASELINE)
+						.addComponent(senhaLabel)
+						.addComponent(_passwordDummyLabel))
+					.addGap(18)
+					.addGroup(gl_passwordPanel.createParallelGroup(Alignment.BASELINE)
+						.addComponent(_b5JButton, GroupLayout.PREFERRED_SIZE, 53, GroupLayout.PREFERRED_SIZE)
+						.addComponent(_b4JButton, GroupLayout.PREFERRED_SIZE, 53, GroupLayout.PREFERRED_SIZE)
+						.addComponent(_b3JButton, GroupLayout.PREFERRED_SIZE, 53, GroupLayout.PREFERRED_SIZE)
+						.addComponent(_b2JButton, GroupLayout.PREFERRED_SIZE, 53, GroupLayout.PREFERRED_SIZE)
+						.addComponent(_b1JButton, GroupLayout.PREFERRED_SIZE, 53, GroupLayout.PREFERRED_SIZE))
+					.addGap(81)
+					.addGroup(gl_passwordPanel.createParallelGroup(Alignment.BASELINE)
+						.addComponent(_secondWarningLabel)
+						.addComponent(_confirmButton))
+					.addGap(23))
+		);
+		passwordPanel.setLayout(gl_passwordPanel);
+		
+		JPanel privateKeyPanel = new JPanel();
+		_frmLogin.getContentPane().add(privateKeyPanel, "privateKeyPanel");
+		
+		JLabel thirdWarningLabel = new JLabel("Warning placeholder");
+		thirdWarningLabel.setForeground(Color.RED);
+		
+		JLabel lblTerceiraEtapa = new JLabel("Terceira etapa");
+		
+		JLabel lblCami = new JLabel("Caminho para o arquivo binário:");
+		
+		_binPathJTextField = new JTextField();
+		_binPathJTextField.setColumns(10);
+		
+		JButton browseJButton = new JButton("Localizar");
+		
+		JLabel lblFraseSecreta = new JLabel("Frase secreta:");
+		
+		_secretPhraseJTextField = new JTextField();
+		_secretPhraseJTextField.setColumns(10);
+		
+		JButton authenticateJButton = new JButton("Autenticar");
+		authenticateJButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				_listener.authenticateButtonPressed();
+			}
+		});
+		GroupLayout gl_privateKeyPanel = new GroupLayout(privateKeyPanel);
+		gl_privateKeyPanel.setHorizontalGroup(
+			gl_privateKeyPanel.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_privateKeyPanel.createSequentialGroup()
+					.addGap(28)
+					.addGroup(gl_privateKeyPanel.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_privateKeyPanel.createSequentialGroup()
+							.addComponent(thirdWarningLabel)
+							.addPreferredGap(ComponentPlacement.RELATED, 179, Short.MAX_VALUE)
+							.addComponent(authenticateJButton))
+						.addGroup(gl_privateKeyPanel.createSequentialGroup()
+							.addComponent(lblFraseSecreta)
+							.addPreferredGap(ComponentPlacement.UNRELATED)
+							.addComponent(_secretPhraseJTextField, 289, 289, 289))
+						.addComponent(lblTerceiraEtapa)
+						.addGroup(gl_privateKeyPanel.createSequentialGroup()
+							.addComponent(lblCami)
+							.addPreferredGap(ComponentPlacement.UNRELATED)
+							.addComponent(browseJButton))
+						.addComponent(_binPathJTextField, GroupLayout.PREFERRED_SIZE, 387, GroupLayout.PREFERRED_SIZE))
+					.addContainerGap())
+		);
+		gl_privateKeyPanel.setVerticalGroup(
+			gl_privateKeyPanel.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_privateKeyPanel.createSequentialGroup()
+					.addContainerGap()
+					.addComponent(lblTerceiraEtapa)
+					.addGap(38)
+					.addGroup(gl_privateKeyPanel.createParallelGroup(Alignment.BASELINE)
+						.addComponent(lblCami)
+						.addComponent(browseJButton))
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(_binPathJTextField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+					.addGap(31)
+					.addGroup(gl_privateKeyPanel.createParallelGroup(Alignment.BASELINE)
+						.addComponent(lblFraseSecreta)
+						.addComponent(_secretPhraseJTextField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+					.addGap(56)
+					.addGroup(gl_privateKeyPanel.createParallelGroup(Alignment.TRAILING)
+						.addGroup(gl_privateKeyPanel.createSequentialGroup()
+							.addComponent(thirdWarningLabel)
+							.addGap(24))
+						.addGroup(gl_privateKeyPanel.createSequentialGroup()
+							.addComponent(authenticateJButton)
+							.addContainerGap())))
+		);
+		privateKeyPanel.setLayout(gl_privateKeyPanel);
+	}
+
+	public void populatePasswordButtons(ArrayList<Pair<String, String>> buttons) {
+		_b1JButton.setText(buttons.get(0).first + "-" + buttons.get(0).second);
+		_b2JButton.setText(buttons.get(1).first + "-" + buttons.get(1).second);
+		_b3JButton.setText(buttons.get(2).first + "-" + buttons.get(2).second);
+		_b4JButton.setText(buttons.get(3).first + "-" + buttons.get(3).second);
+		_b5JButton.setText(buttons.get(4).first + "-" + buttons.get(4).second);
+	}
+}

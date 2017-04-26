@@ -1,0 +1,15 @@
+package model;
+
+import java.security.Timestamp;
+
+public class User {
+	
+	private Group _group;
+	private String  _loginName;
+	private String _passwordHash;
+	private String _salt;
+	private boolean _blockedAccess;
+	private Timestamp _allowAccessAfter;
+	private int _numberOfAttempts;
+
+}

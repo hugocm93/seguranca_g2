@@ -1,0 +1,13 @@
+package model;
+
+import java.util.ArrayList;
+
+public interface UserDAO {
+	
+	public boolean addUser(User user);
+	public ArrayList<User> getAllUsers();
+	User getUserByLoginName(String);
+	public boolean updateUser(User user);
+	public boolean deleteUser(User user);
+
+}
