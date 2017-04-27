@@ -1,0 +1,19 @@
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+
+public class Algorithns {
+	
+	public byte[] calcStringHash(String string){
+		String mockPassword = "162534";
+		MessageDigest digest;
+		try {
+			digest = MessageDigest.getInstance("SHA-1");
+			digest.update((mockPassword + salt).getBytes());
+			user1.set_passwordHash(digest.digest());
+		}
+		catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+		}
+	}
+
+}

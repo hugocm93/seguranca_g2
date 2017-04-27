@@ -19,16 +19,21 @@ public class UserDAOMockImplementation implements UserDAO{
 		user1.set_salt(salt);
 		
 		String mockPassword = "162534";
+		user1.set_passwordHash(calcStringHash(mockPassword + salt));
+		_users.add(user1);	
+	}
+	
+	private byte[] calcStringHash(String string){
 		MessageDigest digest;
 		try {
 			digest = MessageDigest.getInstance("SHA-1");
-			digest.update((mockPassword + salt).getBytes());
-			user1.set_passwordHash(digest.digest());
+			digest.update(string.getBytes());
+			return digest.digest();
 		}
 		catch (NoSuchAlgorithmException e) {
 			e.printStackTrace();
+			return null;
 		}
-		_users.add(user1);	
 	}
 
 	@Override

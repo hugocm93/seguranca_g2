@@ -1,0 +1,12 @@
+package model;
+
+public class Node{                                                                                                      
+  1     String data;                                                                                                        
+  2     Node left, right;                                                                                                   
+  3                                                                                                                         
+  4     Node(String item)                                                                                                   
+  5     {                                                                                                                   
+  6         data = item;                                                                                                    
+  7         left = right = null;                                                                                            
+  8     }                                                                                                                   
+}

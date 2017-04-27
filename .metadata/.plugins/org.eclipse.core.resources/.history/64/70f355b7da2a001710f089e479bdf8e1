@@ -1,0 +1,47 @@
+package model;
+
+import java.util.ArrayList;
+
+public class PasswordTree {
+	private Node _root;
+	private User _user;
+
+	public PasswordTree(User user) {
+		_root = new Node("");
+		_user = user;
+	}
+
+	public void populate(ArrayList<Pair<String, String>> values){
+		insertValues(_root, values);
+	}
+	
+	private void insertValues(Node node, ArrayList<Pair<String, String>> values) {
+		if (node == null || values.size() == 0)
+			return;
+
+		node.left = new Node(values.get(0).first);
+		node.right = new Node(values.get(0).first);
+		if (node.left == null && node.right == null) {
+			return _user.validatePassword(auxString);
+		} else {
+			return passwordDepthSearch(node.left, auxString) | passwordDepthSearch(node.right, auxString);
+		}
+	}
+
+	public boolean passwordDepthSearch() {
+		return passwordDepthSearch(_root, new String());
+	}
+
+	public boolean passwordDepthSearch(Node node, String auxString) {
+		if (node == null)
+			return false;
+
+		auxString += node.data;
+
+		if (node.left == null && node.right == null) {
+			return _user.validatePassword(auxString);
+		} else {
+			return passwordDepthSearch(node.left, auxString) | passwordDepthSearch(node.right, auxString);
+		}
+	}
+}

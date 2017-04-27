@@ -13,8 +13,8 @@ import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
-import model.Pair;
 import presenter.LoginPresenterListener;
+import structures.Pair;
 
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -107,6 +107,7 @@ public class LoginWindow {
 		_secondWarningLabel.setVisible(false);
 		_passwordDummyLabel.setText("");
 		enableVirtualButtons(true);
+		_confirmButton.setEnabled(false);
 	}
 	
 	/**

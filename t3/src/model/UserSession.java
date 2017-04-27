@@ -2,6 +2,8 @@ package model;
 
 import java.util.ArrayList;
 
+import structures.Pair;
+
 public class UserSession {
 	
 	private User _user = null;

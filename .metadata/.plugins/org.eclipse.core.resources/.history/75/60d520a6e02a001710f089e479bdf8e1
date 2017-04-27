@@ -1,0 +1,24 @@
+package others;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+
+public class Algorithm {
+	
+	static public byte[] calcStringHash(String string){
+		MessageDigest digest;
+		try {
+			digest = MessageDigest.getInstance("SHA-1");
+			digest.update(string.getBytes());
+			return digest.digest();
+		}
+		catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	public static boolean compareHash(byte[] byte1, byte[] byte2) {
+		MessageDigest.getInstance("SHA-1");
+		return MessageDigest.isEqual(byte1, byte2);
+	}
+}

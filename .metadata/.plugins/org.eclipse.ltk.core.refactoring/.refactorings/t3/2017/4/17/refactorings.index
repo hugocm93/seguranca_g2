@@ -2,3 +2,9 @@
 1493163882104	Delete element
 1493170117596	Rename field 'binPathJTextField'
 1493170130151	Rename field 'secretPhraseJTextField'
+1493252208226	Rename type 'Algorithns'
+1493252530181	Move compilation unit
+1493252576044	Move compilation unit
+1493253182809	Delete element
+1493254056731	Move compilation units
+1493254076410	Rename package 'Structures'

@@ -1,12 +1,15 @@
 package presenter;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 
-import model.Pair;
 import model.User;
 import model.UserDAOMockImplementation;
 import model.UserSession;
+import structures.Pair;
+import structures.PasswordTree;
 import view.LoginWindow;
 
 public class LoginPresenter implements LoginPresenterListener{
@@ -96,11 +99,16 @@ public class LoginPresenter implements LoginPresenterListener{
 		String dummyLabel = _loginWindow._passwordDummyLabel.getText();
 		_loginWindow._passwordDummyLabel.setText(dummyLabel + "*");
 		
-		if(_session.get_virtualButtonsPressed().size() == 8)
+		if(_session.get_virtualButtonsPressed().size() == 6)
+		{
+			_loginWindow._confirmButton.setEnabled(true);
+		}
+		else if(_session.get_virtualButtonsPressed().size() == 8)
 		{
 			_loginWindow.enableVirtualButtons(false);
 			return;
 		}
+		
 		randomButtons();
 	}
 
@@ -115,7 +123,7 @@ public class LoginPresenter implements LoginPresenterListener{
 
 	@Override
 	public void confirmPasswordButtonPressed() {
-		boolean wrongPassword = checkPassword();
+		boolean wrongPassword = !checkPassword();
 		if(wrongPassword){
 			_session.get_virtualButtonsPressed().clear();
 			_session.incAttempts();
@@ -137,9 +145,40 @@ public class LoginPresenter implements LoginPresenterListener{
 		}
 	}
 
-	private boolean checkPassword() {
-		//TODO:
-		return false;
+	private boolean checkPassword(){
+		PasswordTree tree = new PasswordTree(this);
+		tree.populate(_session.get_virtualButtonsPressed());
+		
+		return tree.passwordDepthSearch();
+	}
+
+	public boolean validatePassword(String auxString) {
+		byte[] hash1 = calcStringHash(auxString + _session.get_user().get_salt());
+		byte[] hash2 = _session.get_user().get_passwordHash();
+		return compareHash(hash1, hash2);
+	}
+	
+	private byte[] calcStringHash(String string){
+		MessageDigest digest;
+		try {
+			digest = MessageDigest.getInstance("SHA-1");
+			digest.update(string.getBytes());
+			return digest.digest();
+		}
+		catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	private boolean compareHash(byte[] byte1, byte[] byte2){
+		try {
+			MessageDigest.getInstance("SHA-1");
+		}
+		catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+		}
+		return MessageDigest.isEqual(byte1, byte2);
 	}
 	
 }
