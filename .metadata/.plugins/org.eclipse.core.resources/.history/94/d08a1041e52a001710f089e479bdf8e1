@@ -324,12 +324,7 @@ public class LoginWindow {
 			public void actionPerformed(ActionEvent e) {
 				JFileChooser fileChooser = new JFileChooser();
 				fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
-				
-				int result = fileChooser.showOpenDialog(_frmLogin);
-				if (result == JFileChooser.APPROVE_OPTION) {
-					File selectedFile = fileChooser.getSelectedFile();
-					_binPathJTextField.setText(selectedFile.getPath());
-				}
+				int result = fileChooser.showOpenDialog(parent);
 			}
 		});
 		
@@ -348,7 +343,8 @@ public class LoginWindow {
 		gl_privateKeyPanel.setHorizontalGroup(
 			gl_privateKeyPanel.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_privateKeyPanel.createSequentialGroup()
-					.addGap(28)
+					.addComponent(browseJButton)
+					.addPreferredGap(ComponentPlacement.RELATED)
 					.addGroup(gl_privateKeyPanel.createParallelGroup(Alignment.LEADING)
 						.addGroup(gl_privateKeyPanel.createSequentialGroup()
 							.addComponent(thirdWarningLabel)
@@ -359,10 +355,7 @@ public class LoginWindow {
 							.addPreferredGap(ComponentPlacement.UNRELATED)
 							.addComponent(_secretPhraseJTextField, 289, 289, 289))
 						.addComponent(lblTerceiraEtapa)
-						.addGroup(gl_privateKeyPanel.createSequentialGroup()
-							.addComponent(lblCami)
-							.addPreferredGap(ComponentPlacement.UNRELATED)
-							.addComponent(browseJButton))
+						.addComponent(lblCami)
 						.addComponent(_binPathJTextField, GroupLayout.PREFERRED_SIZE, 387, GroupLayout.PREFERRED_SIZE))
 					.addContainerGap())
 		);
@@ -372,15 +365,14 @@ public class LoginWindow {
 					.addContainerGap()
 					.addComponent(lblTerceiraEtapa)
 					.addGap(38)
-					.addGroup(gl_privateKeyPanel.createParallelGroup(Alignment.BASELINE)
-						.addComponent(lblCami)
-						.addComponent(browseJButton))
+					.addComponent(lblCami)
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(_binPathJTextField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 					.addGap(31)
 					.addGroup(gl_privateKeyPanel.createParallelGroup(Alignment.BASELINE)
 						.addComponent(lblFraseSecreta)
-						.addComponent(_secretPhraseJTextField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+						.addComponent(_secretPhraseJTextField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(browseJButton))
 					.addGap(56)
 					.addGroup(gl_privateKeyPanel.createParallelGroup(Alignment.TRAILING)
 						.addGroup(gl_privateKeyPanel.createSequentialGroup()
