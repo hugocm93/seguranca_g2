@@ -1,0 +1,98 @@
+package model;
+
+import java.io.ByteArrayInputStream;
+import java.io.Serializable;
+import java.security.cert.CertificateException;
+import java.security.cert.CertificateFactory;
+import java.security.cert.X509Certificate;
+import java.sql.Timestamp;
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.naming.InvalidNameException;
+import javax.naming.ldap.LdapName;
+import javax.naming.ldap.Rdn;
+import javax.security.auth.x500.X500Principal;
+
+public class User implements Serializable{
+	
+	private static final long serialVersionUID = 1L;
+	
+	private String  _loginName;
+	private byte[] _passwordHash;
+	private String _salt;
+	private Group _group;
+	private Timestamp _allowAccessAfter;
+	private String _pemCertificate;
+	
+	public X509Certificate getCertificate() throws CertificateException{
+		ByteArrayInputStream bais = new ByteArrayInputStream(_pemCertificate.getBytes());
+		X509Certificate certificate = (X509Certificate)CertificateFactory.getInstance("X.509").generateCertificate(bais);
+		
+		return certificate;
+		
+	}
+	
+	public String get_pemCertificate() {
+		return _pemCertificate;
+	}
+
+	public void set_pemCertificate(String pemCertificate) {
+		this._pemCertificate = pemCertificate;
+	}
+
+	public String get_loginName() {
+		try {
+			String principal = getCertificate().getSubjectX500Principal().toString();
+			int beginIndex = principal.indexOf("EMAILADDRESS");
+			if(beginIndex == -1)
+			{
+				throw new Exception("Invalid Certificate");
+			}
+			int endIndex = principal.indexOf(principal, beginIndex);
+			String emailAdress = principal.substring(beginIndex, endIndex);
+			
+			return emailAdress;
+		} 
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		return _loginName;
+	}
+	
+	public void set_loginName(String _loginName) {
+		this._loginName = _loginName;
+	}
+	
+	public byte[] get_passwordHash() {
+		return _passwordHash;
+	}
+	
+	public void set_passwordHash(byte[] _passwordHash) {
+		this._passwordHash = _passwordHash;
+	}
+	
+	public String get_salt() {
+		return _salt;
+	}
+	
+	public void set_salt(String _salt) {
+		this._salt = _salt;
+	}
+	
+	public Group get_group() {
+		return _group;
+	}
+	
+	public void set_group(Group _group) {
+		this._group = _group;
+	}
+	
+	public Timestamp get_allowAccessAfter() {
+		return _allowAccessAfter;
+	}
+	
+	public void set_allowAccessAfter(Timestamp _allowAccessAfter) {
+		this._allowAccessAfter = _allowAccessAfter;
+	}
+}

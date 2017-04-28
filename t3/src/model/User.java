@@ -1,54 +1,78 @@
 package model;
 
-import java.io.Serializable;
+import java.io.ByteArrayInputStream;
+import java.security.cert.CertificateException;
+import java.security.cert.CertificateFactory;
+import java.security.cert.X509Certificate;
 import java.sql.Timestamp;
 
-public class User implements Serializable{
-	
-	private static final long serialVersionUID = 1L;
-	
-	private String  _loginName;
+public class User {
+
+	private String _pemCertificate;
 	private byte[] _passwordHash;
 	private String _salt;
 	private Group _group;
 	private Timestamp _allowAccessAfter;
-	
-	public String get_loginName() {
-		return _loginName;
+
+	public X509Certificate getCertificate() throws CertificateException {
+		ByteArrayInputStream bais = new ByteArrayInputStream(_pemCertificate.getBytes());
+		X509Certificate certificate = (X509Certificate) CertificateFactory.getInstance("X.509")
+				.generateCertificate(bais);
+
+		return certificate;
+
 	}
-	
-	public void set_loginName(String _loginName) {
-		this._loginName = _loginName;
+
+	public void set_pemCertificate(String pemCertificate) {
+		this._pemCertificate = pemCertificate;
 	}
+
+	public String get_loginName(){
+		try {
+			String principal = getCertificate().getSubjectX500Principal().toString();
+			int beginIndex = principal.indexOf("EMAILADDRESS");
+			if (beginIndex == -1) {
+				throw new Exception("Invalid Certificate");
+			}
+			int endIndex = principal.indexOf(",", beginIndex);
+			String emailAdress = principal.substring(beginIndex, endIndex);
+			emailAdress = emailAdress.replace("EMAILADDRESS=", "");
 	
+			return emailAdress;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
 	public byte[] get_passwordHash() {
 		return _passwordHash;
 	}
-	
+
 	public void set_passwordHash(byte[] _passwordHash) {
 		this._passwordHash = _passwordHash;
 	}
-	
+
 	public String get_salt() {
 		return _salt;
 	}
-	
+
 	public void set_salt(String _salt) {
 		this._salt = _salt;
 	}
-	
+
 	public Group get_group() {
 		return _group;
 	}
-	
+
 	public void set_group(Group _group) {
 		this._group = _group;
 	}
-	
+
 	public Timestamp get_allowAccessAfter() {
 		return _allowAccessAfter;
 	}
-	
+
 	public void set_allowAccessAfter(Timestamp _allowAccessAfter) {
 		this._allowAccessAfter = _allowAccessAfter;
 	}
