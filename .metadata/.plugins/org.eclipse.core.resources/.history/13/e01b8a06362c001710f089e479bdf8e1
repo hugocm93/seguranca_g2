@@ -23,8 +23,10 @@ public class UserDAOMockImplementation implements UserDAO{
 		} catch (FileNotFoundException e1) {
 			e1.printStackTrace();
 		}
+		
 		String text = scanner.useDelimiter("\\A").next();
 		scanner.close(); 
+		
 		user1.set_pemCertificate(text);		
 		
 		String salt = (String)user1.get_loginName().substring(0, 9);
