@@ -16,8 +16,6 @@ public class MenuPresenter implements MenuPresenterListener{
 	}
 	
 	public void showWindow(){
-		buildHeader();
-		
 		_menuWindow.show();
 	}
 	
@@ -26,9 +24,7 @@ public class MenuPresenter implements MenuPresenterListener{
 		String name = _session.get_user().getUserName();
 		String group = _session.get_user().get_group().getGroupName();
 		
-		_menuWindow._loginLabel.setText(login);
-		_menuWindow._nomeLabel.setText(name);
-		_menuWindow._grupoLabel.setText(group);
+		_menuWindow.
 	}
 
 }

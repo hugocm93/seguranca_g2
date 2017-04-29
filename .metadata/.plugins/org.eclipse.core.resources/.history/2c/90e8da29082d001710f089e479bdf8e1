@@ -32,6 +32,9 @@ public class UserDAOMockImplementation implements UserDAO{
 		
 		String mockPassword = "162534";
 		user1.set_passwordHash(calcStringHash(mockPassword + salt));
+		
+		//Retirar
+		user1.getUserName();
 	
 		_users.add(user1);	
 		
@@ -56,6 +59,9 @@ public class UserDAOMockImplementation implements UserDAO{
 		
 		mockPassword = "162534";
 		user2.set_passwordHash(calcStringHash(mockPassword + salt));
+		
+		//Retirar
+		user2.getUserName();
 	
 		_users.add(user2);	
 	}
@@ -72,6 +78,9 @@ public class UserDAOMockImplementation implements UserDAO{
 			return null;
 		}
 	}
+	
+	
+	
 	
 	@Override
 	public boolean addUser(User user) {

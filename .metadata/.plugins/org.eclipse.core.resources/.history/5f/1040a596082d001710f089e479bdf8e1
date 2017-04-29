@@ -88,8 +88,11 @@ public class LoginPresenter implements LoginPresenterListener{
 	public void authenticateButtonPressed() {
 		_loginWindow.getFrame().setVisible(false);
 		_loginWindow.getFrame().dispose();
-				
-		MenuPresenter menuPresenter = new MenuPresenter(_session);
+		
+		String name = _session.get_user().get_loginName();
+		String group = _session.get_user().get_group().getGroupName();
+		
+		MenuPresenter menuPresenter = new MenuPresenter();
 		menuPresenter.showWindow();
 	}
 

@@ -13,7 +13,7 @@ public class UserDAOMockImplementation implements UserDAO{
 	ArrayList<User> _users = new ArrayList<User>();
 	
 	public UserDAOMockImplementation(){
-		User user1 = new User();
+		//User user1 = new User();
 		user1.set_group(Group.Administrador);
 		user1.set_allowAccessAfter(new Timestamp(System.currentTimeMillis()));
 		
@@ -32,18 +32,21 @@ public class UserDAOMockImplementation implements UserDAO{
 		
 		String mockPassword = "162534";
 		user1.set_passwordHash(calcStringHash(mockPassword + salt));
+		
+		//Retirar
+		user1.getUserName();
 	
 		_users.add(user1);	
 		
 		////////////////
 		
 		User user2 = new User();
-		user2.set_group(Group.Usuário);
+		user2.set_group(Group.Administrador);
 		user2.set_allowAccessAfter(new Timestamp(System.currentTimeMillis()));
 		
 		scanner = null;
 		try {
-			scanner = new Scanner( new File("Pacote-T3/Keys/user01-x509.crt") );
+			scanner = new Scanner( new File("Pacote-T3/Keys/admin-x509.crt") );
 		} catch (FileNotFoundException e1) {
 			e1.printStackTrace();
 		}
@@ -56,6 +59,9 @@ public class UserDAOMockImplementation implements UserDAO{
 		
 		mockPassword = "162534";
 		user2.set_passwordHash(calcStringHash(mockPassword + salt));
+		
+		//Retirar
+		user2.getUserName();
 	
 		_users.add(user2);	
 	}
@@ -72,6 +78,9 @@ public class UserDAOMockImplementation implements UserDAO{
 			return null;
 		}
 	}
+	
+	
+	
 	
 	@Override
 	public boolean addUser(User user) {

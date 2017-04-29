@@ -16,8 +16,6 @@ public class MenuPresenter implements MenuPresenterListener{
 	}
 	
 	public void showWindow(){
-		buildHeader();
-		
 		_menuWindow.show();
 	}
 	

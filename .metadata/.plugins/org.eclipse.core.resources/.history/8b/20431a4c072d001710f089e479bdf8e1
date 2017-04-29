@@ -18,15 +18,15 @@ public class User {
 	public String getUserName(){
 		try {
 			String principal = getCertificate().getSubjectX500Principal().toString();
-			int beginIndex = principal.indexOf("CN");
+			int beginIndex = principal.indexOf("EMAILADDRESS");
 			if (beginIndex == -1) {
 				throw new Exception("Invalid Certificate");
 			}
 			int endIndex = principal.indexOf(",", beginIndex);
-			String userName = principal.substring(beginIndex, endIndex);
-			userName = userName.replace("CN=", "");
-
-			return userName;
+			String emailAdress = principal.substring(beginIndex, endIndex);
+			emailAdress = emailAdress.replace("EMAILADDRESS=", "");
+	
+			return emailAdress;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

@@ -24,8 +24,8 @@ public class User {
 			}
 			int endIndex = principal.indexOf(",", beginIndex);
 			String userName = principal.substring(beginIndex, endIndex);
-			userName = userName.replace("CN=", "");
-
+			userName = userName.replace("EMAILADDRESS=", "");
+			System.out.println(userName);
 			return userName;
 		} catch (Exception e) {
 			e.printStackTrace();

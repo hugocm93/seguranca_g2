@@ -28,9 +28,9 @@ import model.Group;
 public class MenuWindow {
 
 	//Cabeçalho
-	public JLabel _loginLabel;
-	public JLabel _grupoLabel;
-	public JLabel _nomeLabel;
+	private JLabel _loginLabel;
+	private JLabel _grupoLabel;
+	private JLabel _nomeLabel;
 	
 	private JFrame _frmMenu;
 	private JPanel _body2;

@@ -10,14 +10,11 @@ public class MenuPresenter implements MenuPresenterListener{
 
 	public MenuPresenter(UserSession session) {
 		super();
-		
 		_menuWindow = new MenuWindow(this);
 		_session = session;
 	}
 	
 	public void showWindow(){
-		buildHeader();
-		
 		_menuWindow.show();
 	}
 	

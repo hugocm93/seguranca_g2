@@ -15,7 +15,7 @@ public enum Group
 		Usuário._name = "Usuário";
 	}
 
-	public String getGroupName()
+	public String getStatusName()
 	{
 		return _name;
 	}

@@ -60,6 +60,34 @@ public class LoginPresenter implements LoginPresenterListener{
 		}
 	}
 
+	private void randomButtons(){
+		ArrayList<String> numbers = new ArrayList<String>();
+		numbers.add("0"); numbers.add("1"); numbers.add("2");
+		numbers.add("3"); numbers.add("4"); numbers.add("5");
+		numbers.add("6"); numbers.add("7"); numbers.add("8");
+		numbers.add("9");
+		
+		ArrayList<Pair<String, String>> buttons = 
+							new ArrayList<Pair<String, String>>();
+		
+		for(int i = 0; i < 5; i++){
+			int randomNum1 = (int)(Math.random() * numbers.size()); 
+			int randomNum2 = randomNum1;
+			while(randomNum1 == randomNum2){
+				randomNum2 = (int)(Math.random() * numbers.size());
+			}
+			Pair<String, String> newPair = new Pair<String, String>();
+			newPair.first = numbers.get(randomNum1);
+			newPair.second = numbers.get(randomNum2);
+			
+			numbers.remove(newPair.first);
+			numbers.remove(newPair.second);
+			buttons.add(newPair);
+		}
+		
+		_loginWindow.populatePasswordButtons(buttons);
+	}
+
 	@Override
 	public void passwordButtonPressed(String buttonName){
 		String[] parts = buttonName.split("-");
@@ -88,8 +116,8 @@ public class LoginPresenter implements LoginPresenterListener{
 	public void authenticateButtonPressed() {
 		_loginWindow.getFrame().setVisible(false);
 		_loginWindow.getFrame().dispose();
-				
-		MenuPresenter menuPresenter = new MenuPresenter(_session);
+		
+		MenuPresenter menuPresenter = new MenuPresenter();
 		menuPresenter.showWindow();
 	}
 
@@ -115,34 +143,6 @@ public class LoginPresenter implements LoginPresenterListener{
 		else{
 			_loginWindow.passwordSucceded();
 		}
-	}
-	
-	private void randomButtons(){
-		ArrayList<String> numbers = new ArrayList<String>();
-		numbers.add("0"); numbers.add("1"); numbers.add("2");
-		numbers.add("3"); numbers.add("4"); numbers.add("5");
-		numbers.add("6"); numbers.add("7"); numbers.add("8");
-		numbers.add("9");
-		
-		ArrayList<Pair<String, String>> buttons = 
-							new ArrayList<Pair<String, String>>();
-		
-		for(int i = 0; i < 5; i++){
-			int randomNum1 = (int)(Math.random() * numbers.size()); 
-			int randomNum2 = randomNum1;
-			while(randomNum1 == randomNum2){
-				randomNum2 = (int)(Math.random() * numbers.size());
-			}
-			Pair<String, String> newPair = new Pair<String, String>();
-			newPair.first = numbers.get(randomNum1);
-			newPair.second = numbers.get(randomNum2);
-			
-			numbers.remove(newPair.first);
-			numbers.remove(newPair.second);
-			buttons.add(newPair);
-		}
-		
-		_loginWindow.populatePasswordButtons(buttons);
 	}
 
 	private boolean checkPassword(){

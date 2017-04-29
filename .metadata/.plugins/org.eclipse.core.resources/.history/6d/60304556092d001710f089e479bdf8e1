@@ -28,9 +28,9 @@ import model.Group;
 public class MenuWindow {
 
 	//Cabeçalho
-	public JLabel _loginLabel;
-	public JLabel _grupoLabel;
-	public JLabel _nomeLabel;
+	private JLabel loginLabel;
+	private JLabel grupoLabel;
+	private JLabel nomeLabel;
 	
 	private JFrame _frmMenu;
 	private JPanel _body2;
@@ -44,6 +44,7 @@ public class MenuWindow {
 	
 	private MenuPresenterListener _listener;
 
+	
 	/**
 	 * Create the application.
 	 */
@@ -594,11 +595,11 @@ public class MenuWindow {
 		
 		JLabel lblNome = new JLabel("Nome:");
 		
-		_loginLabel = new JLabel("loginPlaceholder");
+		loginLabel = new JLabel("loginPlaceholder");
 		
-		_grupoLabel = new JLabel("grupoPlaceholder");
+		grupoLabel = new JLabel("grupoPlaceholder");
 		
-		_nomeLabel = new JLabel("nomePlaceholder");
+		nomeLabel = new JLabel("nomePlaceholder");
 		GroupLayout gl__header = new GroupLayout(_header);
 		gl__header.setHorizontalGroup(
 			gl__header.createParallelGroup(Alignment.LEADING)
@@ -611,9 +612,9 @@ public class MenuWindow {
 							.addComponent(lblNewLabel)))
 					.addGap(24)
 					.addGroup(gl__header.createParallelGroup(Alignment.LEADING)
-						.addComponent(_loginLabel)
-						.addComponent(_grupoLabel)
-						.addComponent(_nomeLabel))
+						.addComponent(loginLabel)
+						.addComponent(grupoLabel)
+						.addComponent(nomeLabel))
 					.addContainerGap(374, Short.MAX_VALUE))
 		);
 		gl__header.setVerticalGroup(
@@ -622,15 +623,15 @@ public class MenuWindow {
 					.addGap(12)
 					.addGroup(gl__header.createParallelGroup(Alignment.BASELINE)
 						.addComponent(lblLogin)
-						.addComponent(_loginLabel))
+						.addComponent(loginLabel))
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addGroup(gl__header.createParallelGroup(Alignment.BASELINE)
 						.addComponent(lblNewLabel)
-						.addComponent(_grupoLabel))
+						.addComponent(grupoLabel))
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addGroup(gl__header.createParallelGroup(Alignment.BASELINE)
 						.addComponent(lblNome)
-						.addComponent(_nomeLabel))
+						.addComponent(nomeLabel))
 					.addContainerGap(21, Short.MAX_VALUE))
 		);
 		_header.setLayout(gl__header);

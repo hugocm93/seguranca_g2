@@ -13,25 +13,7 @@ public class User {
 	private String _salt;
 	private Group _group;
 	private Timestamp _allowAccessAfter;
-	
-	
-	public String getUserName(){
-		try {
-			String principal = getCertificate().getSubjectX500Principal().toString();
-			int beginIndex = principal.indexOf("CN");
-			if (beginIndex == -1) {
-				throw new Exception("Invalid Certificate");
-			}
-			int endIndex = principal.indexOf(",", beginIndex);
-			String userName = principal.substring(beginIndex, endIndex);
-			userName = userName.replace("CN=", "");
 
-			return userName;
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
 	
 	public void set_pemCertificate(String pemCertificate) {
 		ByteArrayInputStream bais = new ByteArrayInputStream(pemCertificate.getBytes());

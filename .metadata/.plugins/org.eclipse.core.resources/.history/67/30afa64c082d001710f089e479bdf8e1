@@ -60,6 +60,8 @@ public class LoginPresenter implements LoginPresenterListener{
 		}
 	}
 
+	
+
 	@Override
 	public void passwordButtonPressed(String buttonName){
 		String[] parts = buttonName.split("-");
@@ -88,8 +90,8 @@ public class LoginPresenter implements LoginPresenterListener{
 	public void authenticateButtonPressed() {
 		_loginWindow.getFrame().setVisible(false);
 		_loginWindow.getFrame().dispose();
-				
-		MenuPresenter menuPresenter = new MenuPresenter(_session);
+		
+		MenuPresenter menuPresenter = new MenuPresenter();
 		menuPresenter.showWindow();
 	}
 

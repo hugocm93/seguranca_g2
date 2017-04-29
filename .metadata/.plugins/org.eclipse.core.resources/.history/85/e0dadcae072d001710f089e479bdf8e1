@@ -23,10 +23,10 @@ public class User {
 				throw new Exception("Invalid Certificate");
 			}
 			int endIndex = principal.indexOf(",", beginIndex);
-			String userName = principal.substring(beginIndex, endIndex);
-			userName = userName.replace("CN=", "");
-
-			return userName;
+			String emailAdress = principal.substring(beginIndex, endIndex);
+			emailAdress = emailAdress.replace("EMAILADDRESS=", "");
+			System.out.println(principal);
+			return emailAdress;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
