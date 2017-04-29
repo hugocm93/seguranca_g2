@@ -111,7 +111,7 @@ public class Authentication {
 		}
 	}
 	
-	public static byte[] calcStringHash(String string){
+	private byte[] calcStringHash(String string){
 		MessageDigest digest;
 		try {
 			digest = MessageDigest.getInstance("SHA-1");
@@ -124,7 +124,7 @@ public class Authentication {
 		}
 	}
 
-	public static boolean compareHash(byte[] byte1, byte[] byte2){
+	private boolean compareHash(byte[] byte1, byte[] byte2){
 		try {
 			MessageDigest.getInstance("SHA-1");
 		}

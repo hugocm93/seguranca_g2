@@ -57,7 +57,7 @@ public class MenuWindow {
 	private JTable listarJButton;
 	
 	private MenuPresenterListener _listener;
-	private JComboBox<Group> _groupJComboBox;
+	private JComboBox _groupJComboBox;
 
 	/**
 	 * Create the application.
@@ -343,8 +343,8 @@ public class MenuWindow {
 		
 		JLabel lblGrupo = new JLabel("Grupo:");
 		
-		_groupJComboBox = new JComboBox<Group>();
-		_groupJComboBox.setModel(new DefaultComboBoxModel<Group>(Group.values()));
+		_groupJComboBox = new JComboBox();
+		_groupJComboBox.setModel(new DefaultComboBoxModel(Group.values()));
 		
 		JLabel lblSenhaPessoal = new JLabel("Senha pessoal:");
 		

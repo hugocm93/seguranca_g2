@@ -2,12 +2,15 @@ package presenter;
 
 import java.io.IOException;
 import java.security.InvalidKeyException;
+import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
+
 import Util.Authentication;
 import Util.StringExtension;
 import model.User;
@@ -165,6 +168,7 @@ public class LoginPresenter implements LoginPresenterListener{
 		} else {
 			System.out.println("User Authentication Error");
 		}
+		
 	}
 	
 	private void randomButtons(){
@@ -203,11 +207,32 @@ public class LoginPresenter implements LoginPresenterListener{
 	}
 
 	public boolean validatePassword(String auxString) {
-		byte[] hash1 = Authentication.calcStringHash(auxString + _session.get_user().get_salt());
+		byte[] hash1 = calcStringHash(auxString + _session.get_user().get_salt());
 		byte[] hash2 = _session.get_user().get_passwordHash();
-		return Authentication.compareHash(hash1, hash2);
+		return compareHash(hash1, hash2);
 	}
 	
-	
+	private byte[] calcStringHash(String string){
+		MessageDigest digest;
+		try {
+			digest = MessageDigest.getInstance("SHA-1");
+			digest.update(string.getBytes());
+			return digest.digest();
+		}
+		catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	private boolean compareHash(byte[] byte1, byte[] byte2){
+		try {
+			MessageDigest.getInstance("SHA-1");
+		}
+		catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+		}
+		return MessageDigest.isEqual(byte1, byte2);
+	}
 	
 }

@@ -57,7 +57,6 @@ public class MenuWindow {
 	private JTable listarJButton;
 	
 	private MenuPresenterListener _listener;
-	private JComboBox<Group> _groupJComboBox;
 
 	/**
 	 * Create the application.
@@ -343,8 +342,8 @@ public class MenuWindow {
 		
 		JLabel lblGrupo = new JLabel("Grupo:");
 		
-		_groupJComboBox = new JComboBox<Group>();
-		_groupJComboBox.setModel(new DefaultComboBoxModel<Group>(Group.values()));
+		JComboBox groupJComboBox = new JComboBox();
+		groupJComboBox.setModel(new DefaultComboBoxModel(Group.values()));
 		
 		JLabel lblSenhaPessoal = new JLabel("Senha pessoal:");
 		
@@ -387,7 +386,7 @@ public class MenuWindow {
 									.addGap(114)
 									.addComponent(lblGrupo)
 									.addPreferredGap(ComponentPlacement.RELATED)
-									.addComponent(_groupJComboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+									.addComponent(groupJComboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 								.addGroup(gl_cadastroPanel.createSequentialGroup()
 									.addComponent(lblConfirmacaoDaSenha, GroupLayout.PREFERRED_SIZE, 209, GroupLayout.PREFERRED_SIZE)
 									.addPreferredGap(ComponentPlacement.RELATED)
@@ -410,7 +409,7 @@ public class MenuWindow {
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addGroup(gl_cadastroPanel.createParallelGroup(Alignment.BASELINE)
 						.addComponent(lblSenhaPessoal)
-						.addComponent(_groupJComboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(groupJComboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 						.addComponent(lblGrupo)
 						.addComponent(passwordField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 					.addPreferredGap(ComponentPlacement.RELATED)

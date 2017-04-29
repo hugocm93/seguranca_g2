@@ -6,7 +6,6 @@ import java.nio.file.Files;
 import java.security.InvalidKeyException;
 import java.security.Key;
 import java.security.KeyFactory;
-import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
 import java.security.SecureRandom;
@@ -109,29 +108,6 @@ public class Authentication {
 			
 			return null;
 		}
-	}
-	
-	public static byte[] calcStringHash(String string){
-		MessageDigest digest;
-		try {
-			digest = MessageDigest.getInstance("SHA-1");
-			digest.update(string.getBytes());
-			return digest.digest();
-		}
-		catch (NoSuchAlgorithmException e) {
-			e.printStackTrace();
-			return null;
-		}
-	}
-
-	public static boolean compareHash(byte[] byte1, byte[] byte2){
-		try {
-			MessageDigest.getInstance("SHA-1");
-		}
-		catch (NoSuchAlgorithmException e) {
-			e.printStackTrace();
-		}
-		return MessageDigest.isEqual(byte1, byte2);
 	}
 	
 }
