@@ -1,0 +1,27 @@
+package presenter;
+
+import model.User;
+import view.ConfirmationDialog;
+
+public class ConfirmationPresenter implements ConfirmationPresenterListener{
+	
+	private ConfirmationDialog _dialog;
+	
+	private User _admin;
+
+	public ConfirmationPresenter(User admin) {
+		super();
+		this._admin = admin;
+	}
+
+	@Override
+	public void OkButtonPressed() {
+		_admin.incNUsers();
+	}
+
+	public static void showWindow(){
+
+		
+	}
+
+}

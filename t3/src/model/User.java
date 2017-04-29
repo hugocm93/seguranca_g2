@@ -18,7 +18,6 @@ public class User {
 	private int totalListings;
 	private int totalQueries;
 	
-	
 	public String getUserName(){
 		try {
 			String principal = getCertificate().getSubjectX500Principal().toString();
@@ -67,6 +66,22 @@ public class User {
 			e.printStackTrace();
 		}
 		return null;
+	}
+	
+	public void incNAcesses(){
+		totalAcesses += 1;
+	}
+	
+	public void incNUsers(){
+		totalUsers += 1;
+	}
+	
+	public void incNListings(){
+		totalListings += 1;
+	}
+	
+	public void incNQueries(){
+		totalQueries += 1;
 	}
 
 	public byte[] get_passwordHash() {

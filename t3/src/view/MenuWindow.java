@@ -193,7 +193,12 @@ public class MenuWindow {
 		
 		JButton browse1JButton = new JButton("Localizar");
 		
-		JButton listJButton = new JButton("Listar");
+		JButton _listJButton = new JButton("Listar");
+		_listJButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				_listener.listButtonPressed();
+			}
+		});
 		
 		listarJButton = new JTable();
 		GroupLayout gl_arquivosPanel = new GroupLayout(arquivosPanel);
@@ -215,7 +220,7 @@ public class MenuWindow {
 						.addGroup(gl_arquivosPanel.createSequentialGroup()
 							.addComponent(back2JButton)
 							.addPreferredGap(ComponentPlacement.RELATED, 354, Short.MAX_VALUE)
-							.addComponent(listJButton)))
+							.addComponent(_listJButton)))
 					.addContainerGap())
 		);
 		gl_arquivosPanel.setVerticalGroup(
@@ -231,7 +236,7 @@ public class MenuWindow {
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addGroup(gl_arquivosPanel.createParallelGroup(Alignment.BASELINE)
 						.addComponent(back2JButton)
-						.addComponent(listJButton)))
+						.addComponent(_listJButton)))
 		);
 		arquivosPanel.setLayout(gl_arquivosPanel);
 		
@@ -305,7 +310,12 @@ public class MenuWindow {
 		
 		JLabel lblFormularioDeCadastro = new JLabel("Formulário de Cadastro:");
 		
-		JButton signupJButton = new JButton("Cadastrar");
+		JButton _addJButton = new JButton("Cadastrar");
+		_addJButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				_listener.addButtonPressed();
+			}
+		});
 		
 		JLabel lblCaminhoDoArquivo = new JLabel("Caminho do arquivo do certificado digital:");
 		
@@ -351,7 +361,7 @@ public class MenuWindow {
 									.addPreferredGap(ComponentPlacement.RELATED)
 									.addGroup(gl_cadastroPanel.createParallelGroup(Alignment.TRAILING)
 										.addComponent(browse2JButton, GroupLayout.PREFERRED_SIZE, 99, GroupLayout.PREFERRED_SIZE)
-										.addComponent(signupJButton))
+										.addComponent(_addJButton))
 									.addGap(283))
 								.addGroup(gl_cadastroPanel.createSequentialGroup()
 									.addComponent(lblSenhaPessoal)
@@ -393,7 +403,7 @@ public class MenuWindow {
 					.addGap(18)
 					.addGroup(gl_cadastroPanel.createParallelGroup(Alignment.BASELINE)
 						.addComponent(back4JButton)
-						.addComponent(signupJButton))
+						.addComponent(_addJButton))
 					.addContainerGap())
 		);
 		cadastroPanel.setLayout(gl_cadastroPanel);
@@ -414,14 +424,16 @@ public class MenuWindow {
 			}
 		});
 		
-		JButton listarMenuJButton = new JButton("Listar chave privada e certificado digital do usuário");
-		listarMenuJButton.addActionListener(new ActionListener() {
+		JButton _listarMenuJButton = new JButton("Listar chave privada e certificado digital do usuário");
+		_listarMenuJButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				CardLayout cardsLayout = (CardLayout)(_body2.getLayout());
 				cardsLayout.show(_body2, "certificadoPanel");
 				
 				cardsLayout = (CardLayout)(_body1.getLayout());
 				cardsLayout.show(_body1, "totalListagemJPanel");
+				
+				_listener.certificateListButtonPressed();
 			}
 		});
 		
@@ -454,7 +466,7 @@ public class MenuWindow {
 						.addGroup(gl_menuPanel.createSequentialGroup()
 							.addGap(22)
 							.addGroup(gl_menuPanel.createParallelGroup(Alignment.LEADING)
-								.addComponent(listarMenuJButton)
+								.addComponent(_listarMenuJButton)
 								.addComponent(_addUserMenuJButton)
 								.addComponent(consultarMenuJButton)
 								.addComponent(sairMenuJButton)))
@@ -471,7 +483,7 @@ public class MenuWindow {
 					.addGap(18)
 					.addComponent(_addUserMenuJButton)
 					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(listarMenuJButton)
+					.addComponent(_listarMenuJButton)
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(consultarMenuJButton)
 					.addPreferredGap(ComponentPlacement.RELATED)

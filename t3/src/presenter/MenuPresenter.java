@@ -9,7 +9,8 @@ public class MenuPresenter implements MenuPresenterListener{
 	
 	private MenuWindow _menuWindow;
 	private UserSession _session;
-
+	
+	
 	public MenuPresenter(UserSession session) {
 		super();
 		
@@ -22,6 +23,10 @@ public class MenuPresenter implements MenuPresenterListener{
 		buildBody1();
 		buildBody2();
 		_menuWindow.show();
+	}
+	
+	public UserSession get_session() {
+		return _session;
 	}
 	
 	public void buildHeader(){
@@ -48,6 +53,26 @@ public class MenuPresenter implements MenuPresenterListener{
 		
 		_menuWindow._addUserMenuJButton.setVisible(hasPermissionToAdd);
 		_menuWindow._addUserMenuJButton.setEnabled(hasPermissionToAdd);
+	}
+
+	@Override
+	public void addButtonPressed() {
+		ConfirmationPresenter confirmationPresenter = new ConfirmationPresenter(this);
+		confirmationPresenter.showWindow();
+	}
+
+	@Override
+	public void listButtonPressed() {
+		User user = _session.get_user();
+		user.incNQueries();	
+		buildBody1();
+	}
+
+	@Override
+	public void certificateListButtonPressed() {
+		User user = _session.get_user();
+		user.incNListings();
+		buildBody1();
 	}
 
 }

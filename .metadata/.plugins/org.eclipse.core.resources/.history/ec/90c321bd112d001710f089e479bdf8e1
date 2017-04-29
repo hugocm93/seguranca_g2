@@ -1,0 +1,11 @@
+package presenter;
+
+public class ConfirmationPresenter implements ConfirmationPresenterListener{
+
+	@Override
+	public void OkButtonPressed() {
+		// TODO Auto-generated method stub
+		
+	}
+
+}
