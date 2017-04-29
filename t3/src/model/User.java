@@ -68,6 +68,41 @@ public class User {
 		return null;
 	}
 	
+	public String getIssuer() {
+		try {
+			String principal = getCertificate().getIssuerX500Principal().getName().toString();
+			return trimCertificate(principal);
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	public String getSubject() {
+		try {
+			String principal = getCertificate().getSubjectX500Principal().getName().toString();
+			return trimCertificate(principal);
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	private String trimCertificate(String principal){
+		try {
+			int beginIndex = principal.indexOf("CN");
+			if (beginIndex == -1) {
+				throw new Exception("Invalid Certificate");
+			}
+			return principal.substring(beginIndex).replace(",", ", ");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
 	public void incNAcesses(){
 		totalAcesses += 1;
 	}
@@ -147,5 +182,5 @@ public class User {
 	public void setTotalQueries(int totalQueries) {
 		this.totalQueries = totalQueries;
 	}
-	
+
 }

@@ -1,0 +1,195 @@
+package model;
+
+import java.io.ByteArrayInputStream;
+import java.security.cert.CertificateException;
+import java.security.cert.CertificateFactory;
+import java.security.cert.X509Certificate;
+import java.sql.Timestamp;
+
+public class User {
+
+	private X509Certificate _certificate;
+	private byte[] _passwordHash;
+	private String _salt;
+	private Group _group;
+	private Timestamp _allowAccessAfter;
+	private int totalAcesses;
+	private int totalUsers;
+	private int totalListings;
+	private int totalQueries;
+	
+	public String getUserName(){
+		try {
+			String principal = getCertificate().getSubjectX500Principal().toString();
+			int beginIndex = principal.indexOf("CN");
+			if (beginIndex == -1) {
+				throw new Exception("Invalid Certificate");
+			}
+			int endIndex = principal.indexOf(",", beginIndex);
+			String userName = principal.substring(beginIndex, endIndex);
+			userName = userName.replace("CN=", "");
+
+			return userName;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	public void set_pemCertificate(String pemCertificate) {
+		ByteArrayInputStream bais = new ByteArrayInputStream(pemCertificate.getBytes());
+		try {
+			_certificate = (X509Certificate)CertificateFactory.getInstance("X.509").generateCertificate(bais);
+		} catch (CertificateException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public X509Certificate getCertificate() throws CertificateException {
+		return _certificate;
+
+	}
+
+	public String get_loginName(){
+		try {
+			String principal = getCertificate().getSubjectX500Principal().toString();
+			int beginIndex = principal.indexOf("EMAILADDRESS");
+			if (beginIndex == -1) {
+				throw new Exception("Invalid Certificate");
+			}
+			int endIndex = principal.indexOf(",", beginIndex);
+			String emailAdress = principal.substring(beginIndex, endIndex);
+			emailAdress = emailAdress.replace("EMAILADDRESS=", "");
+	
+			return emailAdress;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	public String getIssuer() {
+		try {
+			String principal = getCertificate().getIssuerX500Principal().getName().toString();
+			int beginIndex = principal.indexOf("CN");
+			if (beginIndex == -1) {
+				throw new Exception("Invalid Certificate");
+			}
+			
+			return principal.substring(beginIndex);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	public String getSubject() {
+		try {
+			String principal = getCertificate().getSubjectX500Principal().getName().toString();
+			int beginIndex = principal.indexOf("CN");
+			if (beginIndex == -1) {
+				throw new Exception("Invalid Certificate");
+			}
+			
+			return principal.substring(beginIndex);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	private String trimCertificate(String principal){
+		try {
+			int beginIndex = principal.indexOf("CN");
+			if (beginIndex == -1) {
+				throw new Exception("Invalid Certificate");
+			}
+			
+			return principal.substring(beginIndex);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	public void incNAcesses(){
+		totalAcesses += 1;
+	}
+	
+	public void incNUsers(){
+		totalUsers += 1;
+	}
+	
+	public void incNListings(){
+		totalListings += 1;
+	}
+	
+	public void incNQueries(){
+		totalQueries += 1;
+	}
+
+	public byte[] get_passwordHash() {
+		return _passwordHash;
+	}
+
+	public void set_passwordHash(byte[] _passwordHash) {
+		this._passwordHash = _passwordHash;
+	}
+
+	public String get_salt() {
+		return _salt;
+	}
+
+	public void set_salt(String _salt) {
+		this._salt = _salt;
+	}
+
+	public Group get_group() {
+		return _group;
+	}
+
+	public void set_group(Group _group) {
+		this._group = _group;
+	}
+
+	public Timestamp get_allowAccessAfter() {
+		return _allowAccessAfter;
+	}
+
+	public void set_allowAccessAfter(Timestamp _allowAccessAfter) {
+		this._allowAccessAfter = _allowAccessAfter;
+	}
+
+	public int getTotalAcesses() {
+		return totalAcesses;
+	}
+
+	public void setTotalAcesses(int totalAcesses) {
+		this.totalAcesses = totalAcesses;
+	}
+
+	public int getTotalUsers() {
+		return totalUsers;
+	}
+
+	public void setTotalUsers(int totalUsers) {
+		this.totalUsers = totalUsers;
+	}
+
+	public int getTotalListings() {
+		return totalListings;
+	}
+
+	public void setTotalListings(int totalListings) {
+		this.totalListings = totalListings;
+	}
+
+	public int getTotalQueries() {
+		return totalQueries;
+	}
+
+	public void setTotalQueries(int totalQueries) {
+		this.totalQueries = totalQueries;
+	}
+
+}
