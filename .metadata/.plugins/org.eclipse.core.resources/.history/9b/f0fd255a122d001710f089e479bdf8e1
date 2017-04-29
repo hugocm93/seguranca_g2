@@ -1,0 +1,13 @@
+package presenter;
+
+public class ConfirmationPresenter implements ConfirmationPresenterListener{
+	
+	User _user;
+
+	@Override
+	public void OkButtonPressed() {
+
+		
+	}
+
+}

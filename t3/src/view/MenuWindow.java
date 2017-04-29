@@ -24,6 +24,7 @@ import java.awt.event.WindowEvent;
 import java.awt.event.ActionEvent;
 import javax.swing.DefaultComboBoxModel;
 import model.Group;
+import javax.swing.JScrollPane;
 
 public class MenuWindow {
 
@@ -40,6 +41,10 @@ public class MenuWindow {
 	
 	//Corpo2
 	public JButton _addUserMenuJButton;
+	
+	//Corpo2 - Listagem
+	public JTextPane _privateKeyJTextPane;
+	public JTextPane _certificateJTextPane;
 	
 	private JFrame _frmMenu;
 	private JPanel _body2;
@@ -193,7 +198,12 @@ public class MenuWindow {
 		
 		JButton browse1JButton = new JButton("Localizar");
 		
-		JButton listJButton = new JButton("Listar");
+		JButton _listJButton = new JButton("Listar");
+		_listJButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				_listener.listButtonPressed();
+			}
+		});
 		
 		listarJButton = new JTable();
 		GroupLayout gl_arquivosPanel = new GroupLayout(arquivosPanel);
@@ -215,7 +225,7 @@ public class MenuWindow {
 						.addGroup(gl_arquivosPanel.createSequentialGroup()
 							.addComponent(back2JButton)
 							.addPreferredGap(ComponentPlacement.RELATED, 354, Short.MAX_VALUE)
-							.addComponent(listJButton)))
+							.addComponent(_listJButton)))
 					.addContainerGap())
 		);
 		gl_arquivosPanel.setVerticalGroup(
@@ -231,7 +241,7 @@ public class MenuWindow {
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addGroup(gl_arquivosPanel.createParallelGroup(Alignment.BASELINE)
 						.addComponent(back2JButton)
-						.addComponent(listJButton)))
+						.addComponent(_listJButton)))
 		);
 		arquivosPanel.setLayout(gl_arquivosPanel);
 		
@@ -249,37 +259,39 @@ public class MenuWindow {
 		
 		JLabel lblCertificado = new JLabel("Certificado:");
 		
-		JTextPane privateKeyJTextPane = new JTextPane();
-		privateKeyJTextPane.setEditable(false);
-		privateKeyJTextPane.setText("Placeholder");
-		
-		JTextPane certificateJTextPane = new JTextPane();
-		certificateJTextPane.setEditable(false);
-		certificateJTextPane.setText("Placeholder");
-		
 		JSeparator separator = new JSeparator();
 		separator.setOrientation(SwingConstants.VERTICAL);
 		separator.setForeground(Color.LIGHT_GRAY);
+		
+		JScrollPane scrollPane = new JScrollPane();
+		
+		JScrollPane scrollPane_1 = new JScrollPane();
 		GroupLayout gl_certificadoPanel = new GroupLayout(certificadoPanel);
 		gl_certificadoPanel.setHorizontalGroup(
 			gl_certificadoPanel.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_certificadoPanel.createSequentialGroup()
-					.addGap(14)
-					.addGroup(gl_certificadoPanel.createParallelGroup(Alignment.LEADING)
-						.addComponent(back3JButton)
+					.addContainerGap()
+					.addGroup(gl_certificadoPanel.createParallelGroup(Alignment.TRAILING, false)
 						.addGroup(gl_certificadoPanel.createParallelGroup(Alignment.LEADING)
-							.addComponent(privateKeyJTextPane, GroupLayout.PREFERRED_SIZE, 257, GroupLayout.PREFERRED_SIZE)
-							.addComponent(lblChavePrivada)))
-					.addGap(13)
+							.addGroup(gl_certificadoPanel.createSequentialGroup()
+								.addGap(109)
+								.addComponent(lblChavePrivada)
+								.addGap(65))
+							.addComponent(back3JButton))
+						.addComponent(scrollPane_1))
+					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(separator, GroupLayout.PREFERRED_SIZE, 11, GroupLayout.PREFERRED_SIZE)
-					.addGap(18)
 					.addGroup(gl_certificadoPanel.createParallelGroup(Alignment.LEADING)
-						.addComponent(lblCertificado, GroupLayout.PREFERRED_SIZE, 209, GroupLayout.PREFERRED_SIZE)
-						.addComponent(certificateJTextPane, GroupLayout.PREFERRED_SIZE, 257, GroupLayout.PREFERRED_SIZE))
-					.addContainerGap(287, Short.MAX_VALUE))
+						.addGroup(gl_certificadoPanel.createSequentialGroup()
+							.addGap(24)
+							.addComponent(lblCertificado, GroupLayout.PREFERRED_SIZE, 209, GroupLayout.PREFERRED_SIZE))
+						.addGroup(gl_certificadoPanel.createSequentialGroup()
+							.addGap(6)
+							.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 289, Short.MAX_VALUE)))
+					.addContainerGap())
 		);
 		gl_certificadoPanel.setVerticalGroup(
-			gl_certificadoPanel.createParallelGroup(Alignment.LEADING)
+			gl_certificadoPanel.createParallelGroup(Alignment.TRAILING)
 				.addGroup(gl_certificadoPanel.createSequentialGroup()
 					.addGap(14)
 					.addGroup(gl_certificadoPanel.createParallelGroup(Alignment.BASELINE)
@@ -287,17 +299,26 @@ public class MenuWindow {
 						.addComponent(lblCertificado))
 					.addPreferredGap(ComponentPlacement.UNRELATED)
 					.addGroup(gl_certificadoPanel.createParallelGroup(Alignment.LEADING)
-						.addGroup(gl_certificadoPanel.createSequentialGroup()
-							.addComponent(privateKeyJTextPane, GroupLayout.PREFERRED_SIZE, 113, GroupLayout.PREFERRED_SIZE)
-							.addGap(15)
+						.addGroup(Alignment.TRAILING, gl_certificadoPanel.createSequentialGroup()
+							.addComponent(scrollPane_1, GroupLayout.DEFAULT_SIZE, 128, Short.MAX_VALUE)
+							.addPreferredGap(ComponentPlacement.RELATED)
 							.addComponent(back3JButton))
-						.addComponent(certificateJTextPane, GroupLayout.PREFERRED_SIZE, 113, GroupLayout.PREFERRED_SIZE))
-					.addContainerGap(8, Short.MAX_VALUE))
-				.addGroup(Alignment.TRAILING, gl_certificadoPanel.createSequentialGroup()
+						.addGroup(gl_certificadoPanel.createSequentialGroup()
+							.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 127, GroupLayout.PREFERRED_SIZE)
+							.addContainerGap())))
+				.addGroup(gl_certificadoPanel.createSequentialGroup()
 					.addContainerGap(27, Short.MAX_VALUE)
 					.addComponent(separator, GroupLayout.PREFERRED_SIZE, 157, GroupLayout.PREFERRED_SIZE)
 					.addGap(21))
 		);
+		
+		_privateKeyJTextPane = new JTextPane();
+		_privateKeyJTextPane.setEditable(false);
+		scrollPane_1.setViewportView(_privateKeyJTextPane);
+		
+		_certificateJTextPane = new JTextPane();
+		_certificateJTextPane.setEditable(false);
+		scrollPane.setViewportView(_certificateJTextPane);
 		certificadoPanel.setLayout(gl_certificadoPanel);
 		
 		JPanel cadastroPanel = new JPanel();
@@ -305,7 +326,12 @@ public class MenuWindow {
 		
 		JLabel lblFormularioDeCadastro = new JLabel("Formulário de Cadastro:");
 		
-		JButton signupJButton = new JButton("Cadastrar");
+		JButton _addJButton = new JButton("Cadastrar");
+		_addJButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				_listener.addButtonPressed();
+			}
+		});
 		
 		JLabel lblCaminhoDoArquivo = new JLabel("Caminho do arquivo do certificado digital:");
 		
@@ -351,7 +377,7 @@ public class MenuWindow {
 									.addPreferredGap(ComponentPlacement.RELATED)
 									.addGroup(gl_cadastroPanel.createParallelGroup(Alignment.TRAILING)
 										.addComponent(browse2JButton, GroupLayout.PREFERRED_SIZE, 99, GroupLayout.PREFERRED_SIZE)
-										.addComponent(signupJButton))
+										.addComponent(_addJButton))
 									.addGap(283))
 								.addGroup(gl_cadastroPanel.createSequentialGroup()
 									.addComponent(lblSenhaPessoal)
@@ -393,7 +419,7 @@ public class MenuWindow {
 					.addGap(18)
 					.addGroup(gl_cadastroPanel.createParallelGroup(Alignment.BASELINE)
 						.addComponent(back4JButton)
-						.addComponent(signupJButton))
+						.addComponent(_addJButton))
 					.addContainerGap())
 		);
 		cadastroPanel.setLayout(gl_cadastroPanel);
@@ -414,14 +440,16 @@ public class MenuWindow {
 			}
 		});
 		
-		JButton listarMenuJButton = new JButton("Listar chave privada e certificado digital do usuário");
-		listarMenuJButton.addActionListener(new ActionListener() {
+		JButton _listarMenuJButton = new JButton("Listar chave privada e certificado digital do usuário");
+		_listarMenuJButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				CardLayout cardsLayout = (CardLayout)(_body2.getLayout());
 				cardsLayout.show(_body2, "certificadoPanel");
 				
 				cardsLayout = (CardLayout)(_body1.getLayout());
 				cardsLayout.show(_body1, "totalListagemJPanel");
+				
+				_listener.certificateListButtonPressed();
 			}
 		});
 		
@@ -454,7 +482,7 @@ public class MenuWindow {
 						.addGroup(gl_menuPanel.createSequentialGroup()
 							.addGap(22)
 							.addGroup(gl_menuPanel.createParallelGroup(Alignment.LEADING)
-								.addComponent(listarMenuJButton)
+								.addComponent(_listarMenuJButton)
 								.addComponent(_addUserMenuJButton)
 								.addComponent(consultarMenuJButton)
 								.addComponent(sairMenuJButton)))
@@ -471,7 +499,7 @@ public class MenuWindow {
 					.addGap(18)
 					.addComponent(_addUserMenuJButton)
 					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(listarMenuJButton)
+					.addComponent(_listarMenuJButton)
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(consultarMenuJButton)
 					.addPreferredGap(ComponentPlacement.RELATED)

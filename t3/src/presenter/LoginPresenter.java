@@ -94,11 +94,6 @@ public class LoginPresenter implements LoginPresenterListener{
 
 	@Override
 	public void authenticateButtonPressed() {
-		//_loginWindow.getFrame().setVisible(false);
-		//_loginWindow.getFrame().dispose();
-		//MenuPresenter menuPresenter = new MenuPresenter(_session);
-		//menuPresenter.showWindow();
-		
 		String binPath = _loginWindow._binPathJTextField.getText();
 		String secretPhrase = _loginWindow._secretPhraseJTextField.getText();
 		
@@ -140,6 +135,7 @@ public class LoginPresenter implements LoginPresenterListener{
 	}
 	
 	private void presentMenuView() {
+		_session.get_user().incNAcesses();
 		_loginWindow.getFrame().setVisible(false);
 		_loginWindow.getFrame().dispose();
 		MenuPresenter menuPresenter = new MenuPresenter(_session);

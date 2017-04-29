@@ -1,0 +1,18 @@
+package presenter;
+
+import model.User;
+
+public class ConfirmationPresenter implements ConfirmationPresenterListener{
+	User _admin;
+
+	public ConfirmationPresenter(User _user) {
+		super();
+		this._admin = _user;
+	}
+
+	@Override
+	public void OkButtonPressed() {
+		_admin.incNUsers();
+	}
+
+}

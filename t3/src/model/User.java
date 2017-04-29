@@ -18,7 +18,6 @@ public class User {
 	private int totalListings;
 	private int totalQueries;
 	
-	
 	public String getUserName(){
 		try {
 			String principal = getCertificate().getSubjectX500Principal().toString();
@@ -67,6 +66,57 @@ public class User {
 			e.printStackTrace();
 		}
 		return null;
+	}
+	
+	public String getIssuer() {
+		try {
+			String principal = getCertificate().getIssuerX500Principal().getName().toString();
+			return trimCertificate(principal);
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	public String getSubject() {
+		try {
+			String principal = getCertificate().getSubjectX500Principal().getName().toString();
+			return trimCertificate(principal);
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	private String trimCertificate(String principal){
+		try {
+			int beginIndex = principal.indexOf("CN");
+			if (beginIndex == -1) {
+				throw new Exception("Invalid Certificate");
+			}
+			return principal.substring(beginIndex).replace(",", ", ");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	public void incNAcesses(){
+		totalAcesses += 1;
+	}
+	
+	public void incNUsers(){
+		totalUsers += 1;
+	}
+	
+	public void incNListings(){
+		totalListings += 1;
+	}
+	
+	public void incNQueries(){
+		totalQueries += 1;
 	}
 
 	public byte[] get_passwordHash() {
@@ -132,5 +182,5 @@ public class User {
 	public void setTotalQueries(int totalQueries) {
 		this.totalQueries = totalQueries;
 	}
-	
+
 }

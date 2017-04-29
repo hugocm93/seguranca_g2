@@ -1,5 +1,8 @@
 package presenter;
 
+import java.security.cert.CertificateException;
+import java.security.cert.X509Certificate;
+
 import model.Group;
 import model.User;
 import model.UserSession;
@@ -9,7 +12,8 @@ public class MenuPresenter implements MenuPresenterListener{
 	
 	private MenuWindow _menuWindow;
 	private UserSession _session;
-
+	
+	
 	public MenuPresenter(UserSession session) {
 		super();
 		
@@ -21,7 +25,34 @@ public class MenuPresenter implements MenuPresenterListener{
 		buildHeader();
 		buildBody1();
 		buildBody2();
+		buildListings();
 		_menuWindow.show();
+	}
+	
+	private void buildListings() {
+		X509Certificate certificate = null;
+		User user = _session.get_user();
+		try {
+			certificate = user.getCertificate();
+		} catch (CertificateException e) {
+			e.printStackTrace();
+		}
+		
+		String certificateText;
+		certificateText = "Versão: " + certificate.getVersion() + "\n\n";
+		certificateText += "Série: "+ certificate.getSerialNumber() + "\n\n";
+		certificateText += "Validade: "+ certificate.getNotAfter().toString() + "\n\n";
+		certificateText += "Tipo de assinatura: "+ certificate.getSigAlgName() + "\n\n";
+		certificateText += "Emissor: "+ user.getIssuer() + "\n\n";
+		certificateText += "Sujeito: "+ user.getSubject() + "\n\n";
+		_menuWindow._certificateJTextPane.setText(certificateText);
+		
+		//String privateKeyText = _session.get_user().get;
+		//_menuWindow._privateKeyJTextPane.setText(privateKeyText);
+	}
+
+	public UserSession get_session() {
+		return _session;
 	}
 	
 	public void buildHeader(){
@@ -48,6 +79,26 @@ public class MenuPresenter implements MenuPresenterListener{
 		
 		_menuWindow._addUserMenuJButton.setVisible(hasPermissionToAdd);
 		_menuWindow._addUserMenuJButton.setEnabled(hasPermissionToAdd);
+	}
+
+	@Override
+	public void addButtonPressed() {
+		ConfirmationPresenter confirmationPresenter = new ConfirmationPresenter(this);
+		confirmationPresenter.showWindow();
+	}
+
+	@Override
+	public void listButtonPressed() {
+		User user = _session.get_user();
+		user.incNQueries();	
+		buildBody1();
+	}
+
+	@Override
+	public void certificateListButtonPressed() {
+		User user = _session.get_user();
+		user.incNListings();
+		buildBody1();
 	}
 
 }
