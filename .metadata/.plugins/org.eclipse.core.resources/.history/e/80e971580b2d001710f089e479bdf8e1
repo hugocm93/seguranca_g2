@@ -16,7 +16,6 @@ public class User {
 	private int totalAcesses;
 	private int totalUsers;
 	private int totalListings;
-	private int totalQueries;
 	
 	
 	public String getUserName(){
@@ -100,37 +99,4 @@ public class User {
 	public void set_allowAccessAfter(Timestamp _allowAccessAfter) {
 		this._allowAccessAfter = _allowAccessAfter;
 	}
-
-	public int getTotalAcesses() {
-		return totalAcesses;
-	}
-
-	public void setTotalAcesses(int totalAcesses) {
-		this.totalAcesses = totalAcesses;
-	}
-
-	public int getTotalUsers() {
-		return totalUsers;
-	}
-
-	public void setTotalUsers(int totalUsers) {
-		this.totalUsers = totalUsers;
-	}
-
-	public int getTotalListings() {
-		return totalListings;
-	}
-
-	public void setTotalListings(int totalListings) {
-		this.totalListings = totalListings;
-	}
-
-	public int getTotalQueries() {
-		return totalQueries;
-	}
-
-	public void setTotalQueries(int totalQueries) {
-		this.totalQueries = totalQueries;
-	}
-	
 }

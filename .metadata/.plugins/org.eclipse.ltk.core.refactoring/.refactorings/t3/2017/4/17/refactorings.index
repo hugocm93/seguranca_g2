@@ -8,3 +8,7 @@
 1493253182809	Delete element
 1493254056731	Move compilation units
 1493254076410	Rename package 'Structures'
+1493491674734	Rename field '_consultasLabel'
+1493491687913	Rename field '_acessosLabel'
+1493491701086	Rename field '_usuariosLabel'
+1493491980368	Rename field '_listagemLabel'

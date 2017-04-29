@@ -39,7 +39,6 @@ public class MenuWindow {
 	public JLabel _listingsLabel;
 	
 	//Corpo2
-	public JButton _addUserMenuJButton;
 	
 	private JFrame _frmMenu;
 	private JPanel _body2;
@@ -52,6 +51,7 @@ public class MenuWindow {
 	private JTable listarJButton;
 	
 	private MenuPresenterListener _listener;
+	private JButton _addUserMenuJButton;
 
 	/**
 	 * Create the application.

@@ -1,6 +1,7 @@
 package presenter;
 
-import model.Group;
+import javax.swing.JLabel;
+
 import model.User;
 import model.UserSession;
 import view.MenuWindow;
@@ -24,6 +25,7 @@ public class MenuPresenter implements MenuPresenterListener{
 		_menuWindow.show();
 	}
 	
+	
 	public void buildHeader(){
 		String login = _session.get_user().get_loginName();
 		String name = _session.get_user().getUserName();
@@ -43,11 +45,9 @@ public class MenuPresenter implements MenuPresenterListener{
 	}
 	
 	private void buildBody2() {
-		Group group = _session.get_user().get_group();
-		boolean hasPermissionToAdd = group == Group.Administrador ? true : false;
+		// TODO Auto-generated method stub
 		
-		_menuWindow._addUserMenuJButton.setVisible(hasPermissionToAdd);
-		_menuWindow._addUserMenuJButton.setEnabled(hasPermissionToAdd);
 	}
+
 
 }

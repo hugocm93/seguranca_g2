@@ -33,13 +33,9 @@ public class MenuWindow {
 	public JLabel _nomeLabel;
 	
 	//Corpo1
-	public JLabel _queriesLabel;
-	public JLabel _acessesLabel;
-	public JLabel _usersLabel;
-	public JLabel _listingsLabel;
-	
-	//Corpo2
-	public JButton _addUserMenuJButton;
+	public JLabel _consultasLabel;
+	public JLabel _acessosLabel;
+	public JLabel _usuariosLabel;
 	
 	private JFrame _frmMenu;
 	private JPanel _body2;
@@ -52,6 +48,7 @@ public class MenuWindow {
 	private JTable listarJButton;
 	
 	private MenuPresenterListener _listener;
+
 
 	/**
 	 * Create the application.
@@ -403,8 +400,8 @@ public class MenuWindow {
 		
 		JLabel lblMenuPrincipal = new JLabel("Menu Principal:");
 		
-		_addUserMenuJButton = new JButton("Cadastrar um novo usuário");
-		_addUserMenuJButton.addActionListener(new ActionListener() {
+		JButton cadastrarMenuJButton = new JButton("Cadastrar um novo usuário");
+		cadastrarMenuJButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				CardLayout cardsLayout = (CardLayout)(_body2.getLayout());
 				cardsLayout.show(_body2, "cadastroPanel");
@@ -455,7 +452,7 @@ public class MenuWindow {
 							.addGap(22)
 							.addGroup(gl_menuPanel.createParallelGroup(Alignment.LEADING)
 								.addComponent(listarMenuJButton)
-								.addComponent(_addUserMenuJButton)
+								.addComponent(cadastrarMenuJButton)
 								.addComponent(consultarMenuJButton)
 								.addComponent(sairMenuJButton)))
 						.addGroup(gl_menuPanel.createSequentialGroup()
@@ -469,7 +466,7 @@ public class MenuWindow {
 					.addGap(13)
 					.addComponent(lblMenuPrincipal)
 					.addGap(18)
-					.addComponent(_addUserMenuJButton)
+					.addComponent(cadastrarMenuJButton)
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(listarMenuJButton)
 					.addPreferredGap(ComponentPlacement.RELATED)
@@ -486,7 +483,7 @@ public class MenuWindow {
 		
 		JLabel totalListagemLabel = new JLabel("Total de listagem do usuário:");
 		
-		_listingsLabel = new JLabel("placeholder");
+		JLabel _listagemLabel = new JLabel("placeholder");
 		GroupLayout gl_totalListagemJPanel = new GroupLayout(totalListagemJPanel);
 		gl_totalListagemJPanel.setHorizontalGroup(
 			gl_totalListagemJPanel.createParallelGroup(Alignment.LEADING)
@@ -496,7 +493,7 @@ public class MenuWindow {
 					.addGap(32)
 					.addComponent(totalListagemLabel)
 					.addGap(18)
-					.addComponent(_listingsLabel)
+					.addComponent(_listagemLabel)
 					.addGap(281))
 		);
 		gl_totalListagemJPanel.setVerticalGroup(
@@ -507,7 +504,7 @@ public class MenuWindow {
 					.addGap(14)
 					.addGroup(gl_totalListagemJPanel.createParallelGroup(Alignment.BASELINE)
 						.addComponent(totalListagemLabel)
-						.addComponent(_listingsLabel))
+						.addComponent(_listagemLabel))
 					.addContainerGap(14, Short.MAX_VALUE))
 		);
 		totalListagemJPanel.setLayout(gl_totalListagemJPanel);
@@ -517,7 +514,7 @@ public class MenuWindow {
 		
 		JLabel totalConsultasLabel = new JLabel("Total de consultas do usuário:");
 		
-		_queriesLabel = new JLabel("placeholder");
+		_consultasLabel = new JLabel("placeholder");
 		GroupLayout gl_totalConsultasJPanel = new GroupLayout(totalConsultasJPanel);
 		gl_totalConsultasJPanel.setHorizontalGroup(
 			gl_totalConsultasJPanel.createParallelGroup(Alignment.LEADING)
@@ -526,7 +523,7 @@ public class MenuWindow {
 					.addGap(32)
 					.addComponent(totalConsultasLabel)
 					.addGap(18)
-					.addComponent(_queriesLabel)
+					.addComponent(_consultasLabel)
 					.addGap(281))
 		);
 		gl_totalConsultasJPanel.setVerticalGroup(
@@ -536,7 +533,7 @@ public class MenuWindow {
 					.addGap(14)
 					.addGroup(gl_totalConsultasJPanel.createParallelGroup(Alignment.BASELINE)
 						.addComponent(totalConsultasLabel)
-						.addComponent(_queriesLabel))
+						.addComponent(_consultasLabel))
 					.addContainerGap(14, Short.MAX_VALUE))
 		);
 		totalConsultasJPanel.setLayout(gl_totalConsultasJPanel);
@@ -546,7 +543,7 @@ public class MenuWindow {
 		
 		JLabel totalUsuariosLabel = new JLabel("Total de usuários do sistema:");
 		
-		_usersLabel = new JLabel("placeholder");
+		_usuariosLabel = new JLabel("placeholder");
 		GroupLayout gl_totalUsuariosJPanel = new GroupLayout(totalUsuariosJPanel);
 		gl_totalUsuariosJPanel.setHorizontalGroup(
 			gl_totalUsuariosJPanel.createParallelGroup(Alignment.LEADING)
@@ -555,7 +552,7 @@ public class MenuWindow {
 					.addGap(32)
 					.addComponent(totalUsuariosLabel)
 					.addGap(18)
-					.addComponent(_usersLabel)
+					.addComponent(_usuariosLabel)
 					.addGap(281))
 		);
 		gl_totalUsuariosJPanel.setVerticalGroup(
@@ -565,14 +562,14 @@ public class MenuWindow {
 					.addGap(14)
 					.addGroup(gl_totalUsuariosJPanel.createParallelGroup(Alignment.BASELINE)
 						.addComponent(totalUsuariosLabel)
-						.addComponent(_usersLabel))
+						.addComponent(_usuariosLabel))
 					.addContainerGap(14, Short.MAX_VALUE))
 		);
 		totalUsuariosJPanel.setLayout(gl_totalUsuariosJPanel);
 		
 		JPanel totalAcessosJPanel = new JPanel();
 		
-		_acessesLabel = new JLabel("placeholder");
+		_acessosLabel = new JLabel("placeholder");
 		
 		JLabel totalAcessosLabel = new JLabel("Total de acessos do usuário:");
 		_body1.add(totalAcessosJPanel, "totalAcessosJPanel");
@@ -583,7 +580,7 @@ public class MenuWindow {
 					.addGap(32)
 					.addComponent(totalAcessosLabel)
 					.addGap(18)
-					.addComponent(_acessesLabel)
+					.addComponent(_acessosLabel)
 					.addGap(281))
 		);
 		gl_totalAcessosJPanel.setVerticalGroup(
@@ -592,7 +589,7 @@ public class MenuWindow {
 					.addGap(14)
 					.addGroup(gl_totalAcessosJPanel.createParallelGroup(Alignment.BASELINE)
 						.addComponent(totalAcessosLabel)
-						.addComponent(_acessesLabel))
+						.addComponent(_acessosLabel))
 					.addContainerGap(14, Short.MAX_VALUE))
 		);
 		totalAcessosJPanel.setLayout(gl_totalAcessosJPanel);

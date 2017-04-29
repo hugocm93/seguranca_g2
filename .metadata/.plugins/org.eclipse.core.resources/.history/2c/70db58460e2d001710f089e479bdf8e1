@@ -44,6 +44,7 @@ public class MenuPresenter implements MenuPresenterListener{
 	
 	private void buildBody2() {
 		Group group = _session.get_user().get_group();
+		
 		boolean hasPermissionToAdd = group == Group.Administrador ? true : false;
 		
 		_menuWindow._addUserMenuJButton.setVisible(hasPermissionToAdd);

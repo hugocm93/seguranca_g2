@@ -1,6 +1,7 @@
 package presenter;
 
-import model.Group;
+import javax.swing.JLabel;
+
 import model.User;
 import model.UserSession;
 import view.MenuWindow;
@@ -20,7 +21,6 @@ public class MenuPresenter implements MenuPresenterListener{
 	public void showWindow(){
 		buildHeader();
 		buildBody1();
-		buildBody2();
 		_menuWindow.show();
 	}
 	
@@ -39,15 +39,7 @@ public class MenuPresenter implements MenuPresenterListener{
 		_menuWindow._queriesLabel.setText("" + user.getTotalQueries());
 		_menuWindow._acessesLabel.setText("" + user.getTotalAcesses());
 		_menuWindow._usersLabel.setText("" + user.getTotalUsers());
-		_menuWindow._listingsLabel.setText("" + user.getTotalListings());
-	}
-	
-	private void buildBody2() {
-		Group group = _session.get_user().get_group();
-		boolean hasPermissionToAdd = group == Group.Administrador ? true : false;
-		
-		_menuWindow._addUserMenuJButton.setVisible(hasPermissionToAdd);
-		_menuWindow._addUserMenuJButton.setEnabled(hasPermissionToAdd);
+		_menuWindow._listagemLabel.setText("" + user.getTotalQueries());
 	}
 
 }

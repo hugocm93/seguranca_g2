@@ -1,6 +1,7 @@
 package presenter;
 
-import model.Group;
+import javax.swing.JLabel;
+
 import model.User;
 import model.UserSession;
 import view.MenuWindow;
@@ -43,11 +44,16 @@ public class MenuPresenter implements MenuPresenterListener{
 	}
 	
 	private void buildBody2() {
-		Group group = _session.get_user().get_group();
-		boolean hasPermissionToAdd = group == Group.Administrador ? true : false;
-		
-		_menuWindow._addUserMenuJButton.setVisible(hasPermissionToAdd);
-		_menuWindow._addUserMenuJButton.setEnabled(hasPermissionToAdd);
+		User user = _session.get_user();
+		switch(user.get_group()){
+		case Administrador:
+			break;
+		case Usuário:
+			break;
+		default:
+			break;
+		}
 	}
+
 
 }

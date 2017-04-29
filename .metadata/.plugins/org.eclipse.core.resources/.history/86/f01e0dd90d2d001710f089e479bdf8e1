@@ -39,7 +39,7 @@ public class MenuWindow {
 	public JLabel _listingsLabel;
 	
 	//Corpo2
-	public JButton _addUserMenuJButton;
+	private JButton _addUserMenuJButton;
 	
 	private JFrame _frmMenu;
 	private JPanel _body2;
