@@ -100,9 +100,13 @@ public class LoginPresenter implements LoginPresenterListener{
 				System.out.println("Frase secreta: "+secretPhrase);
 				verifyPrivateKey(binPath, secretPhrase);
 			} else {
+				_loginWindow._thirdWarningLabel.setVisible(true);
+				_loginWindow._thirdWarningLabel.setText("Input muito grande");
 				System.out.println("Input too big");
 			}
 		} else {
+			_loginWindow._thirdWarningLabel.setVisible(true);
+			_loginWindow._thirdWarningLabel.setText("Preencher campos obrigatórios");
 			System.out.println("Missing input");
 		}
 	}
@@ -132,6 +136,8 @@ public class LoginPresenter implements LoginPresenterListener{
 	}
 	
 	private void presentMenuView() {
+		_loginWindow._thirdWarningLabel.setVisible(false);
+		_loginWindow._thirdWarningLabel.setText("");
 		_session.get_user().incNAcesses();
 		_loginWindow.getFrame().setVisible(false);
 		_loginWindow.getFrame().dispose();
@@ -148,6 +154,8 @@ public class LoginPresenter implements LoginPresenterListener{
 			
 		} catch (InvalidKeyException | NoSuchAlgorithmException | NoSuchPaddingException | IllegalBlockSizeException
 				| BadPaddingException | IOException e) {
+			_loginWindow._thirdWarningLabel.setVisible(true);
+			_loginWindow._thirdWarningLabel.setText("Falha na autenticação do usuário");
 			System.out.println("Private key error");
 		}
 		
@@ -157,12 +165,16 @@ public class LoginPresenter implements LoginPresenterListener{
 					Authentication.getPrivateKey(pemPrivateKey), 
 					_session.get_user().getCertificate());
 		} catch (Exception e) {
+			_loginWindow._thirdWarningLabel.setVisible(true);
+			_loginWindow._thirdWarningLabel.setText("Falha na autenticação do usuário");
 			System.out.println(e);
 		}
 		
 		if(isSigned) {
 			presentMenuView();
 		} else {
+			_loginWindow._thirdWarningLabel.setVisible(true);
+			_loginWindow._thirdWarningLabel.setText("Falha na autenticação do usuário");
 			System.out.println("User Authentication Error");
 		}
 	}
