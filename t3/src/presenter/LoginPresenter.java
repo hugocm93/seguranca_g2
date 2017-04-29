@@ -1,10 +1,18 @@
 package presenter;
 
+import java.io.IOException;
+import java.security.InvalidKeyException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
+
+import Util.Authentication;
+import Util.StringExtension;
 import model.User;
 import model.UserDAOMockImplementation;
 import model.UserSession;
@@ -86,11 +94,25 @@ public class LoginPresenter implements LoginPresenterListener{
 
 	@Override
 	public void authenticateButtonPressed() {
-		_loginWindow.getFrame().setVisible(false);
-		_loginWindow.getFrame().dispose();
-				
-		MenuPresenter menuPresenter = new MenuPresenter(_session);
-		menuPresenter.showWindow();
+		//_loginWindow.getFrame().setVisible(false);
+		//_loginWindow.getFrame().dispose();
+		//MenuPresenter menuPresenter = new MenuPresenter(_session);
+		//menuPresenter.showWindow();
+		
+		String binPath = _loginWindow._binPathJTextField.getText();
+		String secretPhrase = _loginWindow._secretPhraseJTextField.getText();
+		
+		if (binPath != null && !binPath.isEmpty() && secretPhrase != null && !secretPhrase.isEmpty()) {
+			if(binPath.length() < 255 && secretPhrase.length() < 255) {
+				System.out.println("Path: "+binPath);
+				System.out.println("Frase secreta: "+secretPhrase);
+				verifyPrivateKey(binPath, secretPhrase);
+			} else {
+				System.out.println("Input too big");
+			}
+		} else {
+			System.out.println("Missing input");
+		}
 	}
 
 	@Override
@@ -115,6 +137,42 @@ public class LoginPresenter implements LoginPresenterListener{
 		else{
 			_loginWindow.passwordSucceded();
 		}
+	}
+	
+	private void presentMenuView() {
+		_loginWindow.getFrame().setVisible(false);
+		_loginWindow.getFrame().dispose();
+		MenuPresenter menuPresenter = new MenuPresenter(_session);
+		menuPresenter.showWindow();
+	}
+	
+	private void verifyPrivateKey(String pathPrivateKey, String secretText){
+		String pemPrivateKey = "";
+		try {
+			byte[] bytePemPrivateKey = Authentication.SymmetricDecription(pathPrivateKey, secretText);
+			pemPrivateKey = StringExtension.convertToUTF8(bytePemPrivateKey);
+			System.out.println(pemPrivateKey);
+			
+		} catch (InvalidKeyException | NoSuchAlgorithmException | NoSuchPaddingException | IllegalBlockSizeException
+				| BadPaddingException | IOException e) {
+			System.out.println("Private key error");
+		}
+		
+		boolean isSigned = false;
+		try {
+			isSigned = Authentication.verifyPrivateKeySignature(
+					Authentication.getPrivateKey(pemPrivateKey), 
+					_session.get_user().getCertificate());
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+		
+		if(isSigned) {
+			presentMenuView();
+		} else {
+			System.out.println("User Authentication Error");
+		}
+		
 	}
 	
 	private void randomButtons(){
