@@ -39,14 +39,16 @@ public class LoginWindow {
 	private JButton _b4JButton;
 	private JButton _b5JButton;
 	
-	// Terceira Etapa
-	public JLabel _thirdWarningLabel;
 	public JTextField _binPathJTextField;
 	public JTextField _secretPhraseJTextField;
-	private JButton _sendButton;
 	
 	private JFrame _frmLogin;
+	private JButton _sendButton;
 	private LoginPresenterListener _listener;
+	
+	// Terceira Etapa
+	public JLabel _thirdWarningLabel;
+	
 	
 	/**
 	 * Cria a interface
@@ -119,8 +121,6 @@ public class LoginWindow {
 	
 	private void resetThirdLoginStep()
 	{
-		 _binPathJTextField.setText("");
-		 _secretPhraseJTextField.setText("");
 		_thirdWarningLabel.setText("");
 		_thirdWarningLabel.setVisible(false);
 	}

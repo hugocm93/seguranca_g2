@@ -119,8 +119,6 @@ public class LoginWindow {
 	
 	private void resetThirdLoginStep()
 	{
-		 _binPathJTextField.setText("");
-		 _secretPhraseJTextField.setText("");
 		_thirdWarningLabel.setText("");
 		_thirdWarningLabel.setVisible(false);
 	}
