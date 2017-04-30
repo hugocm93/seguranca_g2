@@ -157,6 +157,9 @@ public class LoginPresenter implements LoginPresenterListener{
 			_loginWindow._thirdWarningLabel.setVisible(true);
 			_loginWindow._thirdWarningLabel.setText("Falha na autenticação do usuário");
 			System.out.println("Private key error");
+			loginFail();
+			
+			return;
 		}
 		
 		boolean isSigned = false;
@@ -168,6 +171,9 @@ public class LoginPresenter implements LoginPresenterListener{
 			_loginWindow._thirdWarningLabel.setVisible(true);
 			_loginWindow._thirdWarningLabel.setText("Falha na autenticação do usuário");
 			System.out.println(e);
+			loginFail();
+			
+			return;
 		}
 		
 		if(isSigned) {
@@ -176,7 +182,23 @@ public class LoginPresenter implements LoginPresenterListener{
 			_loginWindow._thirdWarningLabel.setVisible(true);
 			_loginWindow._thirdWarningLabel.setText("Falha na autenticação do usuário");
 			System.out.println("User Authentication Error");
+			loginFail();
+			
+			return;
 		}
+	}
+	
+	private void loginFail() {
+		if(_session.get_numberOfAuthAttempts() >= 2){
+			_session.incAuthAttempts();
+			User user = _session.get_user();
+			user.set_allowAccessAfter(new Timestamp(System.currentTimeMillis() + 120000));
+			_userDAO.updateUser(user);
+			_loginWindow.login();	
+		}
+		_session.incAuthAttempts();
+		
+		return;
 	}
 	
 	private void randomButtons(){
@@ -219,7 +241,5 @@ public class LoginPresenter implements LoginPresenterListener{
 		byte[] hash2 = _session.get_user().get_passwordHash();
 		return Authentication.compareHash(hash1, hash2);
 	}
-	
-	
 	
 }

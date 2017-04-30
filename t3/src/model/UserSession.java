@@ -8,6 +8,7 @@ public class UserSession {
 	
 	private User _user = null;
 	private int _numberOfAttempts = 0;
+	private int _numberOfAuthAttempts = 0;
 	
 	private ArrayList<Pair<String, String>> _virtualButtonsPressed;
 	
@@ -30,8 +31,16 @@ public class UserSession {
 		return _numberOfAttempts;
 	}
 	
+	public int get_numberOfAuthAttempts() {
+		return _numberOfAuthAttempts;
+	}
+	
 	public void incAttempts() {
 		++(this._numberOfAttempts);
+	}
+	
+	public void incAuthAttempts() {
+		++(this._numberOfAuthAttempts);
 	}
 
 	public ArrayList<Pair<String, String>> get_virtualButtonsPressed() {
