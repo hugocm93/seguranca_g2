@@ -1,0 +1,193 @@
+package presenter;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.security.cert.CertificateException;
+import java.security.cert.X509Certificate;
+import java.sql.Timestamp;
+import java.util.Scanner;
+
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
+import javax.swing.JPasswordField;
+import javax.swing.JTextField;
+
+import Util.Authentication;
+import model.Group;
+import model.User;
+import model.UserSession;
+import view.MenuWindow;
+
+public class MenuPresenter implements MenuPresenterListener{
+	
+	private MenuWindow _menuWindow;
+	private UserSession _session;
+	
+	
+	public MenuPresenter(UserSession session) {
+		super();
+		
+		_menuWindow = new MenuWindow(this);
+		_session = session;
+	}
+	
+	public void showWindow(){
+		buildHeader();
+		buildBody1();
+		buildBody2();
+		buildListings();
+		_menuWindow.show();
+	}
+	
+	public void resetWindow(){
+		_menuWindow.resetAddUserView();
+	}
+	
+	private void buildListings() {
+		X509Certificate certificate = null;
+		User user = _session.get_user();
+		try {
+			certificate = user.getCertificate();
+		} catch (CertificateException e) {
+			e.printStackTrace();
+		}
+		
+		String certificateText;
+		certificateText = "Versão: " + certificate.getVersion() + "\n\n";
+		certificateText += "Série: "+ certificate.getSerialNumber() + "\n\n";
+		certificateText += "Validade: "+ certificate.getNotAfter().toString() + "\n\n";
+		certificateText += "Tipo de assinatura: "+ certificate.getSigAlgName() + "\n\n";
+		certificateText += "Emissor: "+ user.getIssuer() + "\n\n";
+		certificateText += "Sujeito: "+ user.getSubject() + "\n\n";
+		_menuWindow._certificateArea.setText(certificateText);
+		
+		String privateKeyText = _session.get_user().getPrivateKeyBase64();
+		_menuWindow._privateKeyArea.setText(privateKeyText);
+	}
+
+	public UserSession get_session() {
+		return _session;
+	}
+	
+	public void buildHeader(){
+		String login = _session.get_user().get_loginName();
+		String name = _session.get_user().getUserName();
+		String group = _session.get_user().get_group().getGroupName();
+		
+		_menuWindow._loginLabel.setText(login);
+		_menuWindow._nomeLabel.setText(name);
+		_menuWindow._grupoLabel.setText(group);
+	}
+	
+	public void buildBody1(){
+		User user = _session.get_user();
+		_menuWindow._queriesLabel.setText("" + user.getTotalQueries());
+		_menuWindow._acessesLabel.setText("" + user.getTotalAcesses());
+		_menuWindow._usersLabel.setText("" + user.getTotalUsers());
+		_menuWindow._listingsLabel.setText("" + user.getTotalListings());
+	}
+	
+	private void buildBody2() {
+		Group group = _session.get_user().get_group();
+		boolean hasPermissionToAdd = group == Group.Administrador ? true : false;
+		
+		_menuWindow._addUserMenuJButton.setVisible(hasPermissionToAdd);
+		_menuWindow._addUserMenuJButton.setEnabled(hasPermissionToAdd);
+	}
+	
+	@Override
+	public void addButtonPressed() {
+		if(passwordIsValid())
+		{
+			ConfirmationPresenter confirmationPresenter = new ConfirmationPresenter(this);
+			confirmationPresenter.showWindow();
+		}
+		else
+		{
+			_menuWindow._addUserWarning.setVisible(true);
+			_menuWindow._addUserWarning.setText("Senhas diferentes ou inválidas");
+		}
+		
+	}
+
+	private boolean passwordIsValid() {
+		String pswd1 = _menuWindow._password1JTextField.getPassword().toString();
+		String pswd2 = _menuWindow._password2JTextField.getPassword().toString();
+		if(!pswd1.equals(pswd2)){
+			return false;
+		}
+		if(pswd1.length() < 6 || pswd1.length() > 8){
+			return false;
+		}
+		
+		char[] numbers = {'1', '2', '3', '4', '5', '6', '7', '8', '9', '0'};
+		for(int i = 0; i < 10; i++){
+			if(pswd1.indexOf(numbers[i] + numbers[i]) != -1){
+				return false;
+			}
+		}
+		
+		if(pswd1.equals("012345") || pswd1.equals("0123456") || pswd1.equals("01234567")){
+			return false;
+		}
+		
+		if(pswd1.equals("123456") || pswd1.equals("1234567") || pswd1.equals("12345678")){
+			return false;
+		}
+		
+		if(pswd1.equals("543210") || pswd1.equals("6543210") || pswd1.equals("67543210")){
+			return false;
+		}
+		
+		if(pswd1.equals("654321") || pswd1.equals("7654321") || pswd1.equals("87654321")){
+			return false;
+		}
+		
+		return true;
+	}
+
+	@Override
+	public void listButtonPressed() {
+		User user = _session.get_user();
+		user.incNQueries();	
+		buildBody1();
+	}
+
+	@Override
+	public void certificateListButtonPressed() {
+		User user = _session.get_user();
+		user.incNListings();
+		buildBody1();
+	}
+
+	public boolean addUser() {
+		User newUser = new User();			
+		newUser.set_group((Group)_menuWindow._groupJComboBox.getSelectedItem());
+		newUser.set_allowAccessAfter(new Timestamp(System.currentTimeMillis()));
+		
+		Scanner scanner = null;
+		try {
+			scanner = new Scanner( new File(_menuWindow._certificateJTextField.getText()) );
+		} catch (FileNotFoundException e1) {
+			e1.printStackTrace();
+		}
+		String text = scanner.useDelimiter("\\A").next();
+		scanner.close(); 
+		newUser.set_pemCertificate(text);		
+		
+		String salt = (String)user1.get_loginName().substring(0, 9);
+		user1.set_salt(salt);
+		
+		String password = _menuWindow._password1JTextField.getText();
+		newUser.set_passwordHash(Authentication.calcStringHash(password + salt));
+		
+		newUser.setTotalAcesses(0);
+		newUser.setTotalListings(0);
+		newUser.setTotalQueries(0);
+		newUser.setTotalUsers(0);
+		
+		return false;
+	}
+
+}

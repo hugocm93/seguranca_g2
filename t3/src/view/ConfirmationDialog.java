@@ -1,21 +1,18 @@
 package view;
 
 import java.awt.BorderLayout;
-import java.awt.Container;
 import java.awt.FlowLayout;
-
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-
 import presenter.ConfirmationPresenterListener;
-
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
-import javax.swing.JTextPane;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 
 public class ConfirmationDialog extends JDialog {
 
@@ -25,6 +22,8 @@ public class ConfirmationDialog extends JDialog {
 	private JButton _cancelButton;
 	
 	private ConfirmationPresenterListener _listener;
+	private JScrollPane scrollPane;
+	public JTextArea _certificateArea;
 	
 	
 	public ConfirmationDialog(ConfirmationPresenterListener listener) {
@@ -40,23 +39,30 @@ public class ConfirmationDialog extends JDialog {
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
-		
-		JTextPane _infoTextPane = new JTextPane();
+		scrollPane = new JScrollPane();
 		GroupLayout gl_contentPanel = new GroupLayout(contentPanel);
 		gl_contentPanel.setHorizontalGroup(
 			gl_contentPanel.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_contentPanel.createSequentialGroup()
 					.addContainerGap()
-					.addComponent(_infoTextPane, GroupLayout.DEFAULT_SIZE, 428, Short.MAX_VALUE)
-					.addContainerGap())
+					.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 428, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
 		);
 		gl_contentPanel.setVerticalGroup(
 			gl_contentPanel.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_contentPanel.createSequentialGroup()
-					.addContainerGap()
-					.addComponent(_infoTextPane, GroupLayout.DEFAULT_SIZE, 217, Short.MAX_VALUE)
+				.addGroup(Alignment.TRAILING, gl_contentPanel.createSequentialGroup()
+					.addContainerGap(16, Short.MAX_VALUE)
+					.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 207, GroupLayout.PREFERRED_SIZE)
 					.addContainerGap())
 		);
+		{
+			_certificateArea = new JTextArea();
+			_certificateArea.setLineWrap(true);
+			_certificateArea.setWrapStyleWord(true);
+			_certificateArea.setColumns(60);
+			_certificateArea.setEditable(false);
+			scrollPane.setViewportView(_certificateArea);
+		}
 		contentPanel.setLayout(gl_contentPanel);
 		{
 			JPanel buttonPane = new JPanel();
@@ -75,6 +81,11 @@ public class ConfirmationDialog extends JDialog {
 			}
 			{
 				_cancelButton = new JButton("Cancelar");
+				_cancelButton.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						_listener.CancelButtonPressed();
+					}
+				});
 				_cancelButton.setActionCommand("Cancel");
 				buttonPane.add(_cancelButton);
 			}

@@ -335,7 +335,7 @@ public class LoginWindow {
 		browseJButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				JFileChooser fileChooser = new JFileChooser();
-				fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
+				fileChooser.setCurrentDirectory(new File(System.getProperty("user.dir")));
 				
 				int result = fileChooser.showOpenDialog(_frmLogin);
 				if (result == JFileChooser.APPROVE_OPTION) {

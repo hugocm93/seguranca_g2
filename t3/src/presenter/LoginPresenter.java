@@ -28,7 +28,7 @@ public class LoginPresenter implements LoginPresenterListener{
 		super();
 
 		_loginWindow = new LoginWindow(this);
-		_userDAO = new UserDAOMockImplementation();
+		_userDAO = UserDAOMockImplementation.getInstance();
 	}
 	
 	public void showWindow(){

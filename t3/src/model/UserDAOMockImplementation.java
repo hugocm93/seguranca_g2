@@ -10,9 +10,17 @@ import Util.Authentication;
 
 public class UserDAOMockImplementation implements UserDAO{
 	
+	private static UserDAOMockImplementation instance = null;
+    public static UserDAOMockImplementation getInstance() {
+       if(instance == null) {
+          instance = new UserDAOMockImplementation();
+       }
+       return instance;
+    }
+	
 	ArrayList<User> _users = new ArrayList<User>();
 	
-	public UserDAOMockImplementation(){
+	protected UserDAOMockImplementation(){
 		User user1 = new User();
 		user1.set_group(Group.Administrador);
 		user1.set_allowAccessAfter(new Timestamp(System.currentTimeMillis()));
@@ -39,39 +47,16 @@ public class UserDAOMockImplementation implements UserDAO{
 		user1.setTotalUsers(1);
 	
 		_users.add(user1);	
-		
-		////////////////
-		
-		User user2 = new User();
-		user2.set_group(Group.Usuário);
-		user2.set_allowAccessAfter(new Timestamp(System.currentTimeMillis()));
-		
-		scanner = null;
-		try {
-			scanner = new Scanner( new File("Pacote-T3/Keys/user01-x509.crt") );
-		} catch (FileNotFoundException e1) {
-			e1.printStackTrace();
-		}
-		text = scanner.useDelimiter("\\A").next();
-		scanner.close(); 
-		user2.set_pemCertificate(text);		
-		
-		salt = (String)user2.get_loginName().substring(0, 9);
-		user2.set_salt(salt);
-		
-		mockPassword = "162534";
-		user2.set_passwordHash(Authentication.calcStringHash(mockPassword + salt));
-		
-		user2.setTotalAcesses(0);
-		user2.setTotalListings(0);
-		user2.setTotalQueries(0);
-		user2.setTotalUsers(0);
-	
-		_users.add(user2);	
 	}
 	
 	@Override
 	public boolean addUser(User user) {
+		for(User u : _users){
+			if(user.get_loginName().equals(u.get_loginName())){
+				return false;
+			}
+		}
+		
 		return _users.add(user);
 	}
 

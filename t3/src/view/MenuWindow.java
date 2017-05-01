@@ -13,6 +13,7 @@ import java.awt.CardLayout;
 import javax.swing.JButton;
 import javax.swing.JTextField;
 import javax.swing.JComboBox;
+import javax.swing.JFileChooser;
 import javax.swing.JPasswordField;
 import javax.swing.JSeparator;
 import java.awt.Color;
@@ -20,6 +21,7 @@ import javax.swing.SwingConstants;
 import javax.swing.JTable;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
+import java.io.File;
 import java.awt.event.ActionEvent;
 import javax.swing.DefaultComboBoxModel;
 import model.Group;
@@ -40,23 +42,26 @@ public class MenuWindow {
 	public JLabel _listingsLabel;
 	
 	//Corpo2
-	//Cadastro
-	public JButton _addUserMenuJButton;
+	//Listagem
 	public JTextArea _certificateArea;
 	public JTextArea _privateKeyArea;
+	//Cadastro
+	public JButton _addUserMenuJButton;
+	public JPasswordField _password1JTextField;
+	public JPasswordField _password2JTextField;
+	public JTextField _certificateJTextField;
+	public JComboBox<Group> _groupJComboBox;
+	public JLabel _addUserWarning;
 	
 	private JFrame _frmMenu;
 	private JPanel _body2;
 	private JPanel _body1;
 	private JPanel _header;
-	private JTextField filePath2JTextField;
-	private JPasswordField passwordField;
-	private JPasswordField password2JTextField;
+	
 	private JTextField filePath1JTextField;
 	private JTable listarJButton;
 	
 	private MenuPresenterListener _listener;
-	private JComboBox<Group> _groupJComboBox;
 
 	/**
 	 * Create the application.
@@ -73,7 +78,14 @@ public class MenuWindow {
 		goToMenu();
 		_frmMenu.setVisible(true);
 	}
-	
+		
+	public void resetAddUserView(){
+		_addUserWarning.setVisible(false);
+		_password1JTextField.setText("");
+		_password2JTextField.setText("");;
+		_certificateJTextField.setText("");
+	}
+
 	/**
 	 * Mostra o card de menu
 	 */
@@ -333,10 +345,22 @@ public class MenuWindow {
 		
 		JLabel lblCaminhoDoArquivo = new JLabel("Caminho do arquivo do certificado digital:");
 		
-		filePath2JTextField = new JTextField();
-		filePath2JTextField.setColumns(10);
+		_certificateJTextField = new JTextField();
+		_certificateJTextField.setColumns(10);
 		
 		JButton browse2JButton = new JButton("Localizar");
+		browse2JButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				JFileChooser fileChooser = new JFileChooser();
+				fileChooser.setCurrentDirectory(new File(System.getProperty("user.dir")));
+				
+				int result = fileChooser.showOpenDialog(_frmMenu);
+				if (result == JFileChooser.APPROVE_OPTION) {
+					File selectedFile = fileChooser.getSelectedFile();
+					_certificateJTextField.setText(selectedFile.getPath());
+				}
+			}
+		});
 		
 		JLabel lblGrupo = new JLabel("Grupo:");
 		
@@ -347,7 +371,7 @@ public class MenuWindow {
 		
 		JLabel lblConfirmacaoDaSenha = new JLabel("Confirmação da senha pessoal:");
 		
-		passwordField = new JPasswordField();
+		_password1JTextField = new JPasswordField();
 		
 		JButton back4JButton = new JButton("Voltar ao menu");
 		back4JButton.addActionListener(new ActionListener() {
@@ -356,7 +380,10 @@ public class MenuWindow {
 			}
 		});
 		
-		password2JTextField = new JPasswordField();
+		_password2JTextField = new JPasswordField();
+		
+		_addUserWarning = new JLabel("Warning placeholder");
+		_addUserWarning.setForeground(Color.RED);
 		GroupLayout gl_cadastroPanel = new GroupLayout(cadastroPanel);
 		gl_cadastroPanel.setHorizontalGroup(
 			gl_cadastroPanel.createParallelGroup(Alignment.LEADING)
@@ -370,8 +397,11 @@ public class MenuWindow {
 										.addGroup(gl_cadastroPanel.createSequentialGroup()
 											.addComponent(lblCaminhoDoArquivo)
 											.addGap(12)
-											.addComponent(filePath2JTextField, GroupLayout.DEFAULT_SIZE, 172, Short.MAX_VALUE))
-										.addComponent(back4JButton))
+											.addComponent(_certificateJTextField, GroupLayout.DEFAULT_SIZE, 172, Short.MAX_VALUE))
+										.addGroup(gl_cadastroPanel.createSequentialGroup()
+											.addComponent(back4JButton)
+											.addGap(88)
+											.addComponent(_addUserWarning)))
 									.addPreferredGap(ComponentPlacement.RELATED)
 									.addGroup(gl_cadastroPanel.createParallelGroup(Alignment.TRAILING)
 										.addComponent(browse2JButton, GroupLayout.PREFERRED_SIZE, 99, GroupLayout.PREFERRED_SIZE)
@@ -380,7 +410,7 @@ public class MenuWindow {
 								.addGroup(gl_cadastroPanel.createSequentialGroup()
 									.addComponent(lblSenhaPessoal)
 									.addGap(18)
-									.addComponent(passwordField, GroupLayout.PREFERRED_SIZE, 125, GroupLayout.PREFERRED_SIZE)
+									.addComponent(_password1JTextField, GroupLayout.PREFERRED_SIZE, 125, GroupLayout.PREFERRED_SIZE)
 									.addGap(114)
 									.addComponent(lblGrupo)
 									.addPreferredGap(ComponentPlacement.RELATED)
@@ -388,7 +418,7 @@ public class MenuWindow {
 								.addGroup(gl_cadastroPanel.createSequentialGroup()
 									.addComponent(lblConfirmacaoDaSenha, GroupLayout.PREFERRED_SIZE, 209, GroupLayout.PREFERRED_SIZE)
 									.addPreferredGap(ComponentPlacement.RELATED)
-									.addComponent(password2JTextField, GroupLayout.PREFERRED_SIZE, 125, GroupLayout.PREFERRED_SIZE))))
+									.addComponent(_password2JTextField, GroupLayout.PREFERRED_SIZE, 125, GroupLayout.PREFERRED_SIZE))))
 						.addGroup(gl_cadastroPanel.createSequentialGroup()
 							.addGap(237)
 							.addComponent(lblFormularioDeCadastro)))
@@ -402,22 +432,23 @@ public class MenuWindow {
 					.addGap(18)
 					.addGroup(gl_cadastroPanel.createParallelGroup(Alignment.BASELINE)
 						.addComponent(lblCaminhoDoArquivo)
-						.addComponent(filePath2JTextField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(_certificateJTextField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 						.addComponent(browse2JButton))
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addGroup(gl_cadastroPanel.createParallelGroup(Alignment.BASELINE)
 						.addComponent(lblSenhaPessoal)
 						.addComponent(_groupJComboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 						.addComponent(lblGrupo)
-						.addComponent(passwordField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+						.addComponent(_password1JTextField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addGroup(gl_cadastroPanel.createParallelGroup(Alignment.BASELINE)
 						.addComponent(lblConfirmacaoDaSenha)
-						.addComponent(password2JTextField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+						.addComponent(_password2JTextField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 					.addGap(18)
 					.addGroup(gl_cadastroPanel.createParallelGroup(Alignment.BASELINE)
 						.addComponent(back4JButton)
-						.addComponent(_addJButton))
+						.addComponent(_addJButton)
+						.addComponent(_addUserWarning))
 					.addContainerGap())
 		);
 		cadastroPanel.setLayout(gl_cadastroPanel);
@@ -430,6 +461,7 @@ public class MenuWindow {
 		_addUserMenuJButton = new JButton("Cadastrar um novo usuário");
 		_addUserMenuJButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				resetAddUserView();
 				CardLayout cardsLayout = (CardLayout)(_body2.getLayout());
 				cardsLayout.show(_body2, "cadastroPanel");
 				

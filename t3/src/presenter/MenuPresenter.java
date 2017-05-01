@@ -1,8 +1,15 @@
 package presenter;
 
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.security.cert.CertificateException;
+import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
-
+import java.sql.Timestamp;
+import java.util.Scanner;
+import Util.Authentication;
+import Util.RandomString;
 import model.Group;
 import model.User;
 import model.UserSession;
@@ -27,6 +34,10 @@ public class MenuPresenter implements MenuPresenterListener{
 		buildBody2();
 		buildListings();
 		_menuWindow.show();
+	}
+	
+	public void resetWindow(){
+		_menuWindow.resetAddUserView();
 	}
 	
 	private void buildListings() {
@@ -80,11 +91,80 @@ public class MenuPresenter implements MenuPresenterListener{
 		_menuWindow._addUserMenuJButton.setVisible(hasPermissionToAdd);
 		_menuWindow._addUserMenuJButton.setEnabled(hasPermissionToAdd);
 	}
-
+	
 	@Override
 	public void addButtonPressed() {
-		ConfirmationPresenter confirmationPresenter = new ConfirmationPresenter(this);
-		confirmationPresenter.showWindow();
+		String error = null;
+		if(!passwordIsValid()){
+			error = "Senhas diferentes ou inválidas";
+		}
+		else if(!fieldsAreValid()){
+			error = "Campos vazios, ou cert. inválido";
+		}
+		else
+		{
+			ConfirmationPresenter confirmationPresenter = new ConfirmationPresenter(this);
+			confirmationPresenter.showWindow();
+			_menuWindow._addUserWarning.setVisible(false);
+			return;
+		}
+		_menuWindow._addUserWarning.setVisible(true);
+		_menuWindow._addUserWarning.setText(error);
+	}
+
+	private boolean fieldsAreValid() {
+		try {
+			Scanner scanner = new Scanner( new File(_menuWindow._certificateJTextField.getText()) );
+			String text = scanner.useDelimiter("\\A").next();
+			scanner.close(); 
+			
+			ByteArrayInputStream bais = new ByteArrayInputStream(text.getBytes());
+			CertificateFactory.getInstance("X.509").generateCertificate(bais);
+		}
+		catch (Exception e) {
+			return false;
+		}
+		
+		String pswd1 = new String(_menuWindow._password1JTextField.getPassword());
+		String pswd2 = new String(_menuWindow._password2JTextField.getPassword());
+		return !pswd1.equals("") && !pswd2.equals("");
+	}
+
+	private boolean passwordIsValid() {
+		String pswd1 = new String(_menuWindow._password1JTextField.getPassword());
+		String pswd2 = new String(_menuWindow._password2JTextField.getPassword());
+		if(!pswd1.equals(pswd2)){
+			return false;
+		}
+		if(pswd1.length() < 6 || pswd1.length() > 8){
+			return false;
+		}
+		
+		char[] numbers = {'1', '2', '3', '4', '5', '6', '7', '8', '9', '0'};
+		for(int i = 0; i < 10; i++){
+			if(pswd1.indexOf(numbers[i] + "" + numbers[i]) != -1){
+				System.out.println("seq");
+				return false;
+			}
+		}
+		
+		if(pswd1.equals("012345") || pswd1.equals("0123456") || pswd1.equals("01234567")){
+			return false;
+		}
+		
+		if(pswd1.equals("123456") || pswd1.equals("1234567") || pswd1.equals("12345678")){
+			return false;
+		}
+		
+		if(pswd1.equals("543210") || pswd1.equals("6543210") || pswd1.equals("67543210")){
+			return false;
+		}
+		
+		if(pswd1.equals("654321") || pswd1.equals("7654321") || pswd1.equals("87654321")){
+			return false;
+		}
+		
+		return true;
 	}
 
 	@Override
@@ -101,4 +181,33 @@ public class MenuPresenter implements MenuPresenterListener{
 		buildBody1();
 	}
 
+	public User createUser() {
+		User newUser = new User();			
+		newUser.set_group((Group)_menuWindow._groupJComboBox.getSelectedItem());
+		newUser.set_allowAccessAfter(new Timestamp(System.currentTimeMillis()));
+		
+		Scanner scanner = null;
+		try {
+			scanner = new Scanner( new File(_menuWindow._certificateJTextField.getText()) );
+		} catch (FileNotFoundException e1) {
+			e1.printStackTrace();
+		}
+		String text = scanner.useDelimiter("\\A").next();
+		scanner.close(); 
+		newUser.set_pemCertificate(text);		
+		
+		RandomString random = new RandomString(10);
+		String salt = random.nextString();
+		newUser.set_salt(salt);
+		
+		String password = new String(_menuWindow._password1JTextField.getPassword());
+		newUser.set_passwordHash(Authentication.calcStringHash(password + salt));
+		
+		newUser.setTotalAcesses(0);
+		newUser.setTotalListings(0);
+		newUser.setTotalQueries(0);
+		newUser.setTotalUsers(0);
+		
+		return newUser;	
+	}
 }
