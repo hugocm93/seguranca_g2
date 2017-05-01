@@ -48,7 +48,7 @@ public class MenuPresenter implements MenuPresenterListener{
 		_menuWindow._certificateArea.setText(certificateText);
 		
 		String privateKeyText = _session.get_user().getPrivateKeyBase64();
-		_menuWindow._privateKeyArea.setText(privateKeyText);
+		_menuWindow._privateKeyArea.setText("fakjsdnfksdjfbsdjfhbsdjhfbsdjhfbsdjfhbsdjhfbsdjhfbsdjhfbsjhdfbsdjhfbsd");
 	}
 
 	public UserSession get_session() {

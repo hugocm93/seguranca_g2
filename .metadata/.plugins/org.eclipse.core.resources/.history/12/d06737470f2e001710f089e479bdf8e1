@@ -177,15 +177,10 @@ public class LoginPresenter implements LoginPresenterListener{
 		}
 		
 		if(isSigned) {
-			User user = _session.get_user();
-			if(user.getPrivateKeyBase64() == null)
-			{
-				String privateKeyBase64 = pemPrivateKey.replaceAll("-----BEGIN PRIVATE KEY-----","");
-				privateKeyBase64 = privateKeyBase64.replaceAll("-----END PRIVATE KEY-----", "");
-				privateKeyBase64 = privateKeyBase64.replaceAll("\\s", "");
-				user.setPrivateKeyBase64(privateKeyBase64);
-				_userDAO.updateUser(user);
-			}
+			String privateKeyBase64 = pemPrivateKey.replaceAll("-----BEGIN PRIVATE KEY-----","");
+			privateKeyBase64 = privateKeyBase64.replaceAll("-----END PRIVATE KEY-----", "");
+			privateKeyBase64 = privateKeyBase64.replaceAll("\\s", "");
+			_session.get_user().setPrivateKeyBase64(privateKeyBase64);
 			presentMenuView();
 		} else {
 			_loginWindow._thirdWarningLabel.setVisible(true);

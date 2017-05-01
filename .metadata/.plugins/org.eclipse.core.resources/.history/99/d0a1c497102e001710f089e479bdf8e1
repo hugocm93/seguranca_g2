@@ -348,11 +348,6 @@ public class LoginWindow {
 		JLabel lblFraseSecreta = new JLabel("Frase secreta:");
 		
 		_secretPhraseJTextField = new JTextField();
-		_secretPhraseJTextField.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				_listener.authenticateButtonPressed();
-			}
-		});
 		_secretPhraseJTextField.setColumns(10);
 		
 		JButton authenticateJButton = new JButton("Autenticar");

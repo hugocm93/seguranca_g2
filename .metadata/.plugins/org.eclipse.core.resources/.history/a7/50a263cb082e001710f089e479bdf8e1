@@ -16,8 +16,8 @@ public class User {
 	private String _privateKeyBase64;
 	private int _totalAcesses;
 	private int _totalUsers;
-	private int _totalListings;
-	private int _totalQueries;
+	private int totalListings;
+	private int totalQueries;
 	
 	public String getUserName(){
 		try {
@@ -113,11 +113,11 @@ public class User {
 	}
 	
 	public void incNListings(){
-		_totalListings += 1;
+		totalListings += 1;
 	}
 	
 	public void incNQueries(){
-		_totalQueries += 1;
+		totalQueries += 1;
 	}
 
 	public byte[] get_passwordHash() {
@@ -169,19 +169,19 @@ public class User {
 	}
 
 	public int getTotalListings() {
-		return _totalListings;
+		return totalListings;
 	}
 
 	public void setTotalListings(int totalListings) {
-		this._totalListings = totalListings;
+		this.totalListings = totalListings;
 	}
 
 	public int getTotalQueries() {
-		return _totalQueries;
+		return totalQueries;
 	}
 
 	public void setTotalQueries(int totalQueries) {
-		this._totalQueries = totalQueries;
+		this.totalQueries = totalQueries;
 	}
 
 	public String getPrivateKeyBase64() {

@@ -14,6 +14,7 @@ import javax.swing.JButton;
 import javax.swing.JTextField;
 import javax.swing.JComboBox;
 import javax.swing.JPasswordField;
+import javax.swing.JTextPane;
 import javax.swing.JSeparator;
 import java.awt.Color;
 import javax.swing.SwingConstants;
@@ -24,6 +25,7 @@ import java.awt.event.ActionEvent;
 import javax.swing.DefaultComboBoxModel;
 import model.Group;
 import javax.swing.JScrollPane;
+import javax.swing.ScrollPaneConstants;
 import javax.swing.JTextArea;
 
 public class MenuWindow {
@@ -42,8 +44,6 @@ public class MenuWindow {
 	//Corpo2
 	//Cadastro
 	public JButton _addUserMenuJButton;
-	public JTextArea _certificateArea;
-	public JTextArea _privateKeyArea;
 	
 	private JFrame _frmMenu;
 	private JPanel _body2;
@@ -57,6 +57,8 @@ public class MenuWindow {
 	
 	private MenuPresenterListener _listener;
 	private JComboBox<Group> _groupJComboBox;
+	private JTextArea _certificateArea;
+	private JTextArea _privateKeyArea;
 
 	/**
 	 * Create the application.
@@ -307,15 +309,9 @@ public class MenuWindow {
 		);
 		
 		_certificateArea = new JTextArea();
-		_certificateArea.setLineWrap(true);
-		_certificateArea.setWrapStyleWord(true);
-		_certificateArea.setColumns(30);
 		scrollPane_1.setViewportView(_certificateArea);
 		
 		_privateKeyArea = new JTextArea();
-		_privateKeyArea.setColumns(30);
-		_privateKeyArea.setLineWrap(true);
-		_privateKeyArea.setWrapStyleWord(true);
 		scrollPane.setViewportView(_privateKeyArea);
 		certificadoPanel.setLayout(gl_certificadoPanel);
 		

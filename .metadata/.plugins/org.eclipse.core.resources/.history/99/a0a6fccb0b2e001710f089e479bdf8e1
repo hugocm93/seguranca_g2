@@ -45,10 +45,10 @@ public class MenuPresenter implements MenuPresenterListener{
 		certificateText += "Tipo de assinatura: "+ certificate.getSigAlgName() + "\n\n";
 		certificateText += "Emissor: "+ user.getIssuer() + "\n\n";
 		certificateText += "Sujeito: "+ user.getSubject() + "\n\n";
-		_menuWindow._certificateArea.setText(certificateText);
+		_menuWindow._certificateJTextPane.setText(certificateText);
 		
 		String privateKeyText = _session.get_user().getPrivateKeyBase64();
-		_menuWindow._privateKeyArea.setText(privateKeyText);
+		_menuWindow._privateKeyJTextPane.setText("fakjsdnfksdjfbsdjfhbsdjhfbsdjhfbsdjfhbsdjhfbsdjhfbsdjhfbsjhdfbsdjhfbsd");
 	}
 
 	public UserSession get_session() {

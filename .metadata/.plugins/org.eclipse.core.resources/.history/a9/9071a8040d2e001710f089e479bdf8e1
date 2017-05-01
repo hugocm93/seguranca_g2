@@ -14,6 +14,7 @@ import javax.swing.JButton;
 import javax.swing.JTextField;
 import javax.swing.JComboBox;
 import javax.swing.JPasswordField;
+import javax.swing.JTextPane;
 import javax.swing.JSeparator;
 import java.awt.Color;
 import javax.swing.SwingConstants;
@@ -24,6 +25,7 @@ import java.awt.event.ActionEvent;
 import javax.swing.DefaultComboBoxModel;
 import model.Group;
 import javax.swing.JScrollPane;
+import javax.swing.ScrollPaneConstants;
 import javax.swing.JTextArea;
 
 public class MenuWindow {
@@ -42,8 +44,9 @@ public class MenuWindow {
 	//Corpo2
 	//Cadastro
 	public JButton _addUserMenuJButton;
-	public JTextArea _certificateArea;
-	public JTextArea _privateKeyArea;
+	//Listagem
+	private JTextArea _privateKeyArea;
+	private JTextArea _certificatetextArea;
 	
 	private JFrame _frmMenu;
 	private JPanel _body2;
@@ -245,8 +248,8 @@ public class MenuWindow {
 		);
 		arquivosPanel.setLayout(gl_arquivosPanel);
 		
-		JPanel certificadoPanel = new JPanel();
-		_body2.add(certificadoPanel, "certificadoPanel");
+		JPanel CertificadoPanel = new JPanel();
+		_body2.add(CertificadoPanel, "certificadoPanel");
 		
 		JLabel lblChavePrivada = new JLabel("Chave privada:");
 		
@@ -263,61 +266,48 @@ public class MenuWindow {
 		separator.setOrientation(SwingConstants.VERTICAL);
 		separator.setForeground(Color.LIGHT_GRAY);
 		
-		JScrollPane scrollPane = new JScrollPane();
+		_privateKeyArea = new JTextArea();
 		
-		JScrollPane scrollPane_1 = new JScrollPane();
-		GroupLayout gl_certificadoPanel = new GroupLayout(certificadoPanel);
-		gl_certificadoPanel.setHorizontalGroup(
-			gl_certificadoPanel.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_certificadoPanel.createSequentialGroup()
+		_certificatetextArea = new JTextArea();
+		GroupLayout gl_CertificadoPanel = new GroupLayout(CertificadoPanel);
+		gl_CertificadoPanel.setHorizontalGroup(
+			gl_CertificadoPanel.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_CertificadoPanel.createSequentialGroup()
 					.addContainerGap()
-					.addGroup(gl_certificadoPanel.createParallelGroup(Alignment.LEADING)
-						.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 270, GroupLayout.PREFERRED_SIZE)
+					.addGroup(gl_CertificadoPanel.createParallelGroup(Alignment.LEADING)
+						.addComponent(_privateKeyArea, GroupLayout.PREFERRED_SIZE, 270, GroupLayout.PREFERRED_SIZE)
 						.addComponent(back3JButton)
 						.addComponent(lblChavePrivada))
 					.addPreferredGap(ComponentPlacement.UNRELATED)
 					.addComponent(separator, GroupLayout.PREFERRED_SIZE, 11, GroupLayout.PREFERRED_SIZE)
-					.addPreferredGap(ComponentPlacement.UNRELATED)
-					.addGroup(gl_certificadoPanel.createParallelGroup(Alignment.LEADING)
-						.addComponent(scrollPane_1, GroupLayout.DEFAULT_SIZE, 267, Short.MAX_VALUE)
-						.addComponent(lblCertificado, GroupLayout.PREFERRED_SIZE, 209, GroupLayout.PREFERRED_SIZE))
-					.addContainerGap())
+					.addGap(12)
+					.addGroup(gl_CertificadoPanel.createParallelGroup(Alignment.LEADING)
+						.addComponent(lblCertificado, GroupLayout.PREFERRED_SIZE, 209, GroupLayout.PREFERRED_SIZE)
+						.addComponent(_certificatetextArea, GroupLayout.PREFERRED_SIZE, 265, GroupLayout.PREFERRED_SIZE))
+					.addGap(8))
 		);
-		gl_certificadoPanel.setVerticalGroup(
-			gl_certificadoPanel.createParallelGroup(Alignment.TRAILING)
-				.addGroup(gl_certificadoPanel.createSequentialGroup()
-					.addContainerGap(18, Short.MAX_VALUE)
-					.addGroup(gl_certificadoPanel.createParallelGroup(Alignment.LEADING)
-						.addGroup(gl_certificadoPanel.createSequentialGroup()
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(lblCertificado)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(scrollPane_1, GroupLayout.PREFERRED_SIZE, 129, GroupLayout.PREFERRED_SIZE)
-							.addContainerGap())
-						.addGroup(gl_certificadoPanel.createSequentialGroup()
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(lblChavePrivada)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 130, GroupLayout.PREFERRED_SIZE)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(back3JButton))
-						.addGroup(Alignment.TRAILING, gl_certificadoPanel.createSequentialGroup()
+		gl_CertificadoPanel.setVerticalGroup(
+			gl_CertificadoPanel.createParallelGroup(Alignment.TRAILING)
+				.addGroup(gl_CertificadoPanel.createSequentialGroup()
+					.addContainerGap(19, Short.MAX_VALUE)
+					.addGroup(gl_CertificadoPanel.createParallelGroup(Alignment.LEADING)
+						.addGroup(Alignment.TRAILING, gl_CertificadoPanel.createParallelGroup(Alignment.LEADING)
+							.addGroup(gl_CertificadoPanel.createSequentialGroup()
+								.addPreferredGap(ComponentPlacement.RELATED)
+								.addComponent(lblChavePrivada)
+								.addPreferredGap(ComponentPlacement.RELATED)
+								.addComponent(_privateKeyArea, GroupLayout.PREFERRED_SIZE, 129, GroupLayout.PREFERRED_SIZE)
+								.addPreferredGap(ComponentPlacement.RELATED)
+								.addComponent(back3JButton))
+							.addGroup(gl_CertificadoPanel.createSequentialGroup()
+								.addComponent(lblCertificado)
+								.addPreferredGap(ComponentPlacement.RELATED)
+								.addComponent(_certificatetextArea, GroupLayout.PREFERRED_SIZE, 128, GroupLayout.PREFERRED_SIZE)))
+						.addGroup(Alignment.TRAILING, gl_CertificadoPanel.createSequentialGroup()
 							.addComponent(separator, GroupLayout.PREFERRED_SIZE, 157, GroupLayout.PREFERRED_SIZE)
-							.addGap(22))))
+							.addGap(17))))
 		);
-		
-		_certificateArea = new JTextArea();
-		_certificateArea.setLineWrap(true);
-		_certificateArea.setWrapStyleWord(true);
-		_certificateArea.setColumns(30);
-		scrollPane_1.setViewportView(_certificateArea);
-		
-		_privateKeyArea = new JTextArea();
-		_privateKeyArea.setColumns(30);
-		_privateKeyArea.setLineWrap(true);
-		_privateKeyArea.setWrapStyleWord(true);
-		scrollPane.setViewportView(_privateKeyArea);
-		certificadoPanel.setLayout(gl_certificadoPanel);
+		CertificadoPanel.setLayout(gl_CertificadoPanel);
 		
 		JPanel cadastroPanel = new JPanel();
 		_body2.add(cadastroPanel, "cadastroPanel");
