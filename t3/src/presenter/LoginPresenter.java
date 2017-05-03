@@ -151,6 +151,9 @@ public class LoginPresenter implements LoginPresenterListener{
 			byte[] bytePemPrivateKey = Authentication.SymmetricDecription(pathPrivateKey, secretText);
 			pemPrivateKey = StringExtension.convertToUTF8(bytePemPrivateKey);
 			System.out.println(pemPrivateKey);
+			pemPrivateKey = pemPrivateKey.replaceAll("-----BEGIN PRIVATE KEY-----","");
+			pemPrivateKey = pemPrivateKey.replaceAll("-----END PRIVATE KEY-----", "");
+			pemPrivateKey = pemPrivateKey.replaceAll("\\s", "");
 			
 		} catch (InvalidKeyException | NoSuchAlgorithmException | NoSuchPaddingException | IllegalBlockSizeException
 				| BadPaddingException | IOException e) {
@@ -180,10 +183,7 @@ public class LoginPresenter implements LoginPresenterListener{
 			User user = _session.get_user();
 			if(user.getPrivateKeyBase64() == null)
 			{
-				String privateKeyBase64 = pemPrivateKey.replaceAll("-----BEGIN PRIVATE KEY-----","");
-				privateKeyBase64 = privateKeyBase64.replaceAll("-----END PRIVATE KEY-----", "");
-				privateKeyBase64 = privateKeyBase64.replaceAll("\\s", "");
-				user.setPrivateKeyBase64(privateKeyBase64);
+				user.setPrivateKeyBase64(pemPrivateKey);
 				_userDAO.updateUser(user);
 			}
 			presentMenuView();

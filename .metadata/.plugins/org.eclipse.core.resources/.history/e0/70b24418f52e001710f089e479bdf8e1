@@ -1,0 +1,158 @@
+package Util;
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.security.InvalidKeyException;
+import java.security.Key;
+import java.security.KeyFactory;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.security.PrivateKey;
+import java.security.SecureRandom;
+import java.security.Signature;
+import java.security.SignatureException;
+import java.security.spec.InvalidKeySpecException;
+import java.security.spec.PKCS8EncodedKeySpec;
+import java.util.Base64;
+
+import javax.crypto.BadPaddingException;
+import javax.crypto.Cipher;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.KeyGenerator;
+import javax.crypto.NoSuchPaddingException;
+import java.security.cert.X509Certificate;
+
+import Util.StringExtension;
+
+public class Authentication {
+	
+	public static byte[] SymmetricDecription(String pathfile,String seed) throws IOException, NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException{
+		byte[] bytesDecriptedFile = null;
+		byte[] bytesEncriptedFile = Files.readAllBytes(new File(pathfile).toPath());
+		
+		//Determina o key generator com algoritmo DES
+		KeyGenerator keyGen = KeyGenerator.getInstance("DES");
+		
+		//Determina o secureRandom com SHA1PRNG
+		SecureRandom secureRandom = SecureRandom.getInstance("SHA1PRNG");
+		
+		//passa os bytes da frase secreta (semente) que sera usada no secureRandom
+		secureRandom.setSeed(seed.getBytes("UTF8"));
+		
+		//Utiliza os bytes da frase secreta para intancializar o secure random
+		keyGen.init(56, secureRandom);
+		
+		//Gera a chave para decriptacao
+		Key keyDecription = keyGen.generateKey();
+		
+		//Gera objeto Cipher para decriptacao da chave privada com a chave simetrica gerada
+		Cipher cipherDecription = Cipher.getInstance("DES/ECB/PKCS5Padding");
+		cipherDecription.init(Cipher.DECRYPT_MODE, keyDecription);
+		
+		//Decripta a chava privada com cipherDecription
+		bytesDecriptedFile = cipherDecription.doFinal(bytesEncriptedFile);
+		
+		return bytesDecriptedFile;
+	}
+	
+	public static boolean verifyPrivateKeySignature(PrivateKey userPrivatekey, X509Certificate userCert) throws Exception{
+		Signature sig = Signature.getInstance("SHA1withRSA");
+		SecureRandom sr = SecureRandom.getInstance("SHA1PRNG");
+		
+		//gerado o array aleatorio de 1024 bytes
+		byte[] randomArray = sr.generateSeed(1024);
+		
+		//init Sign com a chave privada
+		sig.initSign(userPrivatekey);
+		sig.update(randomArray);
+		
+		//gera assinatura com chave privada
+		byte[] privateSignature = sig.sign();	
+		System.out.println("Assinatura Chave Privada em RandomArray[1024]: \n"+ StringExtension.convertToHex(privateSignature));
+		
+		//init Verify com chave publica do certificado digital do usuario
+		sig.initVerify(userCert.getPublicKey());
+		sig.update(randomArray);
+		
+		boolean isSigned = false;
+		try {
+			if (sig.verify(privateSignature)) {
+				isSigned = true;
+			} else isSigned = false;
+		} catch (SignatureException se) {
+			isSigned = false;
+		}
+		
+		return isSigned;
+	}
+	
+	public static PrivateKey getPrivateKey(String pemFormatPrivateKey){
+		//Limpa a string da chave privada
+		pemFormatPrivateKey = pemFormatPrivateKey.replaceAll("-----BEGIN PRIVATE KEY-----","").replaceAll("-----END PRIVATE KEY-----", "").replaceAll("\\s", "");
+		
+		//base64
+		byte[] encodedPrivateKey = Base64.getDecoder().decode(pemFormatPrivateKey);
+		
+		//Especifica para o padrao PKCS8, em uma chave RSA
+		PKCS8EncodedKeySpec pkcs8KeySpecPrivateKey = new PKCS8EncodedKeySpec(encodedPrivateKey);
+		
+		PrivateKey privateKey = null;
+		try {
+			KeyFactory keyFactory = KeyFactory.getInstance("RSA");
+			privateKey = keyFactory.generatePrivate(pkcs8KeySpecPrivateKey);
+			
+			return privateKey;
+		} catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
+			System.out.println("Erro ao gerar Private Key");
+			System.out.println(e);
+			
+			return null;
+		}
+	}
+	
+	public static byte[] calcStringHash(String string){
+		MessageDigest digest;
+		try {
+			digest = MessageDigest.getInstance("SHA-1");
+			digest.update(string.getBytes());
+			return digest.digest();
+		}
+		catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	public static boolean compareHash(byte[] byte1, byte[] byte2){
+		try {
+			MessageDigest.getInstance("SHA-1");
+		}
+		catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+		}
+		return MessageDigest.isEqual(byte1, byte2);
+	}
+
+	public static String decryptFile(String filePath, String privateKeyBase64) throws IllegalBlockSizeException, BadPaddingException, IOException, NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException {
+		byte[] encriptedSignature = Files.readAllBytes(new File(filePath + ".asd").toPath());
+		byte[] encriptedEnvelope = Files.readAllBytes(new File(filePath + ".env").toPath());
+		
+		PrivateKey privateKey = Authentication.getPrivateKey(privateKeyBase64);
+		
+		String seed = null;
+		try {
+	        Cipher rsa;
+	        rsa = Cipher.getInstance("RSA/ECB/OAEPWithSHA-256AndMGF1Padding");
+	        rsa.init(Cipher.DECRYPT_MODE, privateKey);
+	        byte[] utf8 = rsa.doFinal(encriptedEnvelope);
+	        seed = new String(utf8, "UTF8");
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+		
+		//Decripta arquivo de índice
+		return StringExtension.convertToUTF8(Authentication.SymmetricDecription(filePath + ".enc", seed));
+	}
+	
+}

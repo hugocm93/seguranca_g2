@@ -47,6 +47,36 @@ public class UserDAOMockImplementation implements UserDAO{
 		user1.setTotalUsers(1);
 	
 		_users.add(user1);	
+		
+		/////////////
+		
+		
+		User user2 = new User();
+		user2.set_group(Group.Usuário);
+		user2.set_allowAccessAfter(new Timestamp(System.currentTimeMillis()));
+		
+		scanner = null;
+		try {
+			scanner = new Scanner( new File("Pacote-T3/Keys/user01-x509.crt") );
+		} catch (FileNotFoundException e1) {
+			e1.printStackTrace();
+		}
+		text = scanner.useDelimiter("\\A").next();
+		scanner.close(); 
+		user2.set_pemCertificate(text);		
+		
+		salt = (String)user2.get_loginName().substring(0, 9);
+		user2.set_salt(salt);
+		
+		mockPassword = "162534";
+		user2.set_passwordHash(Authentication.calcStringHash(mockPassword + salt));
+		
+		user2.setTotalAcesses(1);
+		user2.setTotalListings(1);
+		user2.setTotalQueries(1);
+		user2.setTotalUsers(1);
+	
+		_users.add(user2);
 	}
 	
 	@Override

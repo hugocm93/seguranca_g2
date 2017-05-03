@@ -1,0 +1,288 @@
+package presenter;
+
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.security.cert.CertificateException;
+import java.security.cert.CertificateFactory;
+import java.security.cert.X509Certificate;
+import java.sql.Timestamp;
+import java.util.Scanner;
+import javax.swing.JOptionPane;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.table.DefaultTableModel;
+import Util.Authentication;
+import Util.RandomString;
+import model.Group;
+import model.User;
+import model.UserSession;
+import view.MenuWindow;
+
+public class MenuPresenter implements MenuPresenterListener{
+	
+	private MenuWindow _menuWindow;
+	private UserSession _session;
+	
+	
+	public MenuPresenter(UserSession session) {
+		super();
+		
+		_menuWindow = new MenuWindow(this);
+		_session = session;
+	}
+	
+	public void showWindow(){
+		buildHeader();
+		buildBody1();
+		buildBody2();
+		buildListings();
+		_menuWindow.show();
+	}
+	
+	public void resetWindow(){
+		_menuWindow.resetAddUserView();
+	}
+	
+	private void buildListings() {
+		X509Certificate certificate = null;
+		User user = _session.get_user();
+		try {
+			certificate = user.getCertificate();
+		} catch (CertificateException e) {
+			e.printStackTrace();
+		}
+		
+		String certificateText;
+		certificateText = "Versão: " + certificate.getVersion() + "\n\n";
+		certificateText += "Série: "+ certificate.getSerialNumber() + "\n\n";
+		certificateText += "Validade: "+ certificate.getNotAfter().toString() + "\n\n";
+		certificateText += "Tipo de assinatura: "+ certificate.getSigAlgName() + "\n\n";
+		certificateText += "Emissor: "+ user.getIssuer() + "\n\n";
+		certificateText += "Sujeito: "+ user.getSubject() + "\n\n";
+		_menuWindow._certificateArea.setText(certificateText);
+		
+		String privateKeyText = _session.get_user().getPrivateKeyBase64();
+		_menuWindow._privateKeyArea.setText(privateKeyText);
+	}
+
+	public UserSession get_session() {
+		return _session;
+	}
+	
+	public void buildHeader(){
+		String login = _session.get_user().get_loginName();
+		String name = _session.get_user().getUserName();
+		String group = _session.get_user().get_group().getGroupName();
+		
+		_menuWindow._loginLabel.setText(login);
+		_menuWindow._nomeLabel.setText(name);
+		_menuWindow._grupoLabel.setText(group);
+	}
+	
+	public void buildBody1(){
+		User user = _session.get_user();
+		_menuWindow._queriesLabel.setText("" + user.getTotalQueries());
+		_menuWindow._acessesLabel.setText("" + user.getTotalAcesses());
+		_menuWindow._usersLabel.setText("" + user.getTotalUsers());
+		_menuWindow._listingsLabel.setText("" + user.getTotalListings());
+	}
+	
+	private void buildBody2() {
+		Group group = _session.get_user().get_group();
+		boolean hasPermissionToAdd = group == Group.Administrador ? true : false;
+		
+		_menuWindow._addUserMenuJButton.setVisible(hasPermissionToAdd);
+		_menuWindow._addUserMenuJButton.setEnabled(hasPermissionToAdd);
+	}
+	
+	@Override
+	public void addButtonPressed() {
+		String error = null;
+		if(!passwordIsValid()){
+			error = "Senhas diferentes ou inválidas";
+		}
+		else if(!fieldsAreValid()){
+			error = "Campos vazios, ou cert. inválido";
+		}
+		else
+		{
+			ConfirmationPresenter confirmationPresenter = new ConfirmationPresenter(this);
+			confirmationPresenter.showWindow();
+			_menuWindow._addUserWarning.setVisible(false);
+			return;
+		}
+		_menuWindow._addUserWarning.setVisible(true);
+		_menuWindow._addUserWarning.setText(error);
+	}
+
+	private boolean fieldsAreValid() {
+		try {
+			Scanner scanner = new Scanner( new File(_menuWindow._certificateJTextField.getText()) );
+			String text = scanner.useDelimiter("\\A").next();
+			scanner.close(); 
+			
+			ByteArrayInputStream bais = new ByteArrayInputStream(text.getBytes());
+			CertificateFactory.getInstance("X.509").generateCertificate(bais);
+		}
+		catch (Exception e) {
+			return false;
+		}
+		
+		String pswd1 = new String(_menuWindow._password1JTextField.getPassword());
+		String pswd2 = new String(_menuWindow._password2JTextField.getPassword());
+		return !pswd1.equals("") && !pswd2.equals("");
+	}
+
+	private boolean passwordIsValid() {
+		String pswd1 = new String(_menuWindow._password1JTextField.getPassword());
+		String pswd2 = new String(_menuWindow._password2JTextField.getPassword());
+		if(!pswd1.equals(pswd2)){
+			return false;
+		}
+		if(pswd1.length() < 6 || pswd1.length() > 8){
+			return false;
+		}
+		
+		char[] numbers = {'1', '2', '3', '4', '5', '6', '7', '8', '9', '0'};
+		for(int i = 0; i < 10; i++){
+			if(pswd1.indexOf(numbers[i] + "" + numbers[i]) != -1){
+				System.out.println("seq");
+				return false;
+			}
+		}
+		
+		if(pswd1.equals("012345") || pswd1.equals("0123456") || pswd1.equals("01234567")){
+			return false;
+		}
+		
+		if(pswd1.equals("123456") || pswd1.equals("1234567") || pswd1.equals("12345678")){
+			return false;
+		}
+		
+		if(pswd1.equals("543210") || pswd1.equals("6543210") || pswd1.equals("67543210")){
+			return false;
+		}
+		
+		if(pswd1.equals("654321") || pswd1.equals("7654321") || pswd1.equals("87654321")){
+			return false;
+		}
+		
+		return true;
+	}
+
+	@Override
+	public void listButtonPressed() {
+		User user = _session.get_user();
+		user.incNQueries();	
+		buildBody1();
+		
+		String filePath = _menuWindow._filePath1JTextField.getText() + "/index";
+		
+		String decryptedFile = null;
+		try {
+			decryptedFile = Authentication.decryptFile(filePath, _session.get_user().getPrivateKeyBase64(), _session.get_user().getCertificate());
+			if(decryptedFile == null){
+				JOptionPane.showMessageDialog(_menuWindow.getFrame(), "Erro. Você pode não ter acesso ao arquivo, ou o arquivo pode ter sido adulterado.");
+				return;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		String[] columns = {"Nome do Código", "Nome secreto", "Dono", "Grupo"};
+		String[] content = decryptedFile.split("\\r?\\n");
+		Object[][] data = new Object[content.length][columns.length];
+		for(int i = 0; i < content.length; i++){
+			data[i] = content[i].split("\\s+");
+		}
+		
+		@SuppressWarnings("serial")
+		DefaultTableModel model = new DefaultTableModel(data, columns){
+		    @Override
+		    public boolean isCellEditable(int row, int column) {
+		       return false;
+		    }
+		};
+		
+		_menuWindow._table.getModel().removeTableModelListener(null);
+		_menuWindow._table.setModel(model);
+		
+		_menuWindow._table.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
+	        public void valueChanged(ListSelectionEvent event) {
+	        	String owner = _menuWindow._table.getValueAt(_menuWindow._table.getSelectedRow(), 2).toString();
+	        	String group = _menuWindow._table.getValueAt(_menuWindow._table.getSelectedRow(), 3).toString();
+	        	User user = _session.get_user();
+	        	
+	        	boolean sameGroup = user.get_group().getGroupName().toLowerCase().replaceAll("á", "a").equals(group);
+	        	if(!sameGroup && !user.get_loginName().equals(owner)){
+    				JOptionPane.showMessageDialog(_menuWindow.getFrame(), "Erro. Você não tem acesso ao arquivo.");
+    				return;
+	        	}
+	        	
+	        	String fileCode = _menuWindow._table.getValueAt(_menuWindow._table.getSelectedRow(), 0).toString();
+	        	String filePath = _menuWindow._filePath1JTextField.getText() + "/" + fileCode;
+	    		byte[] decryptedFile = null;
+	    		try {
+	    			decryptedFile = Authentication.decryptFileToBytes(filePath, _session.get_user().getPrivateKeyBase64(), _session.get_user().getCertificate());
+	    			if(decryptedFile == null){
+	    				JOptionPane.showMessageDialog(_menuWindow.getFrame(), "Erro. Você pode não ter acesso ao arquivo, ou o arquivo pode ter sido adulterado.");
+	    				return;
+	    			}
+	    			else{
+	    				String fileName = _menuWindow._table.getValueAt(_menuWindow._table.getSelectedRow(), 1).toString();
+	    				String newFilePath = _menuWindow._filePath1JTextField.getText() + "/" + fileName;
+	    				FileOutputStream stream = new FileOutputStream(newFilePath);
+	    				try {
+	    				    stream.write(decryptedFile);
+	    				} finally {
+	    				    stream.close();
+	    				}
+
+	    				JOptionPane.showMessageDialog(_menuWindow.getFrame(), "Arquivo decriptado para \n" + newFilePath);
+	    			}
+	    		} catch (Exception e) {
+	    			e.printStackTrace();
+	    		}
+	        }
+	    });
+	}
+
+	@Override
+	public void certificateListButtonPressed() {
+		User user = _session.get_user();
+		user.incNListings();
+		buildBody1();
+	}
+
+	public User createUser() {
+		User newUser = new User();			
+		newUser.set_group((Group)_menuWindow._groupJComboBox.getSelectedItem());
+		newUser.set_allowAccessAfter(new Timestamp(System.currentTimeMillis()));
+		
+		Scanner scanner = null;
+		try {
+			scanner = new Scanner( new File(_menuWindow._certificateJTextField.getText()) );
+		} catch (FileNotFoundException e1) {
+			e1.printStackTrace();
+		}
+		String text = scanner.useDelimiter("\\A").next();
+		scanner.close(); 
+		newUser.set_pemCertificate(text);		
+		
+		RandomString random = new RandomString(10);
+		String salt = random.nextString();
+		newUser.set_salt(salt);
+		
+		String password = new String(_menuWindow._password1JTextField.getPassword());
+		newUser.set_passwordHash(Authentication.calcStringHash(password + salt));
+		
+		newUser.setTotalAcesses(0);
+		newUser.setTotalListings(0);
+		newUser.setTotalQueries(0);
+		newUser.setTotalUsers(0);
+		
+		return newUser;	
+	}
+}

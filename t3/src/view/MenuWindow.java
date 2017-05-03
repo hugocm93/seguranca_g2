@@ -52,15 +52,15 @@ public class MenuWindow {
 	public JTextField _certificateJTextField;
 	public JComboBox<Group> _groupJComboBox;
 	public JLabel _addUserWarning;
+	//Arquivos
+	public JTextField _filePath1JTextField;
+	public JTable _table;
 	
 	private JFrame _frmMenu;
 	private JPanel _body2;
 	private JPanel _body1;
 	private JPanel _header;
-	
-	private JTextField filePath1JTextField;
-	private JTable listarJButton;
-	
+		
 	private MenuPresenterListener _listener;
 
 	/**
@@ -95,6 +95,10 @@ public class MenuWindow {
 		
 		cardsLayout = (CardLayout)(_body1.getLayout());
 		cardsLayout.show(_body1, "totalAcessosJPanel");
+	}
+	
+	public JFrame getFrame(){
+		return _frmMenu;
 	}
 
 	/**
@@ -198,8 +202,8 @@ public class MenuWindow {
 		
 		JLabel lblCaminhoDaPasta = new JLabel("Caminho da pasta:");
 		
-		filePath1JTextField = new JTextField();
-		filePath1JTextField.setColumns(10);
+		_filePath1JTextField = new JTextField();
+		_filePath1JTextField.setColumns(10);
 		
 		JButton back2JButton = new JButton("Voltar ao menu");
 		back2JButton.addActionListener(new ActionListener() {
@@ -208,7 +212,20 @@ public class MenuWindow {
 			}
 		});
 		
-		JButton browse1JButton = new JButton("Localizar");
+		JButton _browseJButton = new JButton("Localizar");
+		_browseJButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				JFileChooser fileChooser = new JFileChooser();
+				fileChooser.setCurrentDirectory(new File(System.getProperty("user.dir")));
+				fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+				
+				int result = fileChooser.showOpenDialog(_frmMenu);
+				if (result == JFileChooser.APPROVE_OPTION) {
+					File selectedFile = fileChooser.getSelectedFile();
+					_filePath1JTextField.setText(selectedFile.getPath());
+				}
+			}
+		});
 		
 		JButton _listJButton = new JButton("Listar");
 		_listJButton.addActionListener(new ActionListener() {
@@ -217,23 +234,21 @@ public class MenuWindow {
 			}
 		});
 		
-		listarJButton = new JTable();
+		JScrollPane scrollPane_2 = new JScrollPane();
 		GroupLayout gl_arquivosPanel = new GroupLayout(arquivosPanel);
 		gl_arquivosPanel.setHorizontalGroup(
 			gl_arquivosPanel.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_arquivosPanel.createSequentialGroup()
+				.addGroup(Alignment.TRAILING, gl_arquivosPanel.createSequentialGroup()
 					.addContainerGap()
 					.addGroup(gl_arquivosPanel.createParallelGroup(Alignment.TRAILING)
+						.addComponent(scrollPane_2, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 572, Short.MAX_VALUE)
 						.addGroup(gl_arquivosPanel.createSequentialGroup()
-							.addGap(8)
-							.addGroup(gl_arquivosPanel.createParallelGroup(Alignment.TRAILING)
-								.addComponent(listarJButton, GroupLayout.DEFAULT_SIZE, 564, Short.MAX_VALUE)
-								.addGroup(gl_arquivosPanel.createSequentialGroup()
-									.addComponent(lblCaminhoDaPasta)
-									.addPreferredGap(ComponentPlacement.RELATED)
-									.addComponent(filePath1JTextField, GroupLayout.PREFERRED_SIZE, 285, GroupLayout.PREFERRED_SIZE)
-									.addPreferredGap(ComponentPlacement.RELATED)
-									.addComponent(browse1JButton, GroupLayout.PREFERRED_SIZE, 99, GroupLayout.PREFERRED_SIZE))))
+							.addPreferredGap(ComponentPlacement.RELATED, 59, Short.MAX_VALUE)
+							.addComponent(lblCaminhoDaPasta)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(_filePath1JTextField, GroupLayout.PREFERRED_SIZE, 285, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(_browseJButton, GroupLayout.PREFERRED_SIZE, 99, GroupLayout.PREFERRED_SIZE))
 						.addGroup(gl_arquivosPanel.createSequentialGroup()
 							.addComponent(back2JButton)
 							.addPreferredGap(ComponentPlacement.RELATED, 354, Short.MAX_VALUE)
@@ -246,15 +261,18 @@ public class MenuWindow {
 					.addContainerGap()
 					.addGroup(gl_arquivosPanel.createParallelGroup(Alignment.BASELINE)
 						.addComponent(lblCaminhoDaPasta)
-						.addComponent(filePath1JTextField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(browse1JButton))
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(listarJButton, GroupLayout.PREFERRED_SIZE, 119, GroupLayout.PREFERRED_SIZE)
+						.addComponent(_filePath1JTextField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(_browseJButton))
+					.addGap(7)
+					.addComponent(scrollPane_2, GroupLayout.PREFERRED_SIZE, 118, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addGroup(gl_arquivosPanel.createParallelGroup(Alignment.BASELINE)
 						.addComponent(back2JButton)
 						.addComponent(_listJButton)))
 		);
+		
+		_table = new JTable();
+		scrollPane_2.setViewportView(_table);
 		arquivosPanel.setLayout(gl_arquivosPanel);
 		
 		JPanel certificadoPanel = new JPanel();

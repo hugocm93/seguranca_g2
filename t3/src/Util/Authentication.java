@@ -88,9 +88,6 @@ public class Authentication {
 	}
 	
 	public static PrivateKey getPrivateKey(String pemFormatPrivateKey){
-		//Limpa a string da chave privada
-		pemFormatPrivateKey = pemFormatPrivateKey.replaceAll("-----BEGIN PRIVATE KEY-----","").replaceAll("-----END PRIVATE KEY-----", "").replaceAll("\\s", "");
-		
 		//base64
 		byte[] encodedPrivateKey = Base64.getDecoder().decode(pemFormatPrivateKey);
 		
@@ -132,6 +129,41 @@ public class Authentication {
 			e.printStackTrace();
 		}
 		return MessageDigest.isEqual(byte1, byte2);
+	}
+
+	public static String decryptFile(String filePath, String privateKeyBase64, X509Certificate certificate) throws IllegalBlockSizeException, BadPaddingException, IOException, NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, SignatureException {
+		byte[] decriptedFile = decryptFileToBytes(filePath, privateKeyBase64, certificate);
+		if(decriptedFile == null){
+			return null;
+		}
+		return StringExtension.convertToUTF8(decriptedFile);
+	}
+	
+	public static byte[] decryptFileToBytes(String filePath, String privateKeyBase64, X509Certificate certificate) throws IllegalBlockSizeException, BadPaddingException, IOException, NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, SignatureException {
+		byte[] encriptedEnvelope = Files.readAllBytes(new File(filePath + ".env").toPath());
+		PrivateKey privateKey = Authentication.getPrivateKey(privateKeyBase64);
+		
+		String seed = null;
+		try {
+	        Cipher rsa = Cipher.getInstance("RSA");
+	        rsa.init(Cipher.DECRYPT_MODE, privateKey);
+	        byte[] utf8 = rsa.doFinal(encriptedEnvelope);
+	        seed = new String(utf8, "UTF8");
+	    } catch (Exception e) {
+	        return null;
+	    }
+		
+		byte[] decryptedEnc = Authentication.SymmetricDecription(filePath + ".enc", seed);
+
+		byte[] encriptedSignature = Files.readAllBytes(new File(filePath + ".asd").toPath());
+		Signature sig = Signature.getInstance("MD5withRSA");
+		sig.initVerify(certificate.getPublicKey());
+		sig.update(decryptedEnc);
+		if(!sig.verify(encriptedSignature)){
+			return null;
+		}
+
+		return decryptedEnc;
 	}
 	
 }

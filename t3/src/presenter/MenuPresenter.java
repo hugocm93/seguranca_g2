@@ -3,11 +3,18 @@ package presenter;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
 import java.sql.Timestamp;
 import java.util.Scanner;
+
+import javax.swing.DefaultListSelectionModel;
+import javax.swing.JOptionPane;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.table.DefaultTableModel;
 import Util.Authentication;
 import Util.RandomString;
 import model.Group;
@@ -172,6 +179,80 @@ public class MenuPresenter implements MenuPresenterListener{
 		User user = _session.get_user();
 		user.incNQueries();	
 		buildBody1();
+		
+		String filePath = _menuWindow._filePath1JTextField.getText() + "/index";
+		
+		String decryptedFile = null;
+		try {
+			decryptedFile = Authentication.decryptFile(filePath, _session.get_user().getPrivateKeyBase64(), _session.get_user().getCertificate());
+			if(decryptedFile == null){
+				JOptionPane.showMessageDialog(_menuWindow.getFrame(), "Erro. Você pode não ter acesso ao arquivo, ou o arquivo pode ter sido adulterado.");
+				return;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		String[] columns = {"Nome do Código", "Nome secreto", "Dono", "Grupo"};
+		String[] content = decryptedFile.split("\\r?\\n");
+		Object[][] data = new Object[content.length][columns.length];
+		for(int i = 0; i < content.length; i++){
+			data[i] = content[i].split("\\s+");
+		}
+		
+		@SuppressWarnings("serial")
+		DefaultTableModel model = new DefaultTableModel(data, columns){
+		    @Override
+		    public boolean isCellEditable(int row, int column) {
+		       return false;
+		    }
+		};
+		
+		DefaultListSelectionModel m = (DefaultListSelectionModel)(_menuWindow._table.getSelectionModel());
+		if(m != null && m.getListSelectionListeners().length > 0){
+			m.removeListSelectionListener(m.getListSelectionListeners()[0]);
+		}
+		
+		_menuWindow._table.setModel(model);
+		
+		_menuWindow._table.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
+	        public void valueChanged(ListSelectionEvent event) {
+	        	String owner = _menuWindow._table.getValueAt(_menuWindow._table.getSelectedRow(), 2).toString();
+	        	String group = _menuWindow._table.getValueAt(_menuWindow._table.getSelectedRow(), 3).toString();
+	        	User user = _session.get_user();
+	        	
+	        	boolean sameGroup = user.get_group().getGroupName().toLowerCase().replaceAll("á", "a").equals(group);
+	        	if(!sameGroup && !user.get_loginName().equals(owner)){
+    				JOptionPane.showMessageDialog(_menuWindow.getFrame(), "Erro. Você não tem acesso ao arquivo.");
+    				return;
+	        	}
+	        	
+	        	String fileCode = _menuWindow._table.getValueAt(_menuWindow._table.getSelectedRow(), 0).toString();
+	        	String filePath = _menuWindow._filePath1JTextField.getText() + "/" + fileCode;
+	    		byte[] decryptedFile = null;
+	    		try {
+	    			decryptedFile = Authentication.decryptFileToBytes(filePath, _session.get_user().getPrivateKeyBase64(), _session.get_user().getCertificate());
+	    			if(decryptedFile == null){
+	    				JOptionPane.showMessageDialog(_menuWindow.getFrame(), "Erro. Você pode não ter acesso ao arquivo, ou o arquivo pode ter sido adulterado.");
+	    				return;
+	    			}
+	    			else{
+	    				String fileName = _menuWindow._table.getValueAt(_menuWindow._table.getSelectedRow(), 1).toString();
+	    				String newFilePath = _menuWindow._filePath1JTextField.getText() + "/" + fileName;
+	    				FileOutputStream stream = new FileOutputStream(newFilePath);
+	    				try {
+	    				    stream.write(decryptedFile);
+	    				} finally {
+	    				    stream.close();
+	    				}
+
+	    				JOptionPane.showMessageDialog(_menuWindow.getFrame(), "Arquivo decriptado para \n" + newFilePath);
+	    			}
+	    		} catch (Exception e) {
+	    			e.printStackTrace();
+	    		}
+	        }
+	    });
 	}
 
 	@Override
