@@ -1,0 +1,42 @@
+import java.sql.SQLException;
+import java.sql.Statement;
+
+import database.MySQLConnection;
+import presenter.LoginPresenter;
+
+public class Application {
+	
+	public static void main(String[] args) {
+		LoginPresenter loginPresenter = new LoginPresenter();
+		loginPresenter.showWindow();
+		
+		Statement stmt = null;
+		try {
+			stmt = MySQLConnection.getMySQLConnection().createStatement();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	      
+	      String sql = "CREATE TABLE REGISTRATION " +
+	                   "(id INTEGER not NULL, " +
+	                   " first VARCHAR(255), " + 
+	                   " last VARCHAR(255), " + 
+	                   " age INTEGER, " + 
+	                   " PRIMARY KEY ( id ))"; 
+
+	      try {
+			stmt.executeUpdate(sql);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	      System.out.println(MySQLConnection.statusConnection());
+	      
+	      try{
+	          if(stmt!=null)
+	        	  MySQLConnection.getMySQLConnection().close();
+	       }
+	      catch(SQLException se){
+	       }
+	}
+	
+}

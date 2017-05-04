@@ -1,0 +1,25 @@
+import java.sql.Statement;
+
+import database.MySQLConnection;
+import presenter.LoginPresenter;
+
+public class Application {
+	
+	public static void main(String[] args) {
+		LoginPresenter loginPresenter = new LoginPresenter();
+		loginPresenter.showWindow();
+		
+		Statement stmt = MySQLConnection.getMySQLConnection().createStatement();
+	      
+	      String sql = "CREATE TABLE REGISTRATION " +
+	                   "(id INTEGER not NULL, " +
+	                   " first VARCHAR(255), " + 
+	                   " last VARCHAR(255), " + 
+	                   " age INTEGER, " + 
+	                   " PRIMARY KEY ( id ))"; 
+
+	      stmt.executeUpdate(sql);
+	      System.out.println(MySQLConnection.statusConnection());
+	}
+	
+}
