@@ -294,7 +294,7 @@ public class MenuPresenter implements MenuPresenterListener{
 	}
 
 	@Override
-	public void closeButtonPressed(){
+	public void closeButtonPressed() {
 		UserDAOBDImplementation userDAO = UserDAOBDImplementation.getInstance();
 		userDAO.updateUser(_session.get_user());
 	}

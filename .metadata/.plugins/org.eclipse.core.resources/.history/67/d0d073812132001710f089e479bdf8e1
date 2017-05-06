@@ -149,7 +149,6 @@ public class MenuWindow {
 		JButton sairJButton = new JButton("Sair");
 		sairJButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				_listener.closeButtonPressed();
 				_frmMenu.dispatchEvent(new WindowEvent(_frmMenu, WindowEvent.WINDOW_CLOSING));
 			}
 		});
@@ -721,13 +720,5 @@ public class MenuWindow {
 		);
 		_header.setLayout(gl__header);
 		_frmMenu.getContentPane().setLayout(groupLayout);
-		
-		_frmMenu.addWindowListener(new java.awt.event.WindowAdapter() {
-		    @Override
-		    public void windowClosing(java.awt.event.WindowEvent windowEvent) {
-		    	_listener.closeButtonPressed();
-		    	System.exit(0);
-		    }
-		});
 	}
 }

@@ -19,7 +19,6 @@ import Util.Authentication;
 import Util.RandomString;
 import model.Group;
 import model.User;
-import model.UserDAOBDImplementation;
 import model.UserSession;
 import view.MenuWindow;
 
@@ -291,11 +290,5 @@ public class MenuPresenter implements MenuPresenterListener{
 		newUser.setTotalUsers(0);
 		
 		return newUser;	
-	}
-
-	@Override
-	public void closeButtonPressed(){
-		UserDAOBDImplementation userDAO = UserDAOBDImplementation.getInstance();
-		userDAO.updateUser(_session.get_user());
 	}
 }

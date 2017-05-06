@@ -24,8 +24,10 @@ public enum Group
 		switch(i){
 		case 0:
 			return Group.Administrador;
-		default:
+		case 1:
 			return Group.Usuário;
+		default:
+			return Group.indefinido;
 		}
 	}
 }

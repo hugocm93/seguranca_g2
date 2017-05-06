@@ -25,6 +25,7 @@ public enum Group
 		case 0:
 			return Group.Administrador;
 		default:
+
 			return Group.Usuário;
 		}
 	}
