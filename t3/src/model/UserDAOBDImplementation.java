@@ -37,7 +37,7 @@ public class UserDAOBDImplementation implements UserDAO {
 				     " ID int NOT NULL AUTO_INCREMENT, " + 
 				     " certificate LONGTEXT, " + 
 				     " salt VARCHAR(100), " + 
-				     " privateKeyBase64 VARCHAR(1000), " + 
+				     " privateKeyBase64 LONGTEXT, " + 
 				     " acesses INTEGER, " + 
 				     " users INTEGER, " + 
 				     " listings INTEGER, " + 
@@ -69,10 +69,10 @@ public class UserDAOBDImplementation implements UserDAO {
 			String mockPassword = "162534";
 			user1.set_passwordHash(Authentication.calcStringHash(mockPassword + salt));
 			
-			user1.setTotalAcesses(1);
-			user1.setTotalListings(1);
-			user1.setTotalQueries(1);
-			user1.setTotalUsers(1);
+			user1.setTotalAcesses(0);
+			user1.setTotalListings(0);
+			user1.setTotalQueries(0);
+			user1.setTotalUsers(0);
 		
 			addUser(user1);
 			
