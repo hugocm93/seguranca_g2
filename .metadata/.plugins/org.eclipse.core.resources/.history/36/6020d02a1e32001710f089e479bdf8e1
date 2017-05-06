@@ -5,7 +5,7 @@ package model;
  */
 public enum Group
 {
-	Administrador, Usuário, indefinido;
+	Administrador, Usuário;
 
 	private String _name;
 
@@ -27,7 +27,6 @@ public enum Group
 		case 1:
 			return Group.Usuário;
 		default:
-			return Group.indefinido;
 		}
 	}
 }

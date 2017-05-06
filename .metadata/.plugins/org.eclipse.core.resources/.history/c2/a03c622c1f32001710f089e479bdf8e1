@@ -119,7 +119,8 @@ public class UserDAOBDImplementation implements UserDAO {
 
 	@Override
 	public boolean updateUser(User user) {
-		return deleteUser(user) && addUser(user);
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 	@Override
@@ -132,14 +133,11 @@ public class UserDAOBDImplementation implements UserDAO {
 					"DELETE FROM USUARIOS WHERE certificate LIKE ? ESCAPE '!'");
 			pstmt.setString(1, "%" + preparedStr + "%");
 			
-			pstmt.executeUpdate();
-			
-			return true;
+			pstmt.executeQuery();
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return false;
 	}
 
 	@Override

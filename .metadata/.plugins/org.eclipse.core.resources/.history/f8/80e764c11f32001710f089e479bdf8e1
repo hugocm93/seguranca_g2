@@ -132,7 +132,7 @@ public class UserDAOBDImplementation implements UserDAO {
 					"DELETE FROM USUARIOS WHERE certificate LIKE ? ESCAPE '!'");
 			pstmt.setString(1, "%" + preparedStr + "%");
 			
-			pstmt.executeUpdate();
+			pstmt.executeQuery();
 			
 			return true;
 			
