@@ -1,0 +1,126 @@
+package model;
+
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+
+
+import database.MySQLConnection;
+
+public class UserDAOBDImplementation implements UserDAO {
+
+	private static UserDAOBDImplementation instance = null;
+
+	public static UserDAOBDImplementation getInstance() {
+		if (instance == null) {
+			instance = new UserDAOBDImplementation();
+		}
+		return instance;
+	}
+
+	protected UserDAOBDImplementation() {
+		Statement stmt = null;
+		try {
+			stmt = MySQLConnection.getMySQLConnection().createStatement();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		System.out.println(MySQLConnection.statusConnection());
+
+		String sql = "CREATE TABLE USUARIOS (" + 
+				     " id INTEGER not NULL, " + 
+				     " certificate VARCHAR(255), " + 
+				     " salt VARCHAR(255), " + 
+				     " privateKeyBase64 VARCHAR(255), " + 
+				     " acesses INTEGER, " + 
+				     " users INTEGER, " + 
+				     " listings INTEGER, " + 
+				     " queries INTEGER, " + 
+				     " groupId INTEGER, " + 
+				     " allowAccessAfter TIMESTAMP, " + 
+				     " passwordHash BLOB, " + 
+				     " PRIMARY KEY ( id ))";		
+		try {
+			stmt.executeUpdate(sql);
+		} catch (SQLException e) {
+			if(e.getErrorCode() != 1050){ //Código para já table já existente
+				e.printStackTrace();
+			}	
+		}
+	}
+
+	@Override
+	public boolean addUser(User user) {
+		Statement stmt = null;
+		try {
+			stmt = MySQLConnection.getMySQLConnection().createStatement();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		System.out.println(MySQLConnection.statusConnection());
+
+		String sql = "CREATE TABLE USUARIOS (" + 
+				     " id INTEGER not NULL, " + 
+				     " certificate VARCHAR(255), " + 
+				     " salt VARCHAR(255), " + 
+				     " privateKeyBase64 VARCHAR(255), " + 
+				     " acesses INTEGER, " + 
+				     " users INTEGER, " + 
+				     " listings INTEGER, " + 
+				     " queries INTEGER, " + 
+				     " groupId INTEGER, " + 
+				     " allowAccessAfter TIMESTAMP, " + 
+				     " passwordHash BLOB, " + 
+				     " PRIMARY KEY ( id ))";
+		
+		sql = "INSERT INTO USUARIOS (id, certificate, salt, privateKeyBase64, " + 
+		"acesses, users, listings, queries, groupId, allowAccessAfter, passwordHash)" + 
+		"VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+		
+		 PreparedStatement pstmt = MySQLConnection.getMySQLConnection().prepareStatement(sql);
+		 pstmt.setInt(1, 1);
+		 pstmt.setString(2, user.get_pemCertificate());
+		 pstmt.setString(3, user.get_salt());
+		 pstmt.setString(4, user.getPrivateKeyBase64());
+		 pstmt.setInt(5, user.getTotalAcesses());
+		 pstmt.setString(1, "1");
+		 
+		 pstmt.setTimestamp(2, sqlDate);
+		
+		try {
+			stmt.executeUpdate(sql);
+		} catch (SQLException e) {
+			if(e.getErrorCode() != 1050){ //Código para já table já existente
+				e.printStackTrace();
+			}
+		return false;
+	}
+
+	@Override
+	public ArrayList<User> getAllUsers() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean updateUser(User user) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean deleteUser(User user) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public User getUserByLoginName(String loginName) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+}

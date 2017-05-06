@@ -6,7 +6,7 @@ import java.security.cert.X509Certificate;
 import javax.swing.JOptionPane;
 
 import model.User;
-import model.UserDAOMockImplementation;
+import model.UserDAOBDImplementation;
 import view.ConfirmationDialog;
 
 public class ConfirmationPresenter implements ConfirmationPresenterListener{
@@ -45,7 +45,7 @@ public class ConfirmationPresenter implements ConfirmationPresenterListener{
 
 	@Override
 	public void OkButtonPressed() {	
-		UserDAOMockImplementation userDAO = UserDAOMockImplementation.getInstance();
+		UserDAOBDImplementation userDAO = UserDAOBDImplementation.getInstance();
 		if(userDAO.addUser(_newUser)){
 			User admin = _menu.get_session().get_user();
 			admin.incNUsers();

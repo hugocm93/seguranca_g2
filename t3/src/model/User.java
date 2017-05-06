@@ -8,16 +8,16 @@ import java.sql.Timestamp;
 
 public class User {
 
-	private X509Certificate _certificate;
-	private byte[] _passwordHash;
+	private String _pemCertificate;
 	private String _salt;
-	private Group _group;
-	private Timestamp _allowAccessAfter;
 	private String _privateKeyBase64;
 	private int _totalAcesses;
 	private int _totalUsers;
 	private int _totalListings;
 	private int _totalQueries;
+	private Group _group;
+	private Timestamp _allowAccessAfter;
+	private byte[] _passwordHash;
 	
 	public String getUserName(){
 		try {
@@ -38,17 +38,21 @@ public class User {
 	}
 	
 	public void set_pemCertificate(String pemCertificate) {
-		ByteArrayInputStream bais = new ByteArrayInputStream(pemCertificate.getBytes());
+		_pemCertificate = pemCertificate;
+	}
+	
+	public String get_pemCertificate() {
+		return _pemCertificate;
+	}
+
+	public X509Certificate getCertificate() throws CertificateException {
+		ByteArrayInputStream bais = new ByteArrayInputStream(_pemCertificate.getBytes());
 		try {
-			_certificate = (X509Certificate)CertificateFactory.getInstance("X.509").generateCertificate(bais);
+			return (X509Certificate)CertificateFactory.getInstance("X.509").generateCertificate(bais);
 		} catch (CertificateException e) {
 			e.printStackTrace();
 		}
-	}
-	
-	public X509Certificate getCertificate() throws CertificateException {
-		return _certificate;
-
+		return null;
 	}
 
 	public String get_loginName(){

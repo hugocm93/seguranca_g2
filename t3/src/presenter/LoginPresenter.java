@@ -11,7 +11,7 @@ import javax.crypto.NoSuchPaddingException;
 import Util.Authentication;
 import Util.StringExtension;
 import model.User;
-import model.UserDAOMockImplementation;
+import model.UserDAOBDImplementation;
 import model.UserSession;
 import structures.Pair;
 import structures.PasswordTree;
@@ -20,7 +20,7 @@ import view.LoginWindow;
 public class LoginPresenter implements LoginPresenterListener{
 	
 	private LoginWindow _loginWindow;
-	private UserDAOMockImplementation _userDAO;
+	private UserDAOBDImplementation _userDAO;
 	private UserSession _session;
 	
 	
@@ -28,7 +28,7 @@ public class LoginPresenter implements LoginPresenterListener{
 		super();
 
 		_loginWindow = new LoginWindow(this);
-		_userDAO = UserDAOMockImplementation.getInstance();
+		_userDAO = UserDAOBDImplementation.getInstance();
 	}
 	
 	public void showWindow(){
