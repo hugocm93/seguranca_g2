@@ -80,6 +80,8 @@ public class UserDAOBDImplementation implements UserDAO {
 				e.printStackTrace();
 			}	
 		}
+		
+		
 	}
 
 	@Override

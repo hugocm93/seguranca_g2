@@ -6,6 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 import Util.Authentication;
@@ -47,39 +48,38 @@ public class UserDAOBDImplementation implements UserDAO {
 				     " PRIMARY KEY ( id ))";		
 		try {
 			stmt.executeUpdate(sql);
-			
-			User user1 = new User();
-			user1.set_group(Group.Administrador);
-			user1.set_allowAccessAfter(new Timestamp(System.currentTimeMillis()));
-			
-			Scanner scanner = null;
-			try {
-				scanner = new Scanner( new File("Pacote-T3/Keys/admin-x509.crt") );
-			} catch (FileNotFoundException e1) {
-				e1.printStackTrace();
-			}
-			String text = scanner.useDelimiter("\\A").next();
-			scanner.close(); 
-			user1.set_pemCertificate(text);		
-			
-			String salt = (String)user1.get_loginName().substring(0, 9);
-			user1.set_salt(salt);
-			
-			String mockPassword = "162534";
-			user1.set_passwordHash(Authentication.calcStringHash(mockPassword + salt));
-			
-			user1.setTotalAcesses(1);
-			user1.setTotalListings(1);
-			user1.setTotalQueries(1);
-			user1.setTotalUsers(1);
-		
-			addUser(user1);
-			
 		} catch (SQLException e) {
 			if(e.getErrorCode() != 1050){ //Código para já table já existente
 				e.printStackTrace();
 			}	
 		}
+		
+		User user1 = new User();
+		user1.set_group(Group.Administrador);
+		user1.set_allowAccessAfter(new Timestamp(System.currentTimeMillis()));
+		
+		Scanner scanner = null;
+		try {
+			scanner = new Scanner( new File("Pacote-T3/Keys/admin-x509.crt") );
+		} catch (FileNotFoundException e1) {
+			e1.printStackTrace();
+		}
+		String text = scanner.useDelimiter("\\A").next();
+		scanner.close(); 
+		user1.set_pemCertificate(text);		
+		
+		String salt = (String)user1.get_loginName().substring(0, 9);
+		user1.set_salt(salt);
+		
+		String mockPassword = "162534";
+		user1.set_passwordHash(Authentication.calcStringHash(mockPassword + salt));
+		
+		user1.setTotalAcesses(1);
+		user1.setTotalListings(1);
+		user1.setTotalQueries(1);
+		user1.setTotalUsers(1);
+	
+		addUser(user1);
 	}
 
 	@Override
@@ -114,6 +114,12 @@ public class UserDAOBDImplementation implements UserDAO {
 			return false;
 		}
 		return true;
+	}
+
+	@Override
+	public ArrayList<User> getAllUsers() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	@Override

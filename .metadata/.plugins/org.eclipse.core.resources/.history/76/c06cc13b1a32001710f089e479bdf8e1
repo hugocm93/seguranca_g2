@@ -91,6 +91,11 @@ public class UserDAOMockImplementation implements UserDAO{
 	}
 
 	@Override
+	public ArrayList<User> getAllUsers() {
+		return _users;
+	}
+
+	@Override
 	public boolean updateUser(User user){
 		for(User u : _users){
 			if(user.get_loginName().equals(u.get_loginName())){
