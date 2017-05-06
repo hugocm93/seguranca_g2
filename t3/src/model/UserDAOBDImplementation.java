@@ -45,7 +45,8 @@ public class UserDAOBDImplementation implements UserDAO {
 				     " groupId INTEGER, " + 
 				     " allowAccessAfter TIMESTAMP, " + 
 				     " passwordHash BLOB, " + 
-				     " PRIMARY KEY ( id ))";		
+				     " PRIMARY KEY ( ID ), " +
+				     " FOREIGN KEY ( groupId ) REFERENCES GRUPOS(groupId))";
 		try {
 			stmt.executeUpdate(sql);
 			
