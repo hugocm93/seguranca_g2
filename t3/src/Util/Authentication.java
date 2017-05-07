@@ -69,7 +69,7 @@ public class Authentication {
 		
 		//gera assinatura com chave privada
 		byte[] privateSignature = sig.sign();	
-		System.out.println("Assinatura Chave Privada em RandomArray[1024]: \n"+ StringExtension.convertToHex(privateSignature));
+		//System.out.println("Assinatura Chave Privada em RandomArray[1024]: \n"+ StringExtension.convertToHex(privateSignature));
 		
 		//init Verify com chave publica do certificado digital do usuario
 		sig.initVerify(userCert.getPublicKey());

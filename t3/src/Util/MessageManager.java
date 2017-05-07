@@ -30,7 +30,7 @@ public class MessageManager {
 		messages = new ArrayList<Message>();
 		
 		messages.add(new Message(1001,"Sistema iniciado."));
-		messages.add(new Message(1002,"Sistema Sistema encerrado."));
+		messages.add(new Message(1002,"Sistema encerrado."));
 		
 		messages.add(new Message(2001,"Autenticação etapa 1 iniciada."));
 		messages.add(new Message(2002,"Autenticação etapa 1 encerrada."));

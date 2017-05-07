@@ -107,8 +107,8 @@ public class LoginPresenter implements LoginPresenterListener{
 		
 		if (binPath != null && !binPath.isEmpty() && secretPhrase != null && !secretPhrase.isEmpty()) {
 			if(binPath.length() < 255 && secretPhrase.length() < 255) {
-				System.out.println("Path: "+binPath);
-				System.out.println("Frase secreta: "+secretPhrase);
+				//System.out.println("Path: "+binPath);
+				//System.out.println("Frase secreta: "+secretPhrase);
 				verifyPrivateKey(binPath, secretPhrase);
 			} else {
 				_loginWindow._thirdWarningLabel.setVisible(true);
@@ -182,20 +182,29 @@ public class LoginPresenter implements LoginPresenterListener{
 	}
 	
 	private void verifyPrivateKey(String pathPrivateKey, String secretText){
+		User user = _session.get_user();
 		String pemPrivateKey = "";
 		try {
 			byte[] bytePemPrivateKey = Authentication.SymmetricDecription(pathPrivateKey, secretText);
 			pemPrivateKey = StringExtension.convertToUTF8(bytePemPrivateKey);
-			System.out.println(pemPrivateKey);
 			pemPrivateKey = pemPrivateKey.replaceAll("-----BEGIN PRIVATE KEY-----","");
 			pemPrivateKey = pemPrivateKey.replaceAll("-----END PRIVATE KEY-----", "");
 			pemPrivateKey = pemPrivateKey.replaceAll("\\s", "");
 			
+			Register r = new Register(3003, user.getId(), user.get_loginName(), null);
+			r.Log();
+			
 		} catch (InvalidKeyException | NoSuchAlgorithmException | NoSuchPaddingException | IllegalBlockSizeException
 				| BadPaddingException | IOException e) {
+			if(pathPrivateKey.compareTo(e.getMessage())==0) {
+				Register r = new Register(3004, user.getId(), user.get_loginName(), null);
+				r.Log();
+			} else {
+				Register r = new Register(3005, user.getId(), user.get_loginName(), null);
+				r.Log();
+			}
 			_loginWindow._thirdWarningLabel.setVisible(true);
 			_loginWindow._thirdWarningLabel.setText("Falha na autenticação do usuário");
-			System.out.println("Private key error");
 			loginFail();
 			
 			return;
@@ -216,17 +225,21 @@ public class LoginPresenter implements LoginPresenterListener{
 		}
 		
 		if(isSigned) {
-			User user = _session.get_user();
 			if(user.getPrivateKeyBase64() == null)
 			{
 				user.setPrivateKeyBase64(pemPrivateKey);
 				_userDAO.updateUser(user);
 			}
 			presentMenuView();
+			Register r1 = new Register(4002, user.getId(), user.get_loginName(), null);
+			r1.Log();
+			Register r2 = new Register(5001, user.getId(), user.get_loginName(), null);
+			r2.Log();
 		} else {
 			_loginWindow._thirdWarningLabel.setVisible(true);
 			_loginWindow._thirdWarningLabel.setText("Falha na autenticação do usuário");
-			System.out.println("User Authentication Error");
+			Register r = new Register(3006, user.getId(), user.get_loginName(), null);
+			r.Log();
 			loginFail();
 			
 			return;
@@ -239,7 +252,13 @@ public class LoginPresenter implements LoginPresenterListener{
 			User user = _session.get_user();
 			user.set_allowAccessAfter(new Timestamp(System.currentTimeMillis() + 120000));
 			_userDAO.updateUser(user);
-			_loginWindow.login();	
+			_loginWindow.login();
+			Register r1 = new Register(4009, user.getId(), user.get_loginName(), null);
+			r1.Log();
+			Register r2 = new Register(4002, user.getId(), user.get_loginName(), null);
+			r2.Log();
+			Register r3 = new Register(2001, user.getId(), user.get_loginName(), null);
+			r3.Log();
 		}
 		_session.incAuthAttempts();
 		
