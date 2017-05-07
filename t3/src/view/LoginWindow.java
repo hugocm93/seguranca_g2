@@ -15,6 +15,7 @@ import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
+import model.Register;
 import presenter.LoginPresenterListener;
 import structures.Pair;
 
@@ -410,6 +411,15 @@ public class LoginWindow {
 					.addGap(28))
 		);
 		privateKeyPanel.setLayout(gl_privateKeyPanel);
+		
+		_frmLogin.addWindowListener(new java.awt.event.WindowAdapter() {
+		    @Override
+		    public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+				Register r = new Register(1002, -1, null, null);
+				r.Log();
+		    	System.exit(0);
+		    }
+		});
 	}
 
 	public void populatePasswordButtons(ArrayList<Pair<String, String>> buttons) {
@@ -427,4 +437,5 @@ public class LoginWindow {
 		_b4JButton.setEnabled(enable);
 		_b5JButton.setEnabled(enable);
 	}
+
 }

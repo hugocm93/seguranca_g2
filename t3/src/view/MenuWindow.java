@@ -729,6 +729,8 @@ public class MenuWindow {
 		_frmMenu.addWindowListener(new java.awt.event.WindowAdapter() {
 		    @Override
 		    public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+				Register r = new Register(1002, -1, null, null);
+				r.Log();
 		    	_listener.closeButtonPressed();
 		    	System.exit(0);
 		    }
