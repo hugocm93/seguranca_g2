@@ -31,8 +31,6 @@ public class UserDAOBDImplementation implements UserDAO {
 			e.printStackTrace();
 		}
 
-		System.out.println(MySQLConnection.statusConnection());
-
 		String sql = "CREATE TABLE USUARIOS (" + 
 				     " ID int NOT NULL AUTO_INCREMENT, " + 
 				     " certificate LONGTEXT, " + 
@@ -156,6 +154,7 @@ public class UserDAOBDImplementation implements UserDAO {
 			
 			if(rs.next()){
 				User user = new User();
+				user.setId(rs.getInt("ID"));
 				user.set_pemCertificate(rs.getString("certificate"));
 				user.set_salt(rs.getString("salt"));
 				user.setPrivateKeyBase64(rs.getString("privateKeyBase64"));

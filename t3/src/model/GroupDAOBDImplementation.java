@@ -25,8 +25,6 @@ public class GroupDAOBDImplementation {
 			e.printStackTrace();
 		}
 
-		System.out.println(MySQLConnection.statusConnection());
-
 		String sql = "CREATE TABLE GRUPOS (" + 
 				     " groupId INTEGER, " +
 				     " name VARCHAR(150), " +

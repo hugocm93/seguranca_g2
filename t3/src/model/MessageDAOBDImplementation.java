@@ -1,6 +1,7 @@
 package model;
 
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
@@ -25,11 +26,9 @@ public class MessageDAOBDImplementation {
 			e.printStackTrace();
 		}
 
-		System.out.println(MySQLConnection.statusConnection());
-
 		String sql = "CREATE TABLE MENSAGENS (" + 
 				     " messageId int NOT NULL, " +
-				     " message VARCHAR(350), " +
+				     " message LONGTEXT, " +
 				     " PRIMARY KEY ( messageId ))";		
 		try {
 			stmt.executeUpdate(sql);
@@ -40,18 +39,8 @@ public class MessageDAOBDImplementation {
 		}
 	}
 	
-	public void populateDataBase() {
-		insertOnBD("INSERT INTO MENSAGENS (messageId, message) VALUES (1001,\"Sistema iniciado.\")");
-		insertOnBD("INSERT INTO MENSAGENS (messageId, message) VALUES (1002,\"Sistema encerrado.\")");
-		
-		insertOnBD("INSERT INTO MENSAGENS (messageId, message) VALUES (2001,\"Autenticação etapa 1 iniciada.\")");
-		insertOnBD("INSERT INTO MENSAGENS (messageId, message) VALUES (2002,\"Autenticação etapa 1 encerrada.\")");
-		insertOnBD("INSERT INTO MENSAGENS (messageId, message) VALUES (2003,\"Login name <login_name> identificado com acesso liberado.\")");
-		insertOnBD("INSERT INTO MENSAGENS (messageId, message) VALUES (2004,\"Login name <login_name> identificado com acesso bloqueado.\")");
-		insertOnBD("INSERT INTO MENSAGENS (messageId, message) VALUES (2005,\"Login name <login_name> não identificado.\")");
-	}
-	
-	private void insertOnBD(String sql) {
+	public void insertOnBD(int id, String message) {
+		String sql = "INSERT INTO MENSAGENS (messageId, message) VALUES ("+id+",'"+message+"')";
 		PreparedStatement pstmt = null;
 		try {
 			pstmt = MySQLConnection.getMySQLConnection().prepareStatement(sql);
@@ -61,6 +50,7 @@ public class MessageDAOBDImplementation {
 		try {
 			pstmt.executeUpdate();
 		} catch (SQLException e) {
+			//System.out.println(e);
 			return;
 		}
 	}

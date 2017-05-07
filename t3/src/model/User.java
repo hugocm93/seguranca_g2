@@ -8,6 +8,7 @@ import java.sql.Timestamp;
 
 public class User {
 
+	private int _id;
 	private String _pemCertificate;
 	private String _salt;
 	private String _privateKeyBase64;
@@ -194,6 +195,14 @@ public class User {
 
 	public void setPrivateKeyBase64(String privateKeyBase64) {
 		this._privateKeyBase64 = privateKeyBase64;
+	}
+	
+	public int getId() {
+		return _id;
+	}
+
+	public void setId(int id) {
+		this._id = id;
 	}
 
 }
