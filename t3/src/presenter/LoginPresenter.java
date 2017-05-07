@@ -10,6 +10,7 @@ import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 import Util.Authentication;
 import Util.StringExtension;
+import model.Register;
 import model.User;
 import model.UserDAOBDImplementation;
 import model.UserSession;
@@ -46,6 +47,12 @@ public class LoginPresenter implements LoginPresenterListener{
 				_session = new UserSession(user);
 				randomButtons();
 				_loginWindow.loginNameSucceded();
+				Register r = new Register(2003, user.getId(), user.get_loginName(), null);
+				r.Log();
+				Register r2 = new Register(2002, -1, null, null);
+				r2.Log();
+				Register r3 = new Register(3001, user.getId(), user.get_loginName(), null);
+				r3.Log();
 			}
 			else{
 				double timeDifference = user.get_allowAccessAfter().getTime() - 
@@ -56,12 +63,16 @@ public class LoginPresenter implements LoginPresenterListener{
 				
 				_loginWindow._firstWarningLabel.setVisible(true);
 				_loginWindow._firstWarningLabel.setText(message);
+				Register r = new Register(2004, user.getId(), user.get_loginName(), null);
+				r.Log();
 			}
 			
 		}
 		else{
 			_loginWindow._firstWarningLabel.setVisible(true);
 			_loginWindow._firstWarningLabel.setText("Identificação inválida");
+			Register r = new Register(2005, -1, loginName, null);
+			r.Log();
 		}
 	}
 
@@ -114,15 +125,36 @@ public class LoginPresenter implements LoginPresenterListener{
 	@Override
 	public void confirmPasswordButtonPressed() {
 		boolean wrongPassword = !checkPassword();
+		User user = _session.get_user();
 		if(wrongPassword){
 			_session.get_virtualButtonsPressed().clear();
 			_session.incAttempts();
 			
+			switch(_session.get_numberOfAttempts()) {
+			case 1:
+				Register r = new Register(3007, user.getId(), user.get_loginName(), null);
+				r.Log();
+				break;
+			case 2:
+				Register r2 = new Register(3008, user.getId(), user.get_loginName(), null);
+				r2.Log();
+				break;
+			case 3:
+				Register r3 = new Register(3009, user.getId(), user.get_loginName(), null);
+				r3.Log();
+				break;
+			}
+
 			if(_session.get_numberOfAttempts() == 3){
-				User user = _session.get_user();
 				user.set_allowAccessAfter(new Timestamp(System.currentTimeMillis() + 120000));
 				_userDAO.updateUser(user);
 				_loginWindow.login();
+				Register r = new Register(3010, user.getId(), user.get_loginName(), null);
+				r.Log();
+				Register r2 = new Register(3002, user.getId(), user.get_loginName(), null);
+				r2.Log();
+				Register r3 = new Register(2001, -1, null, null);
+				r3.Log();
 				return;
 			}
 			
@@ -132,6 +164,10 @@ public class LoginPresenter implements LoginPresenterListener{
 		}
 		else{
 			_loginWindow.passwordSucceded();
+			Register r1 = new Register(3002, user.getId(), user.get_loginName(), null);
+			r1.Log();
+			Register r2 = new Register(4001, user.getId(), user.get_loginName(), null);
+			r2.Log();
 		}
 	}
 	

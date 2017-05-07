@@ -21,6 +21,8 @@ public class Application {
 		
 		Register r = new Register(1001, -1, null, null);
 		r.Log();
+		Register r2 = new Register(2001, -1, null, null);
+		r2.Log();
 	}
 	
 }

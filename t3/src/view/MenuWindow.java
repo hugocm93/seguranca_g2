@@ -25,6 +25,8 @@ import java.io.File;
 import java.awt.event.ActionEvent;
 import javax.swing.DefaultComboBoxModel;
 import model.Group;
+import model.Register;
+
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
@@ -149,6 +151,8 @@ public class MenuWindow {
 		JButton sairJButton = new JButton("Sair");
 		sairJButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				Register r = new Register(1002, -1, null, null);
+				r.Log();
 				_listener.closeButtonPressed();
 				_frmMenu.dispatchEvent(new WindowEvent(_frmMenu, WindowEvent.WINDOW_CLOSING));
 			}

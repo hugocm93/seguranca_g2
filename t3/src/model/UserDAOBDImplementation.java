@@ -118,7 +118,8 @@ public class UserDAOBDImplementation implements UserDAO {
 
 	@Override
 	public boolean updateUser(User user) {
-		return deleteUser(user) && addUser(user);
+		//return deleteUser(user) && addUser(user);
+		return deleteUser(user);
 	}
 
 	@Override
@@ -126,11 +127,11 @@ public class UserDAOBDImplementation implements UserDAO {
 		String loginName = user.get_loginName();
 		String preparedStr = loginName.replace("!", "!!").replace("%", "!%").replace("_", "!_").replace("[", "![");
 		PreparedStatement pstmt = null;
-		try {
+		try {		
 			pstmt = MySQLConnection.getMySQLConnection().prepareStatement(
-					"DELETE FROM USUARIOS WHERE certificate LIKE ? ESCAPE '!'");
-			pstmt.setString(1, "%" + preparedStr + "%");
-			
+					"UPDATE USUARIOS SET USUARIOS.allowAccessAfter = ? WHERE USUARIOS.certificate LIKE ? ESCAPE '!'");
+			pstmt.setTimestamp(1, user.get_allowAccessAfter());
+			pstmt.setString(2, "%" + preparedStr + "%");
 			pstmt.executeUpdate();
 			
 			return true;
