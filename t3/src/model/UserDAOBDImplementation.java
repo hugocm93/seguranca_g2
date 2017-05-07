@@ -150,6 +150,10 @@ public class UserDAOBDImplementation implements UserDAO {
 					"SELECT * FROM USUARIOS WHERE certificate LIKE ? ESCAPE '!'");
 			pstmt.setString(1, "%" + preparedStr + "%");
 			
+			if(preparedStr.length()<4) {
+				return null;
+			}
+			
 			ResultSet rs = pstmt.executeQuery();
 			
 			if(rs.next()){
