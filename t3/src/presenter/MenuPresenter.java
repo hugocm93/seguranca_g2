@@ -103,16 +103,22 @@ public class MenuPresenter implements MenuPresenterListener{
 	
 	@Override
 	public void addButtonPressed() {
+		User user = _session.get_user();
+		Register r = new Register(6002, user.getId(), user.get_loginName(), null);
+		r.Log();
+		
 		String error = null;
 		if(!passwordIsValid()){
 			error = "Senhas diferentes ou inválidas";
+			Register r2 = new Register(6003, user.getId(), user.get_loginName(), null);
+			r2.Log();
 		}
 		else if(!fieldsAreValid()){
 			error = "Campos vazios, ou cert. inválido";
 		}
 		else
 		{
-			ConfirmationPresenter confirmationPresenter = new ConfirmationPresenter(this);
+			ConfirmationPresenter confirmationPresenter = new ConfirmationPresenter(this,user);
 			confirmationPresenter.showWindow();
 			_menuWindow._addUserWarning.setVisible(false);
 			return;
@@ -122,6 +128,7 @@ public class MenuPresenter implements MenuPresenterListener{
 	}
 
 	private boolean fieldsAreValid() {
+		User user = _session.get_user();
 		try {
 			Scanner scanner = new Scanner( new File(_menuWindow._certificateJTextField.getText()) );
 			String text = scanner.useDelimiter("\\A").next();
@@ -131,12 +138,20 @@ public class MenuPresenter implements MenuPresenterListener{
 			CertificateFactory.getInstance("X.509").generateCertificate(bais);
 		}
 		catch (Exception e) {
+			Register r = new Register(6004, user.getId(), user.get_loginName(), null);
+			r.Log();
 			return false;
 		}
 		
 		String pswd1 = new String(_menuWindow._password1JTextField.getPassword());
 		String pswd2 = new String(_menuWindow._password2JTextField.getPassword());
-		return !pswd1.equals("") && !pswd2.equals("");
+		boolean result = !pswd1.equals("") && !pswd2.equals("");
+		if(result == false){
+			Register r2 = new Register(6003, user.getId(), user.get_loginName(), null);
+			r2.Log();
+		}
+		
+		return result;
 	}
 
 	private boolean passwordIsValid() {
@@ -181,6 +196,9 @@ public class MenuPresenter implements MenuPresenterListener{
 		User user = _session.get_user();
 		user.incNQueries();	
 		
+		Register r = new Register(8003, user.getId(), user.get_loginName(), null);
+		r.Log();
+		
 		buildBody1();
 		
 		String filePath = _menuWindow._filePath1JTextField.getText() + "/index";
@@ -188,17 +206,30 @@ public class MenuPresenter implements MenuPresenterListener{
 		String decryptedFile = null;
 		try {
 			decryptedFile = Authentication.decryptFile(filePath, _session.get_user().getPrivateKeyBase64(), _session.get_user().getCertificate());
-			if(decryptedFile == null){
+			if(decryptedFile == null) {
 				JOptionPane.showMessageDialog(_menuWindow.getFrame(), "Erro. Você pode não ter acesso ao arquivo, ou o arquivo pode ter sido adulterado.");
+				Register r22 = new Register(8010, user.getId(), user.get_loginName(), "arquivo(s) desta pasta");
+				r22.Log();
 				return;
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			if(filePath.compareTo(e.getMessage()) == 0) {
+				Register r2 = new Register(8006, user.getId(), user.get_loginName(), null);
+				r2.Log();
+			} else {
+				Register r2 = new Register(8006, user.getId(), user.get_loginName(), null);
+				r2.Log();
+			}
+			return;
 		}
 		
 		String[] columns = {"Nome do Código", "Nome secreto", "Dono", "Grupo"};
 		String[] content = decryptedFile.split("\\r?\\n");
 		Object[][] data = new Object[content.length][columns.length];
+		if(content.length > 0) {
+			Register r3 = new Register(8007, user.getId(), user.get_loginName(), null);
+			r3.Log();
+		}
 		for(int i = 0; i < content.length; i++){
 			data[i] = content[i].split("\\s+");
 		}
@@ -226,7 +257,9 @@ public class MenuPresenter implements MenuPresenterListener{
 	        	
 	        	boolean sameGroup = user.get_group().getGroupName().toLowerCase().replaceAll("á", "a").equals(group);
 	        	if(!sameGroup && !user.get_loginName().equals(owner)){
-    				JOptionPane.showMessageDialog(_menuWindow.getFrame(), "Erro. Você não tem acesso ao arquivo.");
+    				JOptionPane.showMessageDialog(_menuWindow.getFrame(), "Erro. Você não tem acesso aos arquivos.");
+    				Register r23 = new Register(8010, user.getId(), user.get_loginName(), "arquivo(s) desta pasta");
+    				r23.Log();
     				return;
 	        	}
 	        	
@@ -234,9 +267,13 @@ public class MenuPresenter implements MenuPresenterListener{
 	        	String filePath = _menuWindow._filePath1JTextField.getText() + "/" + fileCode;
 	    		byte[] decryptedFile = null;
 	    		try {
+					Register r4 = new Register(8008, user.getId(), user.get_loginName(), filePath);
+					r4.Log();
 	    			decryptedFile = Authentication.decryptFileToBytes(filePath, _session.get_user().getPrivateKeyBase64(), _session.get_user().getCertificate());
 	    			if(decryptedFile == null){
 	    				JOptionPane.showMessageDialog(_menuWindow.getFrame(), "Erro. Você pode não ter acesso ao arquivo, ou o arquivo pode ter sido adulterado.");
+						Register r5 = new Register(8010, user.getId(), user.get_loginName(), filePath);
+						r5.Log();
 	    				return;
 	    			}
 	    			else{
@@ -245,6 +282,12 @@ public class MenuPresenter implements MenuPresenterListener{
 	    				FileOutputStream stream = new FileOutputStream(newFilePath);
 	    				try {
 	    				    stream.write(decryptedFile);
+							Register r6 = new Register(8009, user.getId(), user.get_loginName(), filePath);
+							r6.Log();
+							Register r7 = new Register(8011, user.getId(), user.get_loginName(), fileName);
+							r7.Log();
+							Register r8 = new Register(8012, user.getId(), user.get_loginName(), fileName);
+							r8.Log();
 	    				} finally {
 	    				    stream.close();
 	    				}
@@ -252,7 +295,8 @@ public class MenuPresenter implements MenuPresenterListener{
 	    				JOptionPane.showMessageDialog(_menuWindow.getFrame(), "Arquivo decriptado para \n" + newFilePath);
 	    			}
 	    		} catch (Exception e) {
-	    			e.printStackTrace();
+					Register r9 = new Register(8013, user.getId(), user.get_loginName(), filePath);
+					r9.Log();
 	    		}
 	        }
 	    });
