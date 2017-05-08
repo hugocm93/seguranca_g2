@@ -8,27 +8,26 @@ import database.MySQLConnection;
 
 public class LogView {
 	
-	public static void showLogForUserId(int userID) {
+	public static void showLog() {
 		
 		PreparedStatement pstmt = null;
 		try {
 			pstmt = MySQLConnection.getMySQLConnection().prepareStatement(
-					"SELECT timeRegister, ID, message "
-					+ "FROM USUARIOS "
-					+ "INNER JOIN REGISTROS "
-					+ "ON USUARIOS.ID = REGISTROS.userId "
-					+ "WHERE USUARIOS.ID = ? "
-					+ "ORDER BY timeRegister ASC;");
-			pstmt.setInt(1, userID);
+					"SELECT * "
+					+ "FROM REGISTROS "
+					+ "ORDER BY registerId ASC;");
 			
 			ResultSet rs = pstmt.executeQuery();
 			
+			System.out.println("registerId | messageId | timeRegister | message");
 			while(rs.next()) {
-				String timeRegister = rs.getString("timeRegister");
-				String userId = rs.getString("ID");
+				String registerId = rs.getString("registerId");
+				//String userId = rs.getString("userId");
+				String messageId = rs.getString("messageId");
 				String message = rs.getString("message");
+				//String timeRegister = rs.getString("timeRegister");
 				
-				String output = String.format("%s - %s - %s", timeRegister, userId, message);
+				String output = String.format("%s - %s - %s", registerId, messageId, message);
 				System.out.println(output);
 			}
 			

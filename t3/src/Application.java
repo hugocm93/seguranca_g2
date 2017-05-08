@@ -26,7 +26,7 @@ public class Application {
 		r2.Log();
 		
 		// exemplo 1 = Id do user.. verificar no banco
-		//LogView.showLogForUserId(1);
+		//LogView.showLog();
 	}
 	
 }
