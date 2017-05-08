@@ -58,24 +58,24 @@ public class MessageManager {
 		messages.add(new Message(4009,"Acesso do usuario <login_name> bloqueado pela autenticação etapa 3."));
 		
 		messages.add(new Message(5001,"Tela principal apresentada para <login_name>."));
-		messages.add(new Message(5002,"Opção 1 do menu principal selecionada por <login_name>."));
-		messages.add(new Message(5003,"Opção 2 do menu principal selecionada por <login_name>."));
-		messages.add(new Message(5004,"Opção 3 do menu principal selecionada por <login_name>."));
-		messages.add(new Message(5005,"Opção 4 do menu principal selecionada por <login_name>."));
+		messages.add(new Message(5002,"Opção 1 do menu principal selecionada."));
+		messages.add(new Message(5003,"Opção 2 do menu principal selecionada."));
+		messages.add(new Message(5004,"Opção 3 do menu principal selecionada."));
+		messages.add(new Message(5005,"Opção 4 do menu principal selecionada."));
 		
-		messages.add(new Message(6001,"Tela de cadastro apresentada para <login_name>."));
+		messages.add(new Message(6001,"Tela de cadastro apresentada."));
 		messages.add(new Message(6002,"Botão cadastrar pressionado por <login_name>."));
 		messages.add(new Message(6003,"Senha pessoal inválida fornecida por <login_name>."));
 		messages.add(new Message(6004,"Caminho do certificado digital inválido fornecido por <login_name>."));
 		messages.add(new Message(6005,"Confirmação de dados aceita por <login_name>."));
 		messages.add(new Message(6006,"Confirmação de dados rejeitada por <login_name>."));
-		messages.add(new Message(6007,"Botão voltar de cadastro para o menu principal pressionado por <login_name>."));
+		messages.add(new Message(6007,"Botão voltar de cadastro para o menu principal pressionado."));
 		
-		messages.add(new Message(7001,"Tela de consulta da chave privada e certificado apresentada para <login_name>."));
-		messages.add(new Message(7002,"Botão voltar de carregamento para o menu principal pressionado por <login_name>."));
+		messages.add(new Message(7001,"Tela de consulta da chave privada e certificado apresentada."));
+		messages.add(new Message(7002,"Botão voltar de carregamento para o menu principal pressionado."));
 		
-		messages.add(new Message(8001,"Tela de consulta de arquivos secretos apresentada para <login_name>."));
-		messages.add(new Message(8002,"Botão voltar de consulta para o menu principal pressionado por <login_name>."));
+		messages.add(new Message(8001,"Tela de consulta de arquivos secretos apresentada."));
+		messages.add(new Message(8002,"Botão voltar de consulta para o menu principal pressionado."));
 		messages.add(new Message(8003,"Botão Listar de consulta pressionado por <login_name>."));
 		messages.add(new Message(8006,"Caminho de pasta inválido fornecido por <login_name>."));
 		messages.add(new Message(8007,"Lista de arquivos apresentada para <login_name>."));
@@ -87,8 +87,8 @@ public class MessageManager {
 		messages.add(new Message(8013,"Falha na decriptação do arquivo <arq_name> para <login_name>."));
 		messages.add(new Message(8014,"Falha na verificação (integridade e autenticidade) do arquivo <arq_name> para <login_name>."));
 		
-		messages.add(new Message(9001,"Tela de saída apresentada para <login_name>."));
+		messages.add(new Message(9001,"Tela de saída apresentada."));
 		messages.add(new Message(9002,"Botão sair pressionado por <login_name>."));
-		messages.add(new Message(9003,"Botão voltar de sair para o menu principal pressionado por <login_name>."));
+		messages.add(new Message(9003,"Botão voltar de sair para o menu principal pressionado."));
 	}
 }

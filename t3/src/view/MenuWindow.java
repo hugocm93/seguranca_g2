@@ -151,8 +151,6 @@ public class MenuWindow {
 		JButton sairJButton = new JButton("Sair");
 		sairJButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Register r = new Register(1002, -1, null, null);
-				r.Log();
 				_listener.closeButtonPressed();
 				_frmMenu.dispatchEvent(new WindowEvent(_frmMenu, WindowEvent.WINDOW_CLOSING));
 			}
@@ -163,6 +161,8 @@ public class MenuWindow {
 		JButton back1JButton = new JButton("Voltar ao menu");
 		back1JButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				Register r = new Register(9003, -1, null, null);
+				r.Log();
 				goToMenu();
 			}
 		});
@@ -213,6 +213,8 @@ public class MenuWindow {
 		JButton back2JButton = new JButton("Voltar ao menu");
 		back2JButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				Register r = new Register(8002, -1, null, null);
+				r.Log();
 				goToMenu();
 			}
 		});
@@ -288,6 +290,8 @@ public class MenuWindow {
 		JButton back3JButton = new JButton("Voltar ao menu");
 		back3JButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				Register r = new Register(7002, -1, null, null);
+				r.Log();
 				goToMenu();
 			}
 		});
@@ -399,6 +403,8 @@ public class MenuWindow {
 		JButton back4JButton = new JButton("Voltar ao menu");
 		back4JButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				Register r = new Register(6007, -1, null, null);
+				r.Log();
 				goToMenu();
 			}
 		});
@@ -484,6 +490,10 @@ public class MenuWindow {
 		_addUserMenuJButton = new JButton("Cadastrar um novo usuário");
 		_addUserMenuJButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				Register r = new Register(5002, -1, null, null);
+				r.Log();
+				Register r2 = new Register(6001, -1, null, null);
+				r2.Log();
 				resetAddUserView();
 				CardLayout cardsLayout = (CardLayout)(_body2.getLayout());
 				cardsLayout.show(_body2, "cadastroPanel");
@@ -496,6 +506,10 @@ public class MenuWindow {
 		JButton _listarMenuJButton = new JButton("Listar chave privada e certificado digital do usuário");
 		_listarMenuJButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				Register r = new Register(5003, -1, null, null);
+				r.Log();
+				Register r2 = new Register(7001, -1, null, null);
+				r2.Log();
 				CardLayout cardsLayout = (CardLayout)(_body2.getLayout());
 				cardsLayout.show(_body2, "certificadoPanel");
 				
@@ -509,6 +523,10 @@ public class MenuWindow {
 		JButton consultarMenuJButton = new JButton("Consultar pasta de arquivos secretos do usuário");
 		consultarMenuJButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				Register r = new Register(5004, -1, null, null);
+				r.Log();
+				Register r2 = new Register(8001, -1, null, null);
+				r2.Log();
 				CardLayout cardsLayout = (CardLayout)(_body2.getLayout());
 				cardsLayout.show(_body2, "arquivosPanel");
 				
@@ -520,6 +538,10 @@ public class MenuWindow {
 		JButton sairMenuJButton = new JButton("Sair do Sistema");
 		sairMenuJButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				Register r = new Register(5005, -1, null, null);
+				r.Log();
+				Register r2 = new Register(9001, -1, null, null);
+				r2.Log();
 				CardLayout cardsLayout = (CardLayout)(_body2.getLayout());
 				cardsLayout.show(_body2, "sairPanel");
 				

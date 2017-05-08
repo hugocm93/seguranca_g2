@@ -18,6 +18,7 @@ import javax.swing.table.DefaultTableModel;
 import Util.Authentication;
 import Util.RandomString;
 import model.Group;
+import model.Register;
 import model.User;
 import model.UserDAOBDImplementation;
 import model.UserSession;
@@ -179,6 +180,7 @@ public class MenuPresenter implements MenuPresenterListener{
 	public void listButtonPressed() {
 		User user = _session.get_user();
 		user.incNQueries();	
+		
 		buildBody1();
 		
 		String filePath = _menuWindow._filePath1JTextField.getText() + "/index";
