@@ -1,3 +1,4 @@
+import Util.LogView;
 import Util.MessageManager;
 import model.GroupDAOBDImplementation;
 import model.MessageDAOBDImplementation;
@@ -23,6 +24,9 @@ public class Application {
 		r.Log();
 		Register r2 = new Register(2001, -1, null, null);
 		r2.Log();
+		
+		// exemplo 1 = Id do user.. verificar no banco
+		//LogView.showLogForUserId(1);
 	}
 	
 }

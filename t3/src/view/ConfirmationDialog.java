@@ -7,7 +7,6 @@ import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import model.Register;
 import presenter.ConfirmationPresenterListener;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
