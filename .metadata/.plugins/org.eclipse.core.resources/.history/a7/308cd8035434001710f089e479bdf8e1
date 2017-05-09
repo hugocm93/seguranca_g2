@@ -148,7 +148,7 @@ public class LoginPresenter implements LoginPresenterListener{
 			if(_session.get_numberOfAttempts() == 3){
 				user.set_allowAccessAfter(new Timestamp(System.currentTimeMillis() + 120000));
 				_userDAO.updateUser(user);
-				_loginWindow.loginWithErrorMessage("Tentativa 3 falhou. " + user.get_loginName() + " bloqueado.");
+				_loginWindow.loginWithErrorMessage("Tentativa 3 falhou." + user.get_loginName() + " bloqueado.");
 				Register r = new Register(3010, user.getId(), user.get_loginName(), null);
 				r.Log();
 				Register r2 = new Register(3002, user.getId(), user.get_loginName(), null);
