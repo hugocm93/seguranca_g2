@@ -296,6 +296,7 @@ public class MenuPresenter implements MenuPresenterListener{
 	    				JOptionPane.showMessageDialog(_menuWindow.getFrame(), "Arquivo decriptado para \n" + newFilePath);
 	    			}
 	    		} catch (Exception e) {
+	    			JOptionPane.showMessageDialog(_menuWindow.getFrame(), "Erro ao decriptar o arquivo.");
 					Register r9 = new Register(8013, user.getId(), user.get_loginName(), filePath);
 					r9.Log();
 	    		}
