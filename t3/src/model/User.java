@@ -18,7 +18,7 @@ public class User {
 	private int _totalQueries;
 	private Group _group;
 	private Timestamp _allowAccessAfter;
-	private byte[] _passwordHash;
+	private String _passwordHash;
 	
 	public String getUserName(){
 		try {
@@ -125,11 +125,11 @@ public class User {
 		_totalQueries += 1;
 	}
 
-	public byte[] get_passwordHash() {
+	public String get_passwordHash() {
 		return _passwordHash;
 	}
 
-	public void set_passwordHash(byte[] _passwordHash) {
+	public void set_passwordHash(String _passwordHash) {
 		this._passwordHash = _passwordHash;
 	}
 

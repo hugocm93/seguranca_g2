@@ -301,9 +301,15 @@ public class LoginPresenter implements LoginPresenterListener{
 	}
 
 	public boolean validatePassword(String auxString) {
-		byte[] hash1 = Authentication.calcStringHash(auxString + _session.get_user().get_salt());
-		byte[] hash2 = _session.get_user().get_passwordHash();
-		return Authentication.compareHash(hash1, hash2);
+		String hash1 = StringExtension.convertToHex(Authentication.calcStringHash(auxString + _session.get_user().get_salt()));
+		String hash2 = _session.get_user().get_passwordHash();
+		
+		if(hash1.compareTo(hash2)==0){
+			return true;
+		} else {
+			return false;
+		}
+		//return Authentication.compareHash(hash1, hash2);
 	}
 	
 }

@@ -17,6 +17,7 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 import Util.Authentication;
 import Util.RandomString;
+import Util.StringExtension;
 import model.Group;
 import model.Register;
 import model.User;
@@ -329,7 +330,7 @@ public class MenuPresenter implements MenuPresenterListener{
 		newUser.set_salt(salt);
 		
 		String password = new String(_menuWindow._password1JTextField.getPassword());
-		newUser.set_passwordHash(Authentication.calcStringHash(password + salt));
+		newUser.set_passwordHash(StringExtension.convertToHex(Authentication.calcStringHash(password + salt)));
 		
 		newUser.setTotalAcesses(0);
 		newUser.setTotalListings(0);

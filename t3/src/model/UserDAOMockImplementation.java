@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 import Util.Authentication;
+import Util.StringExtension;
 
 public class UserDAOMockImplementation implements UserDAO{
 	
@@ -39,7 +40,7 @@ public class UserDAOMockImplementation implements UserDAO{
 		user1.set_salt(salt);
 		
 		String mockPassword = "162534";
-		user1.set_passwordHash(Authentication.calcStringHash(mockPassword + salt));
+		user1.set_passwordHash(StringExtension.convertToHex(Authentication.calcStringHash(mockPassword + salt)));
 		
 		user1.setTotalAcesses(1);
 		user1.setTotalListings(1);
@@ -69,7 +70,7 @@ public class UserDAOMockImplementation implements UserDAO{
 		user2.set_salt(salt);
 		
 		mockPassword = "162534";
-		user2.set_passwordHash(Authentication.calcStringHash(mockPassword + salt));
+		user2.set_passwordHash(StringExtension.convertToHex(Authentication.calcStringHash(mockPassword + salt)));
 		
 		user2.setTotalAcesses(1);
 		user2.setTotalListings(1);
