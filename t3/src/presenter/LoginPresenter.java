@@ -148,7 +148,7 @@ public class LoginPresenter implements LoginPresenterListener{
 			if(_session.get_numberOfAttempts() == 3){
 				user.set_allowAccessAfter(new Timestamp(System.currentTimeMillis() + 120000));
 				_userDAO.updateUser(user);
-				_loginWindow.login();
+				_loginWindow.loginWithErrorMessage("Tentativa 3 falhou. Usuário bloqueado.");
 				Register r = new Register(3010, user.getId(), user.get_loginName(), null);
 				r.Log();
 				Register r2 = new Register(3002, user.getId(), user.get_loginName(), null);
@@ -251,7 +251,7 @@ public class LoginPresenter implements LoginPresenterListener{
 			User user = _session.get_user();
 			user.set_allowAccessAfter(new Timestamp(System.currentTimeMillis() + 120000));
 			_userDAO.updateUser(user);
-			_loginWindow.login();
+			_loginWindow.loginWithErrorMessage("Tentativa 3 falhou. Usuário bloqueado.");
 			Register r1 = new Register(4009, user.getId(), user.get_loginName(), null);
 			r1.Log();
 			Register r2 = new Register(4002, user.getId(), user.get_loginName(), null);
@@ -300,9 +300,15 @@ public class LoginPresenter implements LoginPresenterListener{
 	}
 
 	public boolean validatePassword(String auxString) {
-		byte[] hash1 = Authentication.calcStringHash(auxString + _session.get_user().get_salt());
-		byte[] hash2 = _session.get_user().get_passwordHash();
-		return Authentication.compareHash(hash1, hash2);
+		String hash1 = StringExtension.convertToHex(Authentication.calcStringHash(auxString + _session.get_user().get_salt()));
+		String hash2 = _session.get_user().get_passwordHash();
+		
+		if(hash1.compareTo(hash2)==0){
+			return true;
+		} else {
+			return false;
+		}
+		//return Authentication.compareHash(hash1, hash2);
 	}
 	
 }

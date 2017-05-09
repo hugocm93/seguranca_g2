@@ -64,6 +64,12 @@ public class LoginWindow {
 		_frmLogin.setVisible(true);
 	}
 	
+	public void loginWithErrorMessage(String str){
+		login();
+		_firstWarningLabel.setText(str);
+		_firstWarningLabel.setVisible(true);
+	}
+	
 	/**
 	 * Volta para a tela de login
 	 */

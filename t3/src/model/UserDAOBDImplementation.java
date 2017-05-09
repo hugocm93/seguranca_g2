@@ -16,6 +16,7 @@ import java.util.Scanner;
 
 import Util.Authentication;
 import Util.RandomString;
+import Util.StringExtension;
 import database.MySQLConnection;
 
 public class UserDAOBDImplementation implements UserDAO {
@@ -47,7 +48,7 @@ public class UserDAOBDImplementation implements UserDAO {
 				     " queries INTEGER, " + 
 				     " groupId INTEGER, " + 
 				     " allowAccessAfter TIMESTAMP, " + 
-				     " passwordHash BLOB, " + 
+				     " passwordHash LONGTEXT, " + 
 				     " PRIMARY KEY ( ID ), " +
 				     " FOREIGN KEY ( groupId ) REFERENCES GRUPOS(groupId))";
 		try {
@@ -75,7 +76,7 @@ public class UserDAOBDImplementation implements UserDAO {
 			user1.set_salt(salt);
 			
 			String mockPassword = "162534";
-			user1.set_passwordHash(Authentication.calcStringHash(mockPassword + salt));
+			user1.set_passwordHash(StringExtension.convertToHex(Authentication.calcStringHash(mockPassword + salt)));
 			
 			user1.setTotalAcesses(0);
 			user1.setTotalListings(0);
@@ -109,7 +110,7 @@ public class UserDAOBDImplementation implements UserDAO {
 			pstmt.setInt(6, user.getTotalQueries());
 			pstmt.setInt(7, user.get_group().ordinal());
 			pstmt.setTimestamp(8, user.get_allowAccessAfter());
-			pstmt.setBytes(9, user.get_passwordHash());
+			pstmt.setString(9, user.get_passwordHash());
 
 		} catch (SQLException e1) {
 			e1.printStackTrace();
@@ -179,7 +180,7 @@ public class UserDAOBDImplementation implements UserDAO {
 							user.setTotalListings(rs2.getInt("listings"));
 							user.set_group(Group.getGroup(rs2.getInt("groupId")));
 							user.set_allowAccessAfter(rs2.getTimestamp("allowAccessAfter"));
-							user.set_passwordHash(rs2.getBytes("passwordHash"));
+							user.set_passwordHash(rs2.getString("passwordHash"));
 
 							return user;
 						}
@@ -188,6 +189,7 @@ public class UserDAOBDImplementation implements UserDAO {
 				} catch (CertificateException e) {
 					e.printStackTrace();
 				}
+
 			}
 			
 		} catch (SQLException e) {
