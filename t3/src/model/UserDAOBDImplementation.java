@@ -34,8 +34,7 @@ public class UserDAOBDImplementation implements UserDAO {
 		String sql = "CREATE TABLE USUARIOS (" + 
 				     " ID int NOT NULL AUTO_INCREMENT, " + 
 				     " certificate LONGTEXT, " + 
-				     " salt VARCHAR(100), " + 
-				     " privateKeyBase64 LONGTEXT, " + 
+				     " salt VARCHAR(100), " +  
 				     " acesses INTEGER, " + 
 				     " users INTEGER, " + 
 				     " listings INTEGER, " + 
@@ -86,22 +85,21 @@ public class UserDAOBDImplementation implements UserDAO {
 	public boolean addUser(User user) {
 		System.out.println(MySQLConnection.statusConnection());
 
-		String sql = "INSERT INTO USUARIOS (certificate, salt, privateKeyBase64, " + 
-		"acesses, users, listings, queries, groupId, allowAccessAfter, passwordHash) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+		String sql = "INSERT INTO USUARIOS (certificate, salt, " + 
+		"acesses, users, listings, queries, groupId, allowAccessAfter, passwordHash) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 		
 		PreparedStatement pstmt = null;
 		try {
 			pstmt = MySQLConnection.getMySQLConnection().prepareStatement(sql);
 			pstmt.setString(1, user.get_pemCertificate());
 			pstmt.setString(2, user.get_salt());
-			pstmt.setString(3, user.getPrivateKeyBase64());
-			pstmt.setInt(4, user.getTotalAcesses());
-			pstmt.setInt(5, user.getTotalUsers());
-			pstmt.setInt(6, user.getTotalListings());
-			pstmt.setInt(7, user.getTotalQueries());
-			pstmt.setInt(8, user.get_group().ordinal());
-			pstmt.setTimestamp(9, user.get_allowAccessAfter());
-			pstmt.setBytes(10, user.get_passwordHash());
+			pstmt.setInt(3, user.getTotalAcesses());
+			pstmt.setInt(4, user.getTotalUsers());
+			pstmt.setInt(5, user.getTotalListings());
+			pstmt.setInt(6, user.getTotalQueries());
+			pstmt.setInt(7, user.get_group().ordinal());
+			pstmt.setTimestamp(8, user.get_allowAccessAfter());
+			pstmt.setBytes(9, user.get_passwordHash());
 
 		} catch (SQLException e1) {
 			e1.printStackTrace();
@@ -162,7 +160,6 @@ public class UserDAOBDImplementation implements UserDAO {
 				user.setId(rs.getInt("ID"));
 				user.set_pemCertificate(rs.getString("certificate"));
 				user.set_salt(rs.getString("salt"));
-				user.setPrivateKeyBase64(rs.getString("privateKeyBase64"));
 				user.setTotalAcesses(rs.getInt("acesses"));
 				user.setTotalUsers(rs.getInt("users"));
 				user.setTotalQueries(rs.getInt("queries"));
