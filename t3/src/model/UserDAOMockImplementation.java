@@ -102,17 +102,6 @@ public class UserDAOMockImplementation implements UserDAO{
 	}
 
 	@Override
-	public boolean deleteUser(User user) {
-		for(User u : _users){
-			if(user.get_loginName().equals(u.get_loginName())){
-				_users.remove(user);
-				return true;
-			}
-		}
-		return false;
-	}
-
-	@Override
 	public User getUserByLoginName(String loginName) {
 		for(User u : _users){
 			if(loginName.equals(u.get_loginName())){

@@ -321,6 +321,9 @@ public class MenuPresenter implements MenuPresenterListener{
 			e1.printStackTrace();
 		}
 		String text = scanner.useDelimiter("\\A").next();
+		int begin = text.indexOf("-----BEGIN CERTIFICATE-----");
+		text = text.substring(begin);
+		
 		scanner.close(); 
 		newUser.set_pemCertificate(text);		
 		

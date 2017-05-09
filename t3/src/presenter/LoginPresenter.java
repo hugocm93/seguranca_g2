@@ -228,7 +228,6 @@ public class LoginPresenter implements LoginPresenterListener{
 			if(user.getPrivateKeyBase64() == null)
 			{
 				user.setPrivateKeyBase64(pemPrivateKey);
-				_userDAO.updateUser(user);
 			}
 			presentMenuView();
 			Register r1 = new Register(4002, user.getId(), user.get_loginName(), null);

@@ -1,0 +1,199 @@
+package model;
+
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.security.cert.CertificateException;
+import java.security.cert.CertificateFactory;
+import java.security.cert.X509Certificate;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.sql.Timestamp;
+import java.util.Scanner;
+
+import Util.Authentication;
+import Util.RandomString;
+import database.MySQLConnection;
+
+public class UserDAOBDImplementation implements UserDAO {
+
+	private static UserDAOBDImplementation instance = null;
+
+	public static UserDAOBDImplementation getInstance() {
+		if (instance == null) {
+			instance = new UserDAOBDImplementation();
+		}
+		return instance;
+	}
+
+	protected UserDAOBDImplementation() {
+		Statement stmt = null;
+		try {
+			stmt = MySQLConnection.getMySQLConnection().createStatement();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		String sql = "CREATE TABLE USUARIOS (" + 
+				     " ID int NOT NULL AUTO_INCREMENT, " + 
+				     " certificate LONGTEXT, " + 
+				     " salt VARCHAR(100), " + 
+				     " acesses INTEGER, " + 
+				     " users INTEGER, " + 
+				     " listings INTEGER, " + 
+				     " queries INTEGER, " + 
+				     " groupId INTEGER, " + 
+				     " allowAccessAfter TIMESTAMP, " + 
+				     " passwordHash BLOB, " + 
+				     " PRIMARY KEY ( ID ), " +
+				     " FOREIGN KEY ( groupId ) REFERENCES GRUPOS(groupId))";
+		try {
+			stmt.executeUpdate(sql);
+			
+			User user1 = new User();
+			user1.set_group(Group.Administrador);
+			user1.set_allowAccessAfter(new Timestamp(System.currentTimeMillis()));
+			
+			Scanner scanner = null;
+			try {
+				scanner = new Scanner( new File("Pacote-T3/Keys/admin-x509.crt") );
+			} catch (FileNotFoundException e1) {
+				e1.printStackTrace();
+			}
+
+			String text = scanner.useDelimiter("\\A").next();
+			int begin = text.indexOf("-----BEGIN CERTIFICATE-----");
+			text = text.substring(begin);
+			scanner.close(); 
+			user1.set_pemCertificate(text);
+			
+			RandomString random = new RandomString(10);
+			String salt = random.nextString();
+			user1.set_salt(salt);
+			
+			String mockPassword = "162534";
+			user1.set_passwordHash(Authentication.calcStringHash(mockPassword + salt));
+			
+			user1.setTotalAcesses(0);
+			user1.setTotalListings(0);
+			user1.setTotalQueries(0);
+			user1.setTotalUsers(0);
+		
+			addUser(user1);
+			
+		} catch (SQLException e) {
+			if(e.getErrorCode() != 1050){ //Código para já table já existente
+				e.printStackTrace();
+			}	
+		}
+	}
+
+	@Override
+	public boolean addUser(User user) {
+		System.out.println(MySQLConnection.statusConnection());
+
+		String sql = "INSERT INTO USUARIOS (certificate, salt, " + 
+		"acesses, users, listings, queries, groupId, allowAccessAfter, passwordHash) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+		
+		PreparedStatement pstmt = null;
+		try {
+			pstmt = MySQLConnection.getMySQLConnection().prepareStatement(sql);
+			pstmt.setString(1, user.get_pemCertificate());
+			pstmt.setString(2, user.get_salt());
+			pstmt.setInt(3, user.getTotalAcesses());
+			pstmt.setInt(4, user.getTotalUsers());
+			pstmt.setInt(5, user.getTotalListings());
+			pstmt.setInt(6, user.getTotalQueries());
+			pstmt.setInt(7, user.get_group().ordinal());
+			pstmt.setTimestamp(8, user.get_allowAccessAfter());
+			pstmt.setBytes(9, user.get_passwordHash());
+
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+
+		try {
+			pstmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+		return true;
+	}
+
+	@Override
+	public boolean updateUser(User user) {
+		PreparedStatement pstmt = null;
+		try {		
+			pstmt = MySQLConnection.getMySQLConnection().prepareStatement(
+					"UPDATE USUARIOS SET USUARIOS.allowAccessAfter = ?, USUARIOS.acesses = ?, USUARIOS.users = ?," + 
+					" USUARIOS.listings = ?, USUARIOS.queries = ? WHERE USUARIOS.ID = ?");
+
+			pstmt.setTimestamp(1, user.get_allowAccessAfter());
+			pstmt.setInt(2, user.getId());
+			pstmt.setInt(3, user.getId());
+			pstmt.setInt(4, user.getId());
+			pstmt.setInt(5, user.getId());
+			pstmt.setInt(6, user.getId());
+			pstmt.executeUpdate();
+			
+			return true;
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+
+	@Override
+	public User getUserByLoginName(String loginName) {
+		PreparedStatement pstmt = null;
+		try {
+			pstmt = MySQLConnection.getMySQLConnection().prepareStatement("SELECT certificate, ID FROM USUARIOS");
+			ResultSet rs = pstmt.executeQuery();
+			ResultSet rs2 = null;
+			
+			while(rs.next()){
+				InputStream stream = new ByteArrayInputStream(rs.getString("certificate").getBytes());
+				try {
+					X509Certificate c = (X509Certificate)CertificateFactory.getInstance("X.509").generateCertificate(stream);
+	
+					if(User.get_loginName(c).equals(loginName)){	
+						int ID = rs.getInt("ID");
+						pstmt = MySQLConnection.getMySQLConnection().prepareStatement("SELECT * FROM USUARIOS WHERE ID = ?");
+						pstmt.setInt(1, ID);
+						rs2 = pstmt.executeQuery();
+						
+						if(rs2.next()){
+							User user = new User();
+							user.setId(rs2.getInt("ID"));
+							user.set_pemCertificate(rs2.getString("certificate"));
+							user.set_salt(rs2.getString("salt"));
+							user.setTotalAcesses(rs2.getInt("acesses"));
+							user.setTotalUsers(rs2.getInt("users"));
+							user.setTotalQueries(rs2.getInt("queries"));
+							user.setTotalListings(rs2.getInt("listings"));
+							user.set_group(Group.getGroup(rs2.getInt("groupId")));
+							user.set_allowAccessAfter(rs2.getTimestamp("allowAccessAfter"));
+							user.set_passwordHash(rs2.getBytes("passwordHash"));
+
+							return user;
+						}
+						
+					}
+				} catch (CertificateException e) {
+					e.printStackTrace();
+				}
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return null;
+	}
+
+}

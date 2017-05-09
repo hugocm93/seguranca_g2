@@ -1,7 +1,12 @@
 package model;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.security.cert.CertificateException;
+import java.security.cert.CertificateFactory;
+import java.security.cert.X509Certificate;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -10,6 +15,7 @@ import java.sql.Timestamp;
 import java.util.Scanner;
 
 import Util.Authentication;
+import Util.RandomString;
 import database.MySQLConnection;
 
 public class UserDAOBDImplementation implements UserDAO {
@@ -35,7 +41,6 @@ public class UserDAOBDImplementation implements UserDAO {
 				     " ID int NOT NULL AUTO_INCREMENT, " + 
 				     " certificate LONGTEXT, " + 
 				     " salt VARCHAR(100), " + 
-				     " privateKeyBase64 LONGTEXT, " + 
 				     " acesses INTEGER, " + 
 				     " users INTEGER, " + 
 				     " listings INTEGER, " + 
@@ -58,11 +63,15 @@ public class UserDAOBDImplementation implements UserDAO {
 			} catch (FileNotFoundException e1) {
 				e1.printStackTrace();
 			}
+
 			String text = scanner.useDelimiter("\\A").next();
+			int begin = text.indexOf("-----BEGIN CERTIFICATE-----");
+			text = text.substring(begin);
 			scanner.close(); 
-			user1.set_pemCertificate(text);		
+			user1.set_pemCertificate(text);
 			
-			String salt = (String)user1.get_loginName().substring(0, 9);
+			RandomString random = new RandomString(10);
+			String salt = random.nextString();
 			user1.set_salt(salt);
 			
 			String mockPassword = "162534";
@@ -86,22 +95,21 @@ public class UserDAOBDImplementation implements UserDAO {
 	public boolean addUser(User user) {
 		System.out.println(MySQLConnection.statusConnection());
 
-		String sql = "INSERT INTO USUARIOS (certificate, salt, privateKeyBase64, " + 
-		"acesses, users, listings, queries, groupId, allowAccessAfter, passwordHash) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+		String sql = "INSERT INTO USUARIOS (certificate, salt, " + 
+		"acesses, users, listings, queries, groupId, allowAccessAfter, passwordHash) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 		
 		PreparedStatement pstmt = null;
 		try {
 			pstmt = MySQLConnection.getMySQLConnection().prepareStatement(sql);
 			pstmt.setString(1, user.get_pemCertificate());
 			pstmt.setString(2, user.get_salt());
-			pstmt.setString(3, user.getPrivateKeyBase64());
-			pstmt.setInt(4, user.getTotalAcesses());
-			pstmt.setInt(5, user.getTotalUsers());
-			pstmt.setInt(6, user.getTotalListings());
-			pstmt.setInt(7, user.getTotalQueries());
-			pstmt.setInt(8, user.get_group().ordinal());
-			pstmt.setTimestamp(9, user.get_allowAccessAfter());
-			pstmt.setBytes(10, user.get_passwordHash());
+			pstmt.setInt(3, user.getTotalAcesses());
+			pstmt.setInt(4, user.getTotalUsers());
+			pstmt.setInt(5, user.getTotalListings());
+			pstmt.setInt(6, user.getTotalQueries());
+			pstmt.setInt(7, user.get_group().ordinal());
+			pstmt.setTimestamp(8, user.get_allowAccessAfter());
+			pstmt.setBytes(9, user.get_passwordHash());
 
 		} catch (SQLException e1) {
 			e1.printStackTrace();
@@ -118,20 +126,19 @@ public class UserDAOBDImplementation implements UserDAO {
 
 	@Override
 	public boolean updateUser(User user) {
-		//return deleteUser(user) && addUser(user);
-		return deleteUser(user);
-	}
-
-	@Override
-	public boolean deleteUser(User user) {
-		String loginName = user.get_loginName();
-		String preparedStr = loginName.replace("!", "!!").replace("%", "!%").replace("_", "!_").replace("[", "![");
 		PreparedStatement pstmt = null;
 		try {		
 			pstmt = MySQLConnection.getMySQLConnection().prepareStatement(
-					"UPDATE USUARIOS SET USUARIOS.allowAccessAfter = ? WHERE USUARIOS.certificate LIKE ? ESCAPE '!'");
+					"UPDATE USUARIOS SET USUARIOS.allowAccessAfter = ?, USUARIOS.acesses = ?, USUARIOS.users = ?," + 
+					" USUARIOS.listings = ?, USUARIOS.queries = ? WHERE USUARIOS.ID = ?");
+
 			pstmt.setTimestamp(1, user.get_allowAccessAfter());
-			pstmt.setString(2, "%" + preparedStr + "%");
+			pstmt.setInt(2, user.getTotalAcesses());
+			pstmt.setInt(3, user.getTotalUsers());
+			pstmt.setInt(4, user.getTotalListings());
+			pstmt.setInt(5, user.getTotalQueries());
+			pstmt.setInt(6, user.getId());
+			
 			pstmt.executeUpdate();
 			
 			return true;
@@ -144,35 +151,45 @@ public class UserDAOBDImplementation implements UserDAO {
 
 	@Override
 	public User getUserByLoginName(String loginName) {
-		String preparedStr = loginName.replace("!", "!!").replace("%", "!%").replace("_", "!_").replace("[", "![");
 		PreparedStatement pstmt = null;
 		try {
-			pstmt = MySQLConnection.getMySQLConnection().prepareStatement(
-					"SELECT * FROM USUARIOS WHERE certificate LIKE ? ESCAPE '!'");
-			pstmt.setString(1, "%" + preparedStr + "%");
-			
-			if(preparedStr.length()<4) {
-				return null;
-			}
-			
+			pstmt = MySQLConnection.getMySQLConnection().prepareStatement("SELECT certificate, ID FROM USUARIOS");
 			ResultSet rs = pstmt.executeQuery();
+			ResultSet rs2 = null;
 			
-			if(rs.next()){
-				User user = new User();
-				user.setId(rs.getInt("ID"));
-				user.set_pemCertificate(rs.getString("certificate"));
-				user.set_salt(rs.getString("salt"));
-				user.setPrivateKeyBase64(rs.getString("privateKeyBase64"));
-				user.setTotalAcesses(rs.getInt("acesses"));
-				user.setTotalUsers(rs.getInt("users"));
-				user.setTotalQueries(rs.getInt("queries"));
-				user.setTotalListings(rs.getInt("listings"));
-				user.set_group(Group.getGroup(rs.getInt("groupId")));
-				user.set_allowAccessAfter(rs.getTimestamp("allowAccessAfter"));
-				user.set_passwordHash(rs.getBytes("passwordHash"));
+			while(rs.next()){
+				InputStream stream = new ByteArrayInputStream(rs.getString("certificate").getBytes());
+				try {
+					X509Certificate c = (X509Certificate)CertificateFactory.getInstance("X.509").generateCertificate(stream);
+	
+					if(User.get_loginName(c).equals(loginName)){	
+						int ID = rs.getInt("ID");
+						pstmt = MySQLConnection.getMySQLConnection().prepareStatement("SELECT * FROM USUARIOS WHERE ID = ?");
+						pstmt.setInt(1, ID);
+						rs2 = pstmt.executeQuery();
+						
+						if(rs2.next()){
+							User user = new User();
+							user.setId(rs2.getInt("ID"));
+							user.set_pemCertificate(rs2.getString("certificate"));
+							user.set_salt(rs2.getString("salt"));
+							user.setTotalAcesses(rs2.getInt("acesses"));
+							user.setTotalUsers(rs2.getInt("users"));
+							user.setTotalQueries(rs2.getInt("queries"));
+							user.setTotalListings(rs2.getInt("listings"));
+							user.set_group(Group.getGroup(rs2.getInt("groupId")));
+							user.set_allowAccessAfter(rs2.getTimestamp("allowAccessAfter"));
+							user.set_passwordHash(rs2.getBytes("passwordHash"));
 
-				return user;
+							return user;
+						}
+						
+					}
+				} catch (CertificateException e) {
+					e.printStackTrace();
+				}
 			}
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

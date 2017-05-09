@@ -1,0 +1,211 @@
+package model;
+
+import java.io.ByteArrayInputStream;
+import java.security.cert.CertificateException;
+import java.security.cert.CertificateFactory;
+import java.security.cert.X509Certificate;
+import java.sql.Timestamp;
+
+public class User {
+
+	//Vai para o banco
+	private int _id;
+	private String _pemCertificate;
+	private String _salt;
+	private int _totalAcesses;
+	private int _totalUsers;
+	private int _totalListings;
+	private int _totalQueries;
+	private Group _group;
+	private Timestamp _allowAccessAfter;
+	private byte[] _passwordHash;
+	
+	//Não vai para o banco
+	private String _privateKeyBase64;
+	
+	public String getUserName(){
+		try {
+			String principal = getCertificate().getSubjectX500Principal().toString();
+			int beginIndex = principal.indexOf("CN");
+			if (beginIndex == -1) {
+				throw new Exception("Invalid Certificate");
+			}
+			int endIndex = principal.indexOf(",", beginIndex);
+			String userName = principal.substring(beginIndex, endIndex);
+			userName = userName.replace("CN=", "");
+
+			return userName;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	public void set_pemCertificate(String pemCertificate) {
+		_pemCertificate = pemCertificate;
+	}
+	
+	public String get_pemCertificate() {
+		return _pemCertificate;
+	}
+
+	public X509Certificate getCertificate() throws CertificateException {
+		ByteArrayInputStream bais = new ByteArrayInputStream(_pemCertificate.getBytes());
+		try {
+			return (X509Certificate)CertificateFactory.getInstance("X.509").generateCertificate(bais);
+		} catch (CertificateException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	public String get_loginName(){
+		try {
+			String principal = getCertificate().getSubjectX500Principal().toString();
+			int beginIndex = principal.indexOf("EMAILADDRESS");
+			if (beginIndex == -1) {
+				throw new Exception("Invalid Certificate");
+			}
+			int endIndex = principal.indexOf(",", beginIndex);
+			String emailAdress = principal.substring(beginIndex, endIndex);
+			emailAdress = emailAdress.replace("EMAILADDRESS=", "");
+	
+			return emailAdress;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	public String getIssuer() {
+		try {
+			String principal = getCertificate().getIssuerX500Principal().getName().toString();
+			return trimCertificate(principal);
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	public String getSubject() {
+		try {
+			String principal = getCertificate().getSubjectX500Principal().getName().toString();
+			return trimCertificate(principal);
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	private String trimCertificate(String principal){
+		try {
+			int beginIndex = principal.indexOf("CN");
+			if (beginIndex == -1) {
+				throw new Exception("Invalid Certificate");
+			}
+			return principal.substring(beginIndex).replace(",", ", ");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	public void incNAcesses(){
+		_totalAcesses += 1;
+	}
+	
+	public void incNUsers(){
+		_totalUsers += 1;
+	}
+	
+	public void incNListings(){
+		_totalListings += 1;
+	}
+	
+	public void incNQueries(){
+		_totalQueries += 1;
+	}
+
+	public byte[] get_passwordHash() {
+		return _passwordHash;
+	}
+
+	public void set_passwordHash(byte[] _passwordHash) {
+		this._passwordHash = _passwordHash;
+	}
+
+	public String get_salt() {
+		return _salt;
+	}
+
+	public void set_salt(String _salt) {
+		this._salt = _salt;
+	}
+
+	public Group get_group() {
+		return _group;
+	}
+
+	public void set_group(Group _group) {
+		this._group = _group;
+	}
+
+	public Timestamp get_allowAccessAfter() {
+		return _allowAccessAfter;
+	}
+
+	public void set_allowAccessAfter(Timestamp _allowAccessAfter) {
+		this._allowAccessAfter = _allowAccessAfter;
+	}
+
+	public int getTotalAcesses() {
+		return _totalAcesses;
+	}
+
+	public void setTotalAcesses(int totalAcesses) {
+		this._totalAcesses = totalAcesses;
+	}
+
+	public int getTotalUsers() {
+		return _totalUsers;
+	}
+
+	public void setTotalUsers(int totalUsers) {
+		this._totalUsers = totalUsers;
+	}
+
+	public int getTotalListings() {
+		return _totalListings;
+	}
+
+	public void setTotalListings(int totalListings) {
+		this._totalListings = totalListings;
+	}
+
+	public int getTotalQueries() {
+		return _totalQueries;
+	}
+
+	public void setTotalQueries(int totalQueries) {
+		this._totalQueries = totalQueries;
+	}
+
+	public String getPrivateKeyBase64() {
+		return _privateKeyBase64;
+	}
+
+	public void setPrivateKeyBase64(String privateKeyBase64) {
+		this._privateKeyBase64 = privateKeyBase64;
+	}
+	
+	public int getId() {
+		return _id;
+	}
+
+	public void setId(int id) {
+		this._id = id;
+	}
+
+}

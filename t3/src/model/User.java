@@ -8,10 +8,10 @@ import java.sql.Timestamp;
 
 public class User {
 
+	//Vai para o banco
 	private int _id;
 	private String _pemCertificate;
 	private String _salt;
-	private String _privateKeyBase64;
 	private int _totalAcesses;
 	private int _totalUsers;
 	private int _totalListings;
@@ -19,6 +19,9 @@ public class User {
 	private Group _group;
 	private Timestamp _allowAccessAfter;
 	private byte[] _passwordHash;
+	
+	//Não vai para o banco
+	private String _privateKeyBase64;
 	
 	public String getUserName(){
 		try {
@@ -37,7 +40,7 @@ public class User {
 		}
 		return null;
 	}
-	
+
 	public void set_pemCertificate(String pemCertificate) {
 		_pemCertificate = pemCertificate;
 	}
@@ -58,7 +61,16 @@ public class User {
 
 	public String get_loginName(){
 		try {
-			String principal = getCertificate().getSubjectX500Principal().toString();
+			return User.get_loginName(getCertificate());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	static public String get_loginName(X509Certificate certificate){
+		try {
+			String principal = certificate.getSubjectX500Principal().toString();
 			int beginIndex = principal.indexOf("EMAILADDRESS");
 			if (beginIndex == -1) {
 				throw new Exception("Invalid Certificate");
